@@ -12,6 +12,12 @@
 
     <!-- String Resourses for activity_selection layout -->
     <string name="SelActMainText">Виберіть тему зайняття, \nта артилерійську систему</string>
+    <string name="selActSelArtsysTex">Виберіть артсистему:</string>
+    <string name="selActSelAdjText">Виберіть пристрілку:</string>
+    <string name="selActGoExButtonText">Перейти до задачі</string>
+    <string name="selActNewExText">Створити задачу</string>
+    <string name="selActTheorButText">ТЕОРІЯ</string>
+    <string name="selActMilButtText">Задачі з тисячними</string>
 
 
 </resources>

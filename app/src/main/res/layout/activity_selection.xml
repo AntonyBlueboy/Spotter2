@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="340dp"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:background="@color/colorLoginFrame"
         android:layout_centerVertical="true"
@@ -26,19 +26,17 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="@string/selActSelArtsysTex"
                 android:id="@+id/textView2"
-                android:layout_weight="1"
                 style="@style/CustomTextViewForFrameStyle" />
 
             <Spinner
                 android:id="@+id/spinner2"
-                android:layout_weight="1"
                 style="@style/CustomSpinnerForFramesStyle" />
 
             <Button
                 style="@style/CustomButtonForFramesStyle"
-                android:text="New Button"
+                android:text="@string/selActGoExButtonText"
                 android:id="@+id/button"/>
         </LinearLayout>
 
@@ -50,18 +48,17 @@
 
             <TextView
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="@string/selActSelAdjText"
                 android:id="@+id/textView3"
-                android:layout_weight="1"
                 style="@style/CustomTextViewForFrameStyle"/>
 
             <Spinner
                 android:id="@+id/spinner3"
-                android:layout_weight="1"
+
                 style="@style/CustomSpinnerForFramesStyle" />
 
             <Button
-                android:text="New Button"
+                android:text="@string/selActNewExText"
                 android:id="@+id/button3"
                 style="@style/CustomButtonForFramesStyle" />
         </LinearLayout>
@@ -73,13 +70,13 @@
             android:layout_weight="1">
 
             <Button
-                android:text="New Button"
+                android:text="@string/selActTheorButText"
                 android:id="@+id/button4"
                 android:layout_weight="1"
                 style="@style/CustomButtonForFramesStyle"/>
 
             <Button
-                android:text="New Button"
+                android:text="@string/selActMilButtText"
                 android:id="@+id/button5"
                 android:layout_weight="1"
                 style="@style/CustomButtonForFramesStyle"/>
