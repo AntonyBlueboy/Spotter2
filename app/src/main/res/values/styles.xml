@@ -10,4 +10,35 @@
 
     </style>
 
+    <style name="CustomButtonForFramesStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/customItemMargin</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CustomTextViewForFrameStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">@dimen/customItemMargin</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CustomSpinnerForFramesStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">@dimen/customItemMargin</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CustomMainTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_gravity">center_horizontal|top</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_margin">@dimen/customItemMargin</item>
+    </style>
+
 </resources>

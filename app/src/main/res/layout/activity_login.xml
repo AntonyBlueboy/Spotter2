@@ -9,64 +9,87 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ua.com.spottertest.spotter2.LoginActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginActButtonText"
+        android:id="@+id/button2"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/customItemMargin"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/loginActMainText"
-            android:textAlignment="center"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal|top" />
+    <TextView
+        android:text="@string/loginActMainText"
+        android:id="@+id/textView"
+        android:layout_above="@+id/linearLayout"
+        style="@style/CustomMainTextViewStyle" />
+
+    <LinearLayout
+        android:background="@color/colorLoginFrame"
+        android:orientation="vertical"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:hint="@string/loginActInputNewEditText"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/customItemMargin"/>
 
         <LinearLayout
-            android:background="@color/accent"
-            android:orientation="vertical"
-            android:layout_width="386dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/loginActYetCheckText"
+                android:id="@+id/checkBox"
+                android:layout_weight="10"
+                android:layout_margin="@dimen/customItemMargin"/>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_weight="90"
+                style="@style/CustomSpinnerForFramesStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPersonName"
-                android:text="Name"
-                android:ems="10"
-                android:id="@+id/editText"
-                android:layout_weight="1"/>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="New CheckBox"
-                    android:id="@+id/checkBox"
-                    android:layout_weight="10" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/spinner"
-                    android:layout_weight="90" />
-            </LinearLayout>
-
-            <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/editText2"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:hint="@string/loginActPassEditText"
+                android:layout_margin="@dimen/customItemMargin"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editText3"
+                android:layout_weight="1"
+                android:hint="@string/loginActPassRepEditText"
+                android:layout_margin="@dimen/customItemMargin"/>
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
+
 </RelativeLayout>

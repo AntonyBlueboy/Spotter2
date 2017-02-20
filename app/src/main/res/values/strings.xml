@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">Коригувальник</string>
+
+    <!-- String Resourses for activity_login layout -->
     <string name="loginActMainText">Увійдіть в обліковий запис \n або створіть новий</string>
+    <string name="loginActInputNewEditText">Введіть новий позивний</string>
+    <string name="loginActSelectEditText">Виберіть існуючий</string>
+    <string name="loginActYetCheckText">Вже маю</string>
+    <string name="loginActPassEditText">Введіть пароль</string>
+    <string name="loginActPassRepEditText">Підтвердіть пароль</string>
+    <string name="loginActButtonText">Увійти</string>
+
+    <!-- String Resourses for activity_selection layout -->
+    <string name="SelActMainText">Виберіть тему зайняття, \nта артилерійську систему</string>
+
 
 </resources>
