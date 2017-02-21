@@ -19,7 +19,7 @@ public class TheoryActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<String> arrayList;
+    ArrayList<String> arrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
