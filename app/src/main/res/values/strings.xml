@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">Коригувальник</string>
 
+    <!-- String Resourses for testing RecyclerView -->
+
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
+
+    <string-array name="topics">
+        <item>Дубок</item>
+        <item>Рудольф</item>
+        <item>Дусант</item>
+        <item>Пушкарь</item>
+        <item>Лемиш</item>
+        <item>Дуф</item>
+        <item>Арт</item>
+        <item>Кихот</item>
+        <item>Варяг</item>
+        <item>Чаек</item>
+    </string-array>
+
     <!-- String Resourses for activity_login layout -->
     <string name="loginActMainText">Увійдіть в обліковий запис \n або створіть новий</string>
     <string name="loginActInputNewEditText">Введіть новий позивний</string>
