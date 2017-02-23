@@ -10,16 +10,19 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SelectionActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".TheoryActivity"
-            android:theme="@style/TheoryActivityTheme"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@style/CustomNoActionBarTheme"></activity>
+        <activity
+            android:name=".MilTaskActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/CustomNoActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

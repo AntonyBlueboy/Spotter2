@@ -10,14 +10,15 @@
 
     </style>
 
-    <style name="TheoryActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Тема для установки тулбаров, со временем можно будет переиграть установив тулбары везде вместо экшнбаров. -->
+    <style name="CustomNoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:colorBackground">@color/colorBackground</item>
     </style>
-
+    <!-- Стили для элементов в таблицах -->
     <style name="CustomButtonForFramesStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -38,7 +39,7 @@
         <item name="android:layout_margin">@dimen/customItemMargin</item>
         <item name="android:layout_gravity">center</item>
     </style>
-
+    <!-- Стиль для заголовков Активити, со временем заголовок перенести в тулбар -->
     <style name="CustomMainTextViewStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -48,5 +49,8 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_margin">@dimen/customItemMargin</item>
     </style>
-
+    
+    <style name="CustomTabStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">20dp</item>
+    </style>
 </resources>
