@@ -19,6 +19,9 @@
         <item>Чаек</item>
     </string-array>
 
+    <string-array name="adjustmentTasks">
+        <item>З далекоміром</item>
+    </string-array>
     <!-- String Resourses for activity_login layout -->
     <string name="loginActMainText">Увійдіть в обліковий запис \n або створіть новий</string>
     <string name="loginActInputNewEditText">Введіть новий позивний</string>

@@ -20,18 +20,23 @@
         <activity
             android:name=".SelectionActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".TheoryActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/CustomNoActionBarTheme">
-        </activity>
+            android:theme="@style/CustomNoActionBarTheme" />
         <activity
             android:name=".MilTaskActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/CustomNoActionBarTheme">
-        </activity>
+            android:theme="@style/CustomNoActionBarTheme" />
+        <activity
+            android:name=".AdjustmentActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PreparingAdjustmentActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
