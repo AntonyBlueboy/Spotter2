@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/loginActButtonText"
-        android:id="@+id/button2"
+        android:id="@+id/loginButt"
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/customItemMargin"/>
@@ -40,9 +40,15 @@
             android:inputType="textPersonName"
             android:hint="@string/loginActInputNewEditText"
             android:ems="10"
-            android:id="@+id/editText"
+            android:maxLength="16"
+            android:id="@+id/loginET"
             android:layout_weight="1"
-            android:layout_margin="@dimen/customItemMargin"/>
+            android:layout_margin="@dimen/customItemMargin"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -54,12 +60,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/loginActYetCheckText"
-                android:id="@+id/checkBox"
+                android:id="@+id/loginCB"
                 android:layout_weight="10"
-                android:layout_margin="@dimen/customItemMargin"/>
+                android:layout_margin="@dimen/customItemMargin"
+                android:checked="true"/>
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/loginSpinner"
                 android:layout_weight="90"
                 style="@style/CustomSpinnerForFramesStyle"/>
         </LinearLayout>
@@ -75,7 +82,8 @@
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/editText2"
+                android:maxLength="8"
+                android:id="@+id/firstPassET"
                 android:layout_weight="1"
                 android:hint="@string/loginActPassEditText"
                 android:layout_margin="@dimen/customItemMargin"/>
@@ -85,10 +93,16 @@
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
                 android:ems="10"
-                android:id="@+id/editText3"
+                android:maxLength="8"
+                android:id="@+id/secondPassET"
                 android:layout_weight="1"
                 android:hint="@string/loginActPassRepEditText"
-                android:layout_margin="@dimen/customItemMargin"/>
+                android:layout_margin="@dimen/customItemMargin"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:visibility="invisible"/>
         </LinearLayout>
     </LinearLayout>
 
