@@ -1,12 +1,19 @@
 package ua.com.spottertest.spotter2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import java.math.BigDecimal;
 
 import ua.com.spottertest.spotter2.core.AdjustmentTask;
 import ua.com.spottertest.spotter2.core.ArtilleryType;
@@ -17,6 +24,9 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
     Spinner systemSpinner, adjSpinner;
     Button goToTaskButton, customTaskButton, theoryButton, milsTaskButton;
     String userName;
+    Toolbar toolbar;
+    DataBaseHelper dataBaseHelper;
+    AlertDialog.Builder builder;
 
 
     @Override
@@ -25,6 +35,8 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_selection);
 
         /*Получаем из интента позывной аккаунта*/
+
+        dataBaseHelper = new DataBaseHelper(this);
 
         userName = getIntent().getStringExtra("userName");
 
@@ -55,6 +67,71 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                 getResources().getStringArray(R.array.adjustmentTasks));
 
         adjSpinner.setAdapter(adjSpinAdapter);
+        toolbar = (Toolbar)findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.SelActMainText));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.select_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.selDeleteAcMenuItem:
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Видалити обліковий запис?").setPositiveButton("Так",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                dataBaseHelper.removeUser(userName);
+                                Intent loginActivityIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(loginActivityIntent);
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton("Ні", null);
+                builder.show();
+                break;
+            case R.id.SelChangeAcMenuItem:
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Змінити обліковий запис?").setPositiveButton("Так",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent loginActivityIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(loginActivityIntent);
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton("Ні", null);
+                builder.show();
+                break;
+            case R.id.SelStatisticMenuItem:
+                User user = dataBaseHelper.getUserForName(userName);
+                String message = String.format("Коригувань всього    %d" + "\n" +
+                                "Уражень                       %d" + "\n" +
+                                "Успішність                   %d" + "\n" +
+                                "Середній час               %s", user.getTasks(), user.getSuccessTasks(),
+                        user.getPercentageOfSuccess(),
+                        getTimeString(user.getAverigeTime()));
+                makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
+                        message);
+                user.clear();
+                break;
+            case R.id.SelQuitMenuItem:
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle("Вийти з додатку?").setPositiveButton("Так",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                finishAffinity();
+                            }
+                        });
+                builder.setNegativeButton("Ні", null);
+                builder.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -98,5 +175,33 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
         nextActivityIntent.putExtra("userName", userName);
         startActivity(nextActivityIntent);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent loginActivityIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(loginActivityIntent);
+        finish();
+    }
+
+    private void makeDialogWindowMessage(String title, String message){
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(title).setMessage(message).setCancelable(false).setNegativeButton("ОК",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private String getTimeString(long millis){
+        int minutes = new BigDecimal(((double) millis)/1000/60).setScale(0, BigDecimal.ROUND_DOWN).intValue();
+        int seconds = new BigDecimal(((double)millis)/1000%60).setScale(0,BigDecimal.ROUND_HALF_UP).intValue();
+
+        String result = String.format("%02d:%02d",
+                minutes, seconds);
+        return result;
     }
 }

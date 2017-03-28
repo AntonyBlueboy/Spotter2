@@ -34,6 +34,8 @@ public class Correction {
         this.angleCorrection = angleCorrection;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,5 +58,25 @@ public class Correction {
         result = 31 * result + (isTotheLeft ? 1 : 0);
         result = 31 * result + angleCorrection;
         return result;
+    }
+
+    public boolean isLower() {
+        return isLower;
+    }
+
+    public int getDistanceCorrection() {
+        return distanceCorrection;
+    }
+
+    public int getScaleCorrection() {
+        return scaleCorrection;
+    }
+
+    public boolean isTotheLeft() {
+        return isTotheLeft;
+    }
+
+    public int getAngleCorrection() {
+        return angleCorrection;
     }
 }

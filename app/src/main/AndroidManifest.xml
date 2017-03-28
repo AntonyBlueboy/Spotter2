@@ -10,7 +10,7 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme">
+            android:theme="@style/CustomNoActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +20,7 @@
         <activity
             android:name=".SelectionActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/CustomNoActionBarTheme" />
         <activity
             android:name=".TheoryActivity"
             android:screenOrientation="landscape"
@@ -32,11 +32,12 @@
         <activity
             android:name=".AdjustmentActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/CustomNoActionBarTheme">
+        </activity>
         <activity
             android:name=".PreparingAdjustmentActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/CustomNoActionBarTheme"/>
     </application>
 
 </manifest>

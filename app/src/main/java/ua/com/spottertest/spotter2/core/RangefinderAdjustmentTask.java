@@ -1,5 +1,8 @@
 package ua.com.spottertest.spotter2.core;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
@@ -11,6 +14,10 @@ import java.util.Random;
  */
 
 public class RangefinderAdjustmentTask extends AdjustmentTask {
+
+    /*Название пристрелки*/
+    private String adjustmentTitle;
+
 
     /*Минимальная дальность нахождения артиллерийского наблюдателя от цели*/
     private static final int MINIMUM_SPOTTER_DISTANCE = 500;
@@ -55,8 +62,25 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     /*Текущая корректура*/
     private Correction currentCorrection;
 
+    private boolean isLastCorrectionSuccesful;
+
+    /*Поле, необходимое при парселизации*/
+
+    public static final Parcelable.Creator<RangefinderAdjustmentTask> CREATOR =
+            new Parcelable.Creator<RangefinderAdjustmentTask>(){
+                public RangefinderAdjustmentTask createFromParcel(Parcel in){
+                    return new RangefinderAdjustmentTask(in);
+                }
+
+                @Override
+                public RangefinderAdjustmentTask[] newArray(int size) {
+                    return new RangefinderAdjustmentTask[size];
+                }
+            };
+
     public RangefinderAdjustmentTask(ArtilleryType type) {
         this.type = type;
+        this.adjustmentTitle = "Пристрілка з далекоміром";
         this.artylleryTypeName = type.getTypeDescription();
         this.maxDistanсe = type.getMaxDistance();
         this.random = new Random(new Date().getTime());
@@ -99,15 +123,66 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         this.mainProtractorStep = new BigDecimal(temp).setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
-    /*Тут будет также конструктор для парселизации класса*/
+    /*Конструктор для парселизации класса*/
 
-    /*Получаем исчисленые пользователем КУ и ШУ, сверяем и возвращаем true или false*/
+    public RangefinderAdjustmentTask(Parcel parcel) {
+        adjustmentTitle = parcel.readString();
+        troopDistance = parcel.readDouble();
+        mainCommanderDistance = parcel.readDouble();
+        mainParallax = parcel.readDouble();
+        valueOfScale = parcel.readInt();
 
-    public boolean checkPreparingResult( double userDistanceCoef, int userProtratorStep)
+        isLeftHand = parcel.readInt()==1;
+
+        mainDistanceCoef = parcel.readDouble();
+        mainProtractorStep = parcel.readInt();
+        maxDistanсe = parcel.readInt();
+        artylleryTypeName = parcel.readString();
+        type = ArtilleryType.getTypeForDescription(artylleryTypeName);
+        random = new Random(new Date().getTime());
+    }
+
+    /*Метод обязательный при имплементировании парселизации*/
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /*Метод для упаковки полей в парсель*/
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(adjustmentTitle);
+        parcel.writeDouble(troopDistance);
+        parcel.writeDouble(mainCommanderDistance);
+        parcel.writeDouble(mainParallax);
+        parcel.writeInt(valueOfScale);
+
+        int isLefth = isLeftHand ? 1 : 0;
+        parcel.writeInt(isLefth);
+
+        parcel.writeDouble(mainDistanceCoef);
+        parcel.writeInt(mainProtractorStep);
+        parcel.writeInt(maxDistanсe);
+        parcel.writeString(artylleryTypeName);
+    }
+
+    /*Получаем исчисленые пользователем КУ и ШУ в контейнере для Number, сверяем и возвращаем true или false*/
+
+    @Override
+    public String checkPreparingResult( Number... preparedCoefs )
     {
-        boolean isCorrect = false;
-        if (this.mainDistanceCoef == userDistanceCoef & this.mainProtractorStep == userProtratorStep) isCorrect = true;
-        return isCorrect;
+        double userDistanceCoef = (double)preparedCoefs[0];
+        int userProtratorStep = (int) preparedCoefs[1];
+        String result;
+        if (this.mainDistanceCoef == userDistanceCoef & this.mainProtractorStep == userProtratorStep)
+            result = "Розраховано вірно. Можна розпочати пристрілку.";
+        else result = String.format("Розраховано невірно. Запишіть, КВ = %.1f, КК = %s. \n Можна почнати пристрілку.",
+                mainDistanceCoef, ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep));
+
+        return result;
+
     }
 
     /*Генерируем текст наблюдения по залпу, вида "Перелет/недолет х, лево/право у", рассчитываем и
@@ -115,7 +190,7 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     *  ВНИМАНИЕ: нулевые наблюдения отсутствуют. Их нужно будет ввести при лоработке*/
 
     @Override
-    public String getBurstDescription() {
+    public String[] getBurstDescription() {
 
         /*генерируем флажок "перелет"*/
 
@@ -159,11 +234,19 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
 
         else angleToTarget = random.nextInt(30) / 10 * 10 + 5;
 
-        /*Формируем текстовое описание разрыва.*/
+        /*Формируем текстовое описание разрыва для случая с отклонениями.*/
 
-        String burstDescription = "Наблюдаю разрыв! \n" + (isOver ? "Перелет " : "Недолет ")
-                + distanceToTarget +
-                (isLeft ? ", лево " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(angleToTarget) + "!";
+        String burstRejectionDescription = String.format("Спостерігаю розрив! " + (isOver ? "Переліт " : "Недоліт ")
+                + "%d" +
+                (isLeft ? ", ліво " : ", право ")+ "%s" + "!",
+                distanceToTarget, ArtilleryMilsUtil.convertToMilsFormat(angleToTarget));
+
+        /*Формируем текстовое описание разрыва для случая с дистанцией.*/
+
+        String burstDistanceDescription = String.format("Спостерігаю розрив! " + ("Дистанція - %.0f") +
+                (isLeft ? ", ліво " : ", право ") + "%s" + "!",
+                (isOver ? (mainCommanderDistance + distanceToTarget) : (mainCommanderDistance - distanceToTarget)),
+                ArtilleryMilsUtil.convertToMilsFormat(angleToTarget));
 
         /*Исчисляем атрибуты корректуры, создаем ее и присваиваем.*/
 
@@ -188,28 +271,65 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
 
         /*Создаем и присваиваем переменную currentCorrection*/
         /*если исчисленые корректуры равны нулю, создать нулевую ссылку*/
-
         if(angleCorrection==0 & distanceCorrection==0) currentCorrection = null;
 
         else currentCorrection = new Correction((distanceCorrection < 0), Math.abs(distanceCorrection), Math.abs(scaleCorrection),
                 (angleCorrection < 0), Math.abs(angleCorrection) );
 
-        /*Возвращаем описание разрыва*/
-        return burstDescription;
+        /*Возвращаем массив с двумя разными описаниями одного разрыва*/
+        return new String[]{burstRejectionDescription, burstDistanceDescription};
     }
 
-    @Override
-    public Correction getCorrection() {
-        return currentCorrection;
-    }
-
+    /*Метод возвращающй описание боевого порядка*/
     @Override
     public String getFormotion() {
-        return new StringBuilder().append("Дальность командира - ").append((int)mainCommanderDistance)
-                .append(".\n Дальность цели - ").append((int)troopDistance).append(".\n Поправка на смещение - ")
-                .append(ArtilleryMilsUtil.convertToMilsFormat(mainParallax)).append(".\n Положение огневой - ")
-                .append(isLeftHand ? "слева" : "справа")
+        return new StringBuilder().append("Дальність командира - ").append((int)mainCommanderDistance)
+                .append(".\n Дальність ціли - ").append((int)troopDistance).append(".\n Поправка на зміщення - ")
+                .append(ArtilleryMilsUtil.convertToMilsFormat(mainParallax)).append(".\n Положення вогневої - ")
+                .append(isLeftHand ? "зліва" : "зправа")
                 .toString();
+    }
+
+    @Override
+    public String checkCorrection(Correction userCorretion, boolean isScaleUsed) {
+        StringBuilder result = new StringBuilder();
+        if (currentCorrection.equals(userCorretion)) {
+            isLastCorrectionSuccesful = true;
+            result.append("Точна коректура!\nЧас розрахунку - .");
+
+        }
+        else {
+            isLastCorrectionSuccesful = false;
+            result.append("Коригування не точне!\n" +
+                    "Мало бути:\n");
+            if (currentCorrection.getAngleCorrection() == 0) result.append("Приціл без змін");
+            else {
+                result.append("Приціл " + (currentCorrection.isLower() ? "менше " : "більше "));
+                    if (isScaleUsed) result.append(currentCorrection.getScaleCorrection());
+                    else result.append(String.format("%d метрів", currentCorrection.getDistanceCorrection()));
+                }
+            result.append("\n");
+            if (currentCorrection.getAngleCorrection() == 0) result.append("Кутомір без змін");
+            else {
+                result.append("Кутомір " + (currentCorrection.isTotheLeft() ? "лівіше " : "правіше ")
+                        + ArtilleryMilsUtil.convertToMilsFormat(currentCorrection.getAngleCorrection()));
+            }
+        }
+        return result.toString();
+    }
+
+    @Override
+    public String getCoefsDescription() {
+        return String.format("КВ = %.1f\n" +
+                                "КК = %s\n" +
+                                "Вогнева %s", getMainDistanceCoef(),
+                ArtilleryMilsUtil.convertToMilsFormat(getMainProtractorStep()),
+                (isLeftHand() ? "зліва" : "зправа"));
+    }
+
+    @Override
+    public boolean isLastCorrectionSuccessful() {
+        return isLastCorrectionSuccesful;
     }
 
     public void setValueOfScale(int valueOfScale) {
@@ -228,8 +348,17 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         return isLeftHand;
     }
 
+    public String getAdjustmentTitle() {
+        return adjustmentTitle;
+    }
+
+    @Override
     public int getValueOfScale() {
         return valueOfScale;
+    }
+
+    public String getArtylleryTypeName() {
+        return artylleryTypeName;
     }
 }
 

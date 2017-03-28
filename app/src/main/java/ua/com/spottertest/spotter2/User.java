@@ -28,7 +28,11 @@ public class User {
 
     private int percentageOfSuccess;
 
-    /*Пустой конструктор для ручного заполнения полей*/
+   /*Среднее время задачи*/
+
+    private long averigeTime;
+
+     /*Пустой конструктор для ручного заполнения полей*/
 
     public User() {
     }
@@ -41,6 +45,46 @@ public class User {
         this.successTasks = 0;
         this.unSuccessTasks = 0;
         this.percentageOfSuccess = 0;
+        this.averigeTime = 0;
+    }
+
+    /*Метод для пересчета процента успешных задач*/
+
+    public void refreshPercentageOfSuccess() {
+        if (tasks != 0)this.percentageOfSuccess = new BigDecimal((double) successTasks/(double) tasks * 100)
+                .setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+    }
+
+    /*Увеличивает на 1 задачу число успешных задач и общее число*/
+
+    public void incrementSuccessTasks(long averigeTime){
+        successTasks++;
+        tasks++;
+        refreshPercentageOfSuccess();
+        refreshTime(averigeTime);
+    }
+
+    /*Увеличивает на 1 задачу число ошибочных задач и общее число*/
+
+    public void incrementUnsuccessTasks(long averigeTime){
+        unSuccessTasks++;
+        tasks++;
+        refreshPercentageOfSuccess();
+        refreshTime(averigeTime);
+    }
+
+    /*Очищает статистику, кроме времени*/
+
+    public void clear(){
+        tasks = 0;
+        successTasks = 0;
+        unSuccessTasks = 0;
+    }
+
+    private void refreshTime(long averigeTime){
+
+        if(this.averigeTime == 0) this.averigeTime = averigeTime;
+        else this.averigeTime = (this.averigeTime + averigeTime)/2;
     }
 
     public String getName() {
@@ -65,7 +109,6 @@ public class User {
 
     public void setSuccessTasks(int successTasks) {
         this.successTasks = successTasks;
-
     }
 
     public int getUnsuccessTasks() {
@@ -76,42 +119,21 @@ public class User {
         this.unSuccessTasks = unSuccessTasks;
     }
 
-    public void setPercentageOfSuccess(int percentageOfSuccess) {
-        this.percentageOfSuccess = percentageOfSuccess;
-    }
-
     public int getPercentageOfSuccess() {
         return percentageOfSuccess;
     }
 
-    /*Метод для пересчета процента успешных задач*/
-
-    public void refreshPercentageOfSuccess() {
-        this.percentageOfSuccess = new BigDecimal((double) successTasks/(double) tasks * 100)
-                .setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+    public void setPercentageOfSuccess(int percentageOfSuccess) {
+        this.percentageOfSuccess = percentageOfSuccess;
     }
 
-    /*Увеличивает на 1 задачу число успешных задач и общее число*/
-
-    public void incrementSuccessTasks(){
-        successTasks++;
-        tasks++;
-        refreshPercentageOfSuccess();
+    public long getAverigeTime() {
+        return averigeTime;
     }
 
-    /*Увеличивает на 1 задачу число ошибочных задач и общее число*/
-
-    public void incrementUnsuccessTasks(){
-        unSuccessTasks++;
-        tasks++;
-        refreshPercentageOfSuccess();
+    public void setAverigeTime(long averigeTime) {
+        this.averigeTime = averigeTime;
     }
 
-    /*Очищает статистику*/
 
-    public void clear(){
-        tasks = 0;
-        successTasks = 0;
-        unSuccessTasks = 0;
-    }
 }

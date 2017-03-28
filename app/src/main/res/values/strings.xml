@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Коригувальник</string>
+    <string name="milsExMessage">Формат вводу для кутів "х-хх"</string>
+    <string name="numExMessage">Корректно заповніть необхідні поля</string>
 
     <!-- String Resourses for testing RecyclerView -->
 
@@ -30,15 +32,55 @@
     <string name="loginActPassEditText">Введіть пароль</string>
     <string name="loginActPassRepEditText">Підтвердіть пароль</string>
     <string name="loginActButtonText">Увійти</string>
+    <string name="loginActInputAllToastMessage">Для створення нового облікового запису заповніть всі поля</string>
+    <string name="loginActSecondPassErrorMessage">При повторному введені паролю допущено помилку</string>
+    <string name="loginActDublicateLoginErrorMessage">Такий позивний вже зареєстровано</string>
+    <string name="loginActSelectLoginMessage">Виберіть позивний</string>
+    <string name="loginActInputPassMessage">Введіть пароль</string>
+    <string name="loginActWrongPassMessage">Невірний пароль!</string>
+
+    <string name="rangPrepMainText">Введіть необхідні дані</string>
+    <string name="rangPrepDistCoefETHint">Коеф. віддалення</string>
+    <string name="rangPrepProtStepETHint">Крок кутоміра</string>
+    <string name="rangPrepScaleETHint">∆П на 100 м</string>
+    <string name="rangPrepScaleCBText">Не потрібна</string>
+    <string name="rangPrepCheckButText">Перевірити</string>
+    <string name="rangPrepGoButText">До пристрілки</string>
+    <string name="rangPrepNotCheckedMessage">Перед пристрілкою перевірте корректність необхідних коефіціентів</string>
+
+    <string name="adjDistSwitchText">Дальність розриву</string>
+    <string name="adjScaleSwitchText">Ділення прицілу</string>
+    <string name="adjGetBurstButtText">Отримати</string>
+    <string name="adjCorrButtText">Коригувати</string>
+    <string name="adjWithoutCorrCBText">Без коректури</string>
+    <string name="adjLessRBText">Менше</string>
+    <string name="adjMoreRBText">Більше</string>
+    <string name="adjAngCorrETHintText">Тисячних</string>
+    <string name="adjScaleCorrETHintText">Поділок прицілу</string>
+    <string name="adjMetersCorrETHintText">Метрів</string>
+    <string name="adjRightRBText">Правіше</string>
+    <string name="adjLeftRBText">Лівіше</string>
+    <string name="adjInputTVText">Введіть корректури</string>
+    <string name="adjScaleNotAvailableMessage">∆П на 100 м не задано. Режим недоступний.</string>
+    <string name="adjStatisticMenuItemText">Статистика вправ</string>
+    <string name="adjQuitMenuItemText">Вийти</string>
+    <string name="adjGoTheoryMenuItemText">До теорії</string>
+
+
+
+
+
 
     <!-- String Resourses for activity_selection layout -->
-    <string name="SelActMainText">Виберіть тему зайняття, \nта артилерійську систему</string>
+    <string name="SelActMainText">Виберіть тему зайняття та артилерійську систему</string>
     <string name="selActSelArtsysTex">Виберіть артсистему:</string>
     <string name="selActSelAdjText">Виберіть пристрілку:</string>
     <string name="selActGoExButtonText">Перейти до задачі</string>
     <string name="selActNewExText">Створити задачу</string>
     <string name="selActTheorButText">ТЕОРІЯ</string>
     <string name="selActMilButtText">Задачі з тисячними</string>
+    <string name="selActDelMenuItemText">Видалити аккаунт</string>
+    <string name="selActChangeMenuItemText">Змінити аккаунт</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

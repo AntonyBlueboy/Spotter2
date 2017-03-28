@@ -3,10 +3,213 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ua.com.spottertest.spotter2.AdjustmentActivity">
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar"
+        />
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout3">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:background="@color/colorBackground"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                tools:text="Burst description"
+                android:id="@+id/adjBurstDescrTV"
+                android:layout_weight="2"
+                android:gravity="center"/>
+
+            <Chronometer
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/adjChron"
+                android:layout_weight="8"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/adjInputTVText"
+                android:id="@+id/adjInputTV"
+                style="@style/CustomTextViewForFrameStyle"
+                android:layout_weight="5"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                tools:text="Huita"
+                android:id="@+id/adjStatTV"
+                style="@style/CustomTextViewForFrameStyle"
+                android:layout_weight="5"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:id="@+id/adjAngCorrRG">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adjLeftRBText"
+                    android:checked="true"
+                    android:id="@+id/adjLeftRB" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adjRightRBText"
+                    android:id="@+id/adjRightRB" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9">
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adjWithoutCorrCBText"
+                    android:id="@+id/adjAngNoCorrCB" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/adjAngCorrET"
+                    android:hint="@string/adjAngCorrETHintText"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+            </LinearLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:id="@+id/adjDistCorrRG">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adjLessRBText"
+                    android:id="@+id/adjLessRB"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adjMoreRBText"
+                    android:id="@+id/adjMoreRB" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9">
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adjWithoutCorrCBText"
+                    android:id="@+id/adjDistNoCorrCB" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/adjDistCorrET"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="Result Text"
+        android:id="@+id/adjCoefsTV"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/customItemMargin"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/adjCorrButtText"
+        android:id="@+id/adjCorrBut"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignEnd="@+id/linearLayout3"
+        android:enabled="false"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/adjGetBurstButtText"
+        android:id="@+id/adjBurstBut"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignStart="@+id/linearLayout3" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/adjDistSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/adjDistSwitchText"
+        android:layout_above="@+id/linearLayout3"
+        android:layout_alignStart="@+id/linearLayout3" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/adjScaleSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/adjScaleSwitchText"
+        android:layout_above="@+id/linearLayout3"
+        android:layout_alignEnd="@+id/linearLayout3" />
+
 
 </RelativeLayout>

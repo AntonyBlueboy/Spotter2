@@ -39,6 +39,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     private static final String SUCCESS_TASKS = "SUCCESS_TASKS";
     private static final String UNSUCCESS_TASKS = "UNSUCCESS_TASKS";
     private static final String PERCENTAGE_OF_SUCCESS = "PERCENTAGE_OF_SUCCESS";
+    private static final String AVERAGE_TIME = "AVERAGE_TIME";
 
 
     public DataBaseHelper(Context context) {
@@ -49,7 +50,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        /*Создаем таблицу с 6-ю соответствующими колонками*/
+        /*Создаем таблицу с 7-ю соответствующими колонками*/
 
         db.execSQL("CREATE TABLE " + USERS_TABLE_NAME+ " ( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -58,7 +59,8 @@ public class DataBaseHelper extends SQLiteOpenHelper{
                 TASKS + " INTEGER, " +
                 SUCCESS_TASKS + " INTEGER, " +
                 UNSUCCESS_TASKS + " INTEGER, " +
-                PERCENTAGE_OF_SUCCESS + " INTEGER)");
+                PERCENTAGE_OF_SUCCESS + " INTEGER, " +
+                AVERAGE_TIME + " LONG)");
     }
 
     @Override
@@ -86,6 +88,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         values.put(SUCCESS_TASKS, 0);
         values.put(UNSUCCESS_TASKS, 0);
         values.put(PERCENTAGE_OF_SUCCESS, 0);
+        values.put(AVERAGE_TIME, 0);
 
         db.insert(USERS_TABLE_NAME, null, values);
         db.close();
@@ -114,16 +117,17 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     public User getUserForName(String userName){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{USERNAME, PASSWORD, TASKS,
-                SUCCESS_TASKS, UNSUCCESS_TASKS, PERCENTAGE_OF_SUCCESS}
+        Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{USERNAME, TASKS,
+                SUCCESS_TASKS, UNSUCCESS_TASKS, AVERAGE_TIME}
                 ,USERNAME + " = ?", new String[]{userName}, null, null, null);
         if (cursor.moveToFirst()){
             User user = new User();
             user.setName(cursor.getString(0));
-            user.setTasks(cursor.getInt(2));
-            user.setSuccessTasks(cursor.getInt(3));
-            user.setUnsuccessTasks(cursor.getInt(4));
+            user.setTasks(cursor.getInt(1));
+            user.setSuccessTasks(cursor.getInt(2));
+            user.setUnsuccessTasks(cursor.getInt(3));
             user.refreshPercentageOfSuccess();
+            user.setAverigeTime(cursor.getLong(4));
 
             cursor.close();
             db.close();
@@ -141,18 +145,20 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     public void refreshUserStats(User user){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{USERNAME, TASKS, SUCCESS_TASKS, UNSUCCESS_TASKS}
+            Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{TASKS, SUCCESS_TASKS, UNSUCCESS_TASKS, AVERAGE_TIME}
                     , USERNAME + " = ?", new String[]{user.getName()}, null, null, null);
             cursor.moveToFirst();
-            user.setTasks(user.getTasks() + cursor.getInt(1));
-            user.setSuccessTasks(user.getSuccessTasks() + cursor.getInt(2));
-            user.setUnsuccessTasks(user.getUnsuccessTasks() + cursor.getInt(3));
+            user.setTasks(user.getTasks() + cursor.getInt(0));
+            user.setSuccessTasks(user.getSuccessTasks() + cursor.getInt(1));
+            user.setUnsuccessTasks(user.getUnsuccessTasks() + cursor.getInt(2));
+            user.setAverigeTime((user.getAverigeTime() + cursor.getLong(3))/2);
             user.refreshPercentageOfSuccess();
 
             values.put(TASKS, user.getTasks());
             values.put(SUCCESS_TASKS, user.getSuccessTasks());
             values.put(UNSUCCESS_TASKS, user.getUnsuccessTasks());
             values.put(PERCENTAGE_OF_SUCCESS, user.getPercentageOfSuccess());
+            values.put(AVERAGE_TIME, user.getAverigeTime());
 
             db.update(USERS_TABLE_NAME, values, USERNAME + " = ?", new String[]{user.getName()});
 
@@ -173,5 +179,11 @@ public class DataBaseHelper extends SQLiteOpenHelper{
             isCorrect = password.equals(tablePass);
         }
         return isCorrect;
+    }
+
+    public void removeUser(String userName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(USERS_TABLE_NAME, USERNAME + " = ?", new String[]{userName});
+        db.close();
     }
 }

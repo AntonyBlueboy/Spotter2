@@ -4,6 +4,7 @@ package ua.com.spottertest.spotter2;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private List<String> usernames;
     private Button loginButton;
     private Intent selectActIntent;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DBHelper.insertUser("Anton", "aaaa");
         DBHelper.insertUser("Vasili", "vvvv");
         DBHelper.insertUser("Batia", "bbbb");
+
+        toolbar = (Toolbar)findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Увійдіть в обліковий запис, або створіть новий");
 
         selectActIntent = new Intent(this,  SelectionActivity.class);
 
@@ -52,36 +59,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, usernames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         loginSpinner.setAdapter(adapter);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.loginCB:
-                if (!loginCB.isChecked()){
-                    loginET.setClickable(true);
-                    loginET.setCursorVisible(true);
-                    loginET.setFocusable(true);
-                    loginET.setFocusableInTouchMode(true);
-                    loginET.setVisibility(View.VISIBLE);
-                    secondPassET.setClickable(true);
-                    secondPassET.setCursorVisible(true);
-                    secondPassET.setFocusable(true);
-                    secondPassET.setFocusableInTouchMode(true);
-                    secondPassET.setVisibility(View.VISIBLE);
-                }
-                else {
-                    loginET.setClickable(false);
-                    loginET.setCursorVisible(false);
-                    loginET.setFocusable(false);
-                    loginET.setFocusableInTouchMode(false);
-                    loginET.setVisibility(View.INVISIBLE);
-                    secondPassET.setClickable(false);
-                    secondPassET.setCursorVisible(false);
-                    secondPassET.setFocusable(false);
-                    secondPassET.setFocusableInTouchMode(false);
-                    secondPassET.setVisibility(View.INVISIBLE);
-                }
+                boolean isChecked = loginCB.isChecked();
+                    loginET.setEnabled(!isChecked);
+                    secondPassET.setEnabled(!isChecked);
+                    loginSpinner.setEnabled(isChecked);
                 break;
             case R.id.loginButt:
                 if (!loginCB.isChecked()){
@@ -91,13 +79,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     if (userName.equals("") || password.equals("")
                             || repeatingPassword.equals(""))
-                        makeToastMessage("Для створення нового облікового запису заповніть всі поля");
+                        makeToastMessage(getResources().getString(R.string.loginActInputAllToastMessage));
                     else {
                         if (!password.equals(repeatingPassword))
-                            makeToastMessage("При повторному введені паролю допущено помилку");
+                            makeToastMessage(getResources().getString(R.string.loginActSecondPassErrorMessage));
                         else {
                             if (!DBHelper.insertUser(userName, password))
-                                makeToastMessage("Такий позивний вже зареєстровано");
+                                makeToastMessage(getResources().getString(R.string.loginActDublicateLoginErrorMessage));
                             else {
                                 selectActIntent.putExtra("userName", userName);
                                 startActivity(selectActIntent);
@@ -108,18 +96,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
                 else {
-                    if(loginSpinner.getSelectedItem() == null) makeToastMessage("Виберіть позивний");
+                    if(loginSpinner.getSelectedItem() == null) makeToastMessage(getResources()
+                            .getString(R.string.loginActSelectLoginMessage));
                     else {
                         String userName = loginSpinner.getSelectedItem().toString();
                         String password = firstPassET.getText().toString();
-                        if (password.equals("")) makeToastMessage("Введіть пароль");
+                        if (password.equals("")) makeToastMessage(getResources().getString(R.string.loginActInputPassMessage));
                         else {
                             if(DBHelper.checkPasswordForUser(userName, password)){
                                 selectActIntent.putExtra("userName", userName);
                                 startActivity(selectActIntent);
                                 finish();
                             }
-                            else makeToastMessage("Невірний пароль!");
+                            else makeToastMessage(getResources().getString(R.string.loginActWrongPassMessage));
                         }
                     }
 

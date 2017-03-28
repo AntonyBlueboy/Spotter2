@@ -10,4 +10,5 @@
     <color name="divider">#BDBDBD</color>
     <color name="colorBackground">#e8f5e9</color>
     <color name="colorLoginFrame">#a5d6a7</color>
+    <color name="switchActivColor">#1b5e20</color>
 </resources>

@@ -47,7 +47,7 @@ public enum ArtilleryType {
 
     /*Метод принимает описание типа арты, а возвращает обьект ArtilleryType или null*/
 
-    public ArtilleryType getTypeForDescription(String typeDescription){
+    public static ArtilleryType getTypeForDescription(String typeDescription){
         for (ArtilleryType type : ArtilleryType.values()){
             if (type.getTypeDescription().equals(typeDescription)) return type;
         }
