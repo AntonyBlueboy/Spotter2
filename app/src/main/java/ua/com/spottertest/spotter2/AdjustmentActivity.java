@@ -155,14 +155,14 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.adjQuitMenuItem:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Вийти з додатку?").setPositiveButton("Вийти",
+                builder.setTitle("Вийти з додатку?").setPositiveButton("Так",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id) {
                                 dataBaseHelper.refreshUserStats(currentUser);
                                 finishAffinity();
                             }
                         });
-                builder.setNegativeButton("Повернутись", null);
+                builder.setNegativeButton("Ні", null);
                 builder.show();
 
                 break;
@@ -313,20 +313,25 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
      */
 
     private void onCorrectionButtonClicked(){
-        chronometer.stop();
-        long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
-        summTime += elapsedMillis;
         try {
 
             /*Для проверки передаем в обьект пристрелки корректуру из полей и флажок использования дП на 100*/
 
             StringBuilder resulMessage = new StringBuilder(task.checkCorrection(getUserCorrection(), isScaleUsed));
+            chronometer.stop();
+            long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+            summTime += elapsedMillis;
             resulMessage.append("\nЧас - " + getTimeString(elapsedMillis));
             String title = "Ціль не вражено";
             if(task.isLastCorrectionSuccessful()){
                 title = "Ціль вражено";
             }
             makeDialogWindowMessage(title, resulMessage.toString());
+
+            adjBurstBut.setEnabled(true);
+            adjCorrBut.setEnabled(false);
+
+            onTaskDecided(task.isLastCorrectionSuccessful());
 
         }
         catch (NotMilsFormatException e){
@@ -335,10 +340,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         catch (NumberFormatException e){
             makeToastMessage(getResources().getString(R.string.numExMessage));
         }
-        adjBurstBut.setEnabled(true);
-        adjCorrBut.setEnabled(false);
 
-        onTaskDecided(task.isLastCorrectionSuccessful());
     }
 
 
@@ -409,14 +411,14 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Залишити пристрілку?").setPositiveButton("Залишити",
+        builder.setTitle("Залишити пристрілку?").setPositiveButton("Так",
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id) {
                         dataBaseHelper.refreshUserStats(currentUser);
                         finish();
                     }
                 });
-        builder.setNegativeButton("Повернутись", null);
+        builder.setNegativeButton("Ні", null);
         builder.show();
     }
 

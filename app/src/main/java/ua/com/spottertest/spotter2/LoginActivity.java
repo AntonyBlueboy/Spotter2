@@ -37,10 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DBHelper.insertUser("Vasili", "vvvv");
         DBHelper.insertUser("Batia", "bbbb");
 
-        toolbar = (Toolbar)findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Увійдіть в обліковий запис, або створіть новий");
 
         selectActIntent = new Intent(this,  SelectionActivity.class);
 
@@ -60,7 +57,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         loginSpinner.setAdapter(adapter);
 
+        toolbar = (Toolbar)findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Увійдіть в обліковий запис, або створіть новий");
+
     }
+
+
 
     @Override
     public void onClick(View view) {
