@@ -1,11 +1,10 @@
 package ua.com.spottertest.spotter2;
 
 
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,24 +12,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ua.com.spottertest.spotter2.core.ArtilleryMilsUtil;
 import ua.com.spottertest.spotter2.core.ArtilleryType;
+import ua.com.spottertest.spotter2.core.DualObservingAdjustmentTask;
 import ua.com.spottertest.spotter2.core.NotMilsFormatException;
 import ua.com.spottertest.spotter2.core.RangefinderAdjustmentTask;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Фрагмент с логикой активити задач по подготовке стрельбы с дальномером
  */
-public class RangeFinderPrepareFragment extends Fragment implements View.OnClickListener{
+public class DualObservingPrepareFragment extends Fragment implements View.OnClickListener{
 
     /*Переменная целевой задачи и типа артиллерии, а также идентификатора целевой задачи*/
 
-    RangefinderAdjustmentTask task;
+    DualObservingAdjustmentTask task;
     ArtilleryType type;
     int taskId;
 
@@ -40,10 +41,13 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
 
     /*Переменные используемых вью*/
 
-    private TextView rangPrepDescrTV;
-    private EditText rangPrepDistCoefET, rangPrepProtStepET, rangPrepDeltaET;
-    private CheckBox rangPrepCB;
-    private Button rangPrepCheckBut, rangPrepGoBut;
+    private TextView dualPrepDescrText;
+    private EditText dualPrepDistCoefET, dualPrepProtStepET, dualPrepLeftCoefET, dualPrepRightCoefET,dualPrepDeltaET;
+    private RadioGroup dualPrepMainCommanderRG, dualPrepHandRG;
+    private RadioButton dualPrepMainCommanderLeftRB, dualPrepMainCommanderRightRB,
+            dualPrepHandLeftRB, dualPrepHandRightRB;
+    private CheckBox dualPrepCB;
+    private Button dualPrepCheckBut, dualPrepGoBut;
 
     /*Переменная для интента для перехода к следующей активити*/
 
@@ -62,8 +66,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     private boolean isChacked = false;
 
 
-
-    public RangeFinderPrepareFragment() {
+    public DualObservingPrepareFragment() {
         // Required empty public constructor
     }
 
@@ -72,7 +75,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_range_finder_prepare, container, false);
+        return inflater.inflate(R.layout.fragment_dual_observing_prepare, container, false);
     }
 
     /*сеттер для внедрения в фрагмент идентификатора пристрелки, типа артиллерии и создания таска*/
@@ -80,7 +83,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     public void setAdjustmentTask(int taskId, ArtilleryType type){
         this.taskId = taskId;
         this.type = type;
-        task = new RangefinderAdjustmentTask(this.type);
+        task = new DualObservingAdjustmentTask(this.type);
     }
 
     /*Метод жизненного цикла стартующий сразу после создания активити и фрагмента
@@ -89,17 +92,27 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     @Override
     public void onStart() {
         super.onStart();
-        rangPrepDescrTV = (TextView) getView().findViewById(R.id.rangPrepDescrText);
-        rangPrepDescrTV.setText(task.getFormotion());
-        rangPrepCB = (CheckBox) getView().findViewById(R.id.rangPrepCB);
-        rangPrepCB.setOnClickListener(this);
-        rangPrepDistCoefET = (EditText) getView().findViewById(R.id.rangPrepDistCoefET);
-        rangPrepProtStepET = (EditText) getView().findViewById(R.id.rangPrepProtStepET);
-        rangPrepDeltaET = (EditText) getView().findViewById(R.id.rangPrepDeltaET);
-        rangPrepCheckBut = (Button) getView().findViewById(R.id.rangPrepCheckBut);
-        rangPrepCheckBut.setOnClickListener(this);
-        rangPrepGoBut = (Button) getView().findViewById(R.id.rangPrepGoBut);
-        rangPrepGoBut.setOnClickListener(this);
+
+        dualPrepDescrText = (TextView) getView().findViewById(R.id.dualPrepDescrText);
+        dualPrepDescrText.setText(task.getFormotion());
+        dualPrepDistCoefET = (EditText) getView().findViewById(R.id.dualPrepDistCoefET);
+        dualPrepProtStepET = (EditText) getView().findViewById(R.id.dualPrepProtStepET);
+        dualPrepLeftCoefET = (EditText) getView().findViewById(R.id.dualPrepLeftCoefET);
+        dualPrepRightCoefET = (EditText) getView().findViewById(R.id.dualPrepRightCoefET);
+        dualPrepDeltaET = (EditText) getView().findViewById(R.id.dualPrepDeltaET);
+        dualPrepMainCommanderRG = (RadioGroup) getView().findViewById(R.id.dualPrepMainCommanderRG);
+        dualPrepHandRG = (RadioGroup) getView().findViewById(R.id.dualPrepHandRG);
+        dualPrepMainCommanderLeftRB = (RadioButton) getView().findViewById(R.id.dualPrepMainCommanderLeftRB);
+        dualPrepMainCommanderRightRB = (RadioButton) getView().findViewById(R.id.dualPrepMainCommanderRightRB);
+        dualPrepHandLeftRB = (RadioButton) getView().findViewById(R.id.dualPrepHandLeftRB);
+        dualPrepHandRightRB = (RadioButton) getView().findViewById(R.id.dualPrepHandRightRB);
+        dualPrepCB = (CheckBox) getView().findViewById(R.id.dualPrepCB);
+        dualPrepCB.setOnClickListener(this);
+        dualPrepCheckBut = (Button) getView().findViewById(R.id.dualPrepCheckBut);
+        dualPrepCheckBut.setOnClickListener(this);
+        dualPrepGoBut = (Button) getView().findViewById(R.id.dualPrepGoBut);
+        dualPrepGoBut.setOnClickListener(this);
+
         userName = getActivity().getIntent().getStringExtra("userName");
 
         builder = new AlertDialog.Builder(getActivity());
@@ -112,34 +125,43 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
                 Toast.LENGTH_SHORT).show();
     }
 
-    /*Метод реакции на клик по любому вью*/
+    /*Метод интерфейса для реакции на все клики*/
 
     @Override
     public void onClick(View view) {
+
         switch (view.getId()){
-            case R.id.rangPrepCB:
+            case R.id.dualPrepCB:
 
                 /*Если нажата/убрана галочка "не нужны" для графы с дП100, то убираем/выставляем графу с экрана,
                  инициируем булеву переменную true/false*/
 
-                isWithoutScale = rangPrepCB.isChecked();
-                rangPrepDeltaET.setEnabled(!isWithoutScale);
+                isWithoutScale = dualPrepCB.isChecked();
+                dualPrepDeltaET.setEnabled(!isWithoutScale);
                 break;
-            case R.id.rangPrepCheckBut:
+            case R.id.dualPrepCheckBut:
 
                 /*Если нажата кнопка "Проверить", то
                 * создаем и обнуляем локальные переменные результатов подготовки стрельбы */
 
                 double userDistanceCoef = 0;
                 int userProtratorStep = 0;
+                int leftCoef = 0;
+                int rightCoef = 0;
+                boolean isLeftMain = false;
+                boolean isLefthand = false;
                 int valueOfScale = 0;
 
                 /*Пытаемся получить данные из граф, при некорректности/отсутствии данных, выводим мэссэдж*/
 
                 try{
-                userDistanceCoef = Double.parseDouble(rangPrepDistCoefET.getText().toString());
-                userProtratorStep = ArtilleryMilsUtil.convertToIntFormat(rangPrepProtStepET.getText().toString());
-                    if (!isWithoutScale) valueOfScale = Integer.parseInt(rangPrepDeltaET.getText().toString());
+                    userDistanceCoef = Double.parseDouble(dualPrepDistCoefET.getText().toString());
+                    userProtratorStep = ArtilleryMilsUtil.convertToIntFormat(dualPrepProtStepET.getText().toString());
+                    if (!isWithoutScale) valueOfScale = Integer.parseInt(dualPrepDeltaET.getText().toString());
+                    leftCoef = Integer.parseInt(dualPrepLeftCoefET.getText().toString());
+                    rightCoef = Integer.parseInt(dualPrepRightCoefET.getText().toString());
+                    isLeftMain = dualPrepMainCommanderLeftRB.isChecked();
+                    isLefthand = dualPrepHandLeftRB.isChecked();
                 }
                 catch (NotMilsFormatException e){
                     makeToastMessage(getView().getResources().getString(R.string.milsExMessage));
@@ -152,7 +174,8 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
 
                 /*Выводим в результат проверки в Диалоговое окно*/
 
-                makeDialogWindowMessage("Результат", task.checkPreparingResult(userDistanceCoef, userProtratorStep));
+                makeDialogWindowMessage("Результат", task.checkPreparingResult(userDistanceCoef, userProtratorStep,
+                        leftCoef, rightCoef, isLeftMain, isLefthand));
 
                 /*Задаем дП100 в таск, если 0, то 0*/
 
@@ -162,26 +185,24 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
 
                 isChacked = true;
                 break;
-            case R.id.rangPrepGoBut:
-
+            case R.id.dualPrepGoBut:
                 /*Если нажата кнопка "Перейти дальше", то
-                 * проверяем, выполнялась ли подготовка, если нет - предупреждение
-                  * если да, создаем интент, добавляем позывной, идентиф. прстрелки и сам таск, стартуем*/
+                    * проверяем, выполнялась ли подготовка, если нет - предупреждение
+                    * если да, создаем интент, добавляем позывной, идентиф. прстрелки и сам таск, стартуем*/
 
                 if (!isChacked) makeToastMessage(getView().getResources().getString(R.string.rangPrepNotCheckedMessage));
                 else {
                     adjustmentActIntent = new Intent(getActivity().getApplicationContext(), AdjustmentActivity.class );
                     adjustmentActIntent.putExtra("userName", userName);
                     adjustmentActIntent.putExtra("taskId", taskId);
-                    adjustmentActIntent.putExtra(RangefinderAdjustmentTask.class.getCanonicalName(), task);
+                    adjustmentActIntent.putExtra(DualObservingAdjustmentTask.class.getCanonicalName(), task);
                     startActivity(adjustmentActIntent);
                     getActivity().finish();
                 }
                 break;
-
         }
-
     }
+
     /*Метод для вывода далогового окна*/
 
     private void makeDialogWindowMessage(String title, String message){

@@ -9,17 +9,26 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="380dp"
-        android:background="@color/colorLoginFrame"
         android:layout_height="wrap_content"
+        android:background="@color/colorLoginFrame"
         android:layout_gravity="center">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="Adjustment task description"
             android:id="@+id/rangPrepDescrText"
+            android:layout_gravity="center"
+            style="@style/CustomTextViewForFrameStyle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/rangPrepMainText"
+            android:id="@+id/textView6"
             android:layout_gravity="center"
             style="@style/CustomTextViewForFrameStyle"/>
 
@@ -35,16 +44,14 @@
                 android:layout_weight="1"
                 android:hint="@string/rangPrepDistCoefETHint"
                 android:ems="10"
-                android:id="@+id/rangPrepDistCoefET"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:id="@+id/rangPrepDistCoefET" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/rangPrepProtStepETHint"
-                android:id="@+id/rangPrepProtStepET"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:id="@+id/rangPrepProtStepET" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,14 +73,13 @@
                 android:hint="@string/rangPrepScaleETHint"
                 android:ems="10"
                 android:layout_weight="1"
-                android:id="@+id/rangPrepDeltaET"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:id="@+id/rangPrepDeltaET" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <Button
                 android:layout_width="wrap_content"
@@ -81,8 +87,7 @@
                 android:text="@string/rangPrepCheckButText"
                 android:id="@+id/rangPrepCheckBut"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"
-                />
+                style="@style/CustomButtonForFramesStyle"/>
 
             <Button
                 android:layout_width="wrap_content"

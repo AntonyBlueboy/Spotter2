@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import java.math.BigDecimal;
 
 import ua.com.spottertest.spotter2.core.AdjustmentTask;
@@ -21,11 +20,16 @@ import ua.com.spottertest.spotter2.core.ArtilleryType;
 
 public class PreparingAdjustmentActivity extends AppCompatActivity {
 
-    /*Идентификатор разновидности пристрелики*/
+    /*Переменная БД*/
 
     private DataBaseHelper dataBaseHelper;
 
+
+
     private String userName;
+
+    /*Идентификатор разновидности пристрелики*/
+
     private int adjustmentTypeId;
 
     /*Тип артиллерии в виде enum*/
@@ -71,22 +75,40 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
         /*Переход к целевому фрагменту через свич*/
 
         switch (adjustmentTypeId){
-            case AdjustmentTask.RANGEFINDER_TYPE:
-                RangeFinderPrepareFragment fragment = new RangeFinderPrepareFragment();
+            case AdjustmentTask.RANGE_FINDER_TYPE:
+                RangeFinderPrepareFragment rangeFinderPrepareFragment = new RangeFinderPrepareFragment();
 
                 /*R.id.frag_container - специально вложеный в макет Активити фрейм
                 * В нем и запускается фрагмент*/
 
-                fragmentTransaction.add(R.id.frag_container, fragment);
+                fragmentTransaction.add(R.id.frag_container, rangeFinderPrepareFragment);
                 fragmentTransaction.commit();
 
-                /*Передаем в фрагмент тип пристрелки и артиллерии*/
+                /*Передаем в фрагмент тип пристрелки и артиллерии, инициируем переменную названия пристрелки*/
 
-                fragment.setAdjustmentTask(adjustmentTypeId, artilleryType);
-                getSupportActionBar().setTitle("Пристрілка з далекоміром" + "  " + artilleryTitle);
+                rangeFinderPrepareFragment.setAdjustmentTask(adjustmentTypeId, artilleryType);
+                taskTitle = "Пристрілка з далекоміром";
+                break;
+            case AdjustmentTask.DUAL_OBSERVINGS_TYPE:
+                DualObservingPrepareFragment dualObservingPrepareFragment = new DualObservingPrepareFragment();
+
+                /*R.id.frag_container - специально вложеный в макет Активити фрейм
+                * В нем и запускается фрагмент*/
+
+                fragmentTransaction.add(R.id.frag_container, dualObservingPrepareFragment);
+                fragmentTransaction.commit();
+
+                /*Передаем в фрагмент тип пристрелки и артиллерии, инициируем переменную названия пристрелки*/
+
+                dualObservingPrepareFragment.setAdjustmentTask(adjustmentTypeId, artilleryType);
+                taskTitle = "Пристрілка з сопрядженим спостереженням";
                 break;
 
         }
+
+        /*Выводим описание стрельбы и артсистемы на Actionbar*/
+
+        getSupportActionBar().setTitle(taskTitle + "  " + artilleryTitle);
     }
 
     @Override
@@ -95,11 +117,17 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
         return true;
     }
 
+    /*Метод определяющий реакцию на выбор строк из списка в меню*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
             case R.id.adjStatisticMenuItem:
+                /*При выборе "Статистика занятий"
+                * получаем статистику из БД по имени
+                * Формируем отчет
+                * Выводим его в диалоговое окно*/
                 User user = dataBaseHelper.getUserForName(userName);
                 String message = String.format("Коригувань всього   %d" + "\n" +
                                 "Уражень                      %d" + "\n" +
@@ -112,14 +140,18 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
                 user.clear();
                 break;
             case R.id.adjQuitMenuItem:
+                /*При выборе кнопки "Выйти"
+                * Создаем диалоговое окно,
+                * Переспрашиваем
+                * Выходим*/
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Вийти з додатку?").setPositiveButton("Вийти",
+                builder.setTitle("Вийти з додатку?").setPositiveButton("Так",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id) {
                                 finishAffinity();
                             }
                         });
-                builder.setNegativeButton("Повернутись", null);
+                builder.setNegativeButton("Ні", null);
                 builder.show();
 
                 break;
@@ -137,6 +169,8 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
                 minutes, seconds);
         return result;
     }
+
+    /*Метод для получения диалогового окна без возможности выбора*/
 
     private void makeDialogWindowMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

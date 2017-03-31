@@ -160,13 +160,18 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
 
                 String artilleryTypeDescription = systemSpinner.getSelectedItem().toString();
                 String adjustmentType = adjSpinner.getSelectedItem().toString();
+                nextActivityIntent = new Intent(this, PreparingAdjustmentActivity.class);
+                nextActivityIntent.putExtra("Artillery Description", artilleryTypeDescription);
+                int adjustmentTypeVar = 0;
                 switch (adjustmentType){
                     case "З далекоміром" :
-                        nextActivityIntent = new Intent(this, PreparingAdjustmentActivity.class);
-                        nextActivityIntent.putExtra("Artillery Description", artilleryTypeDescription);
-                        nextActivityIntent.putExtra("Adjustment Type Id", AdjustmentTask.RANGEFINDER_TYPE);
+                        adjustmentTypeVar = AdjustmentTask.RANGE_FINDER_TYPE;
+                        break;
+                    case "З сопрядженим спостереженням":
+                        adjustmentTypeVar = AdjustmentTask.DUAL_OBSERVINGS_TYPE;
                         break;
                 }
+                nextActivityIntent.putExtra("Adjustment Type Id", adjustmentTypeVar);
                 break;
         }
 

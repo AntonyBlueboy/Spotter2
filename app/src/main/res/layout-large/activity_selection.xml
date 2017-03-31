@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="ua.com.spottertest.spotter2.SelectionActivity">
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:background="@color/colorLoginFrame"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout2">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/selActSelArtsysTex"
+                android:id="@+id/textView2"
+                style="@style/CustomTextViewForFrameStyle" />
+
+            <Spinner
+                android:id="@+id/selSystemSpinner"
+                style="@style/CustomSpinnerForFramesStyle" />
+
+            <Button
+                style="@style/CustomButtonForFramesStyle"
+                android:text="@string/selActGoExButtonText"
+                android:id="@+id/selGoToTaskButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/selActSelAdjText"
+                android:id="@+id/textView3"
+                style="@style/CustomTextViewForFrameStyle"/>
+
+            <Spinner
+                android:id="@+id/selAdjSpinner"
+
+                style="@style/CustomSpinnerForFramesStyle" />
+
+            <Button
+                android:text="@string/selActNewExText"
+                android:id="@+id/selCustomTaskButton"
+                style="@style/CustomButtonForFramesStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:text="@string/selActTheorButText"
+                android:id="@+id/selTheoryButton"
+                android:layout_weight="1"
+                style="@style/CustomButtonForFramesStyle"/>
+
+            <Button
+                android:text="@string/selActMilButtText"
+                android:id="@+id/selMilsTaskButton"
+                android:layout_weight="1"
+                style="@style/CustomButtonForFramesStyle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

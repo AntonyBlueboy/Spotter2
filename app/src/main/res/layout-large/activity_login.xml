@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ua.com.spottertest.spotter2.LoginActivity">
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loginActButtonText"
+        android:id="@+id/loginButt"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/customItemMargin" />
+
+    <LinearLayout
+        android:background="@color/colorLoginFrame"
+        android:orientation="vertical"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:hint="@string/loginActInputNewEditText"
+            android:ems="10"
+            android:maxLength="16"
+            android:id="@+id/loginET"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/customItemMargin"
+            android:enabled="false"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/loginActYetCheckText"
+                android:id="@+id/loginCB"
+                android:layout_weight="10"
+                android:layout_margin="@dimen/customItemMargin"
+                android:checked="true"/>
+
+            <Spinner
+                android:id="@+id/loginSpinner"
+                android:layout_weight="90"
+                style="@style/CustomSpinnerForFramesStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:maxLength="8"
+                android:id="@+id/firstPassET"
+                android:layout_weight="1"
+                android:hint="@string/loginActPassEditText"
+                android:layout_margin="@dimen/customItemMargin"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:maxLength="8"
+                android:id="@+id/secondPassET"
+                android:layout_weight="1"
+                android:hint="@string/loginActPassRepEditText"
+                android:layout_margin="@dimen/customItemMargin"
+                android:enabled="false"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

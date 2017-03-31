@@ -62,6 +62,8 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     /*Текущая корректура*/
     private Correction currentCorrection;
 
+    /*Флаг, была ли успешной крайняя корректура*/
+
     private boolean isLastCorrectionSuccesful;
 
     /*Поле, необходимое при парселизации*/
@@ -168,10 +170,10 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         parcel.writeString(artylleryTypeName);
     }
 
-    /*Получаем исчисленые пользователем КУ и ШУ в контейнере для Number, сверяем и возвращаем true или false*/
+    /*Получаем исчисленые пользователем КУ и ШУ в контейнере для Object, сверяем и возвразаем вердикт*/
 
     @Override
-    public String checkPreparingResult( Number... preparedCoefs )
+    public String checkPreparingResult( Object... preparedCoefs )
     {
         double userDistanceCoef = (double)preparedCoefs[0];
         int userProtratorStep = (int) preparedCoefs[1];
@@ -322,9 +324,9 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     public String getCoefsDescription() {
         return String.format("КВ = %.1f\n" +
                                 "КК = %s\n" +
-                                "Вогнева %s", getMainDistanceCoef(),
-                ArtilleryMilsUtil.convertToMilsFormat(getMainProtractorStep()),
-                (isLeftHand() ? "зліва" : "зправа"));
+                                "Вогнева %s", getMainProtractorStep(),
+                ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
+                (isLeftHand ? "зліва" : "зправа"));
     }
 
     @Override
@@ -332,20 +334,14 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         return isLastCorrectionSuccesful;
     }
 
-    public void setValueOfScale(int valueOfScale) {
-        this.valueOfScale = valueOfScale;
-    }
 
-    public double getMainDistanceCoef() {
-        return mainDistanceCoef;
+    @Override
+    public void setValueofScale(int valueofScale) {
+        this.valueOfScale = valueofScale;
     }
 
     public int getMainProtractorStep() {
         return mainProtractorStep;
-    }
-
-    public boolean isLeftHand() {
-        return isLeftHand;
     }
 
     public String getAdjustmentTitle() {

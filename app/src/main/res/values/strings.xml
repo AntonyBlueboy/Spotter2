@@ -23,6 +23,7 @@
 
     <string-array name="adjustmentTasks">
         <item>З далекоміром</item>
+        <item>З сопрядженим спостереженням</item>
     </string-array>
     <!-- String Resourses for activity_login layout -->
     <string name="loginActMainText">Увійдіть в обліковий запис \n або створіть новий</string>
@@ -48,6 +49,15 @@
     <string name="rangPrepGoButText">До пристрілки</string>
     <string name="rangPrepNotCheckedMessage">Перед пристрілкою перевірте корректність необхідних коефіціентів</string>
 
+    <string name="dualPrepLeftCoefHint">Коеф.лівого</string>
+    <string name="dualPrepRighCoefHint">Коеф.правого</string>
+    <string name="dualPrepMainFPText">Основний КСП</string>
+    <string name="dualPrepHandFPText">Положення ВП</string>
+    <string name="dualPrepMainLeftFPRadioText">Лівий</string>
+    <string name="dualPrepMainRightFPRadioText">Правий</string>
+    <string name="dualPrepHandLeftFPRadioText">Зліва</string>
+    <string name="dualPrepHandRightFPRadioText">Зправа</string>
+
     <string name="adjDistSwitchText">Дальність розриву</string>
     <string name="adjScaleSwitchText">Ділення прицілу</string>
     <string name="adjGetBurstButtText">Отримати</string>
@@ -65,10 +75,6 @@
     <string name="adjStatisticMenuItemText">Статистика вправ</string>
     <string name="adjQuitMenuItemText">Вийти</string>
     <string name="adjGoTheoryMenuItemText">До теорії</string>
-
-
-
-
 
 
     <!-- String Resourses for activity_selection layout -->

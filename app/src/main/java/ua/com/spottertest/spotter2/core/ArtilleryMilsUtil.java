@@ -2,6 +2,7 @@ package ua.com.spottertest.spotter2.core;
 
 /**
  * Created by Rudolf on 07.03.2017.
+ * Утилитарный клас для преобразования чисел в строки формата тысячных и назад
  */
 public abstract class ArtilleryMilsUtil {
 

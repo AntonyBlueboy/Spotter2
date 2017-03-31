@@ -1,0 +1,200 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ua.com.spottertest.spotter2.DualObservingPrepareFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorLoginFrame"
+        android:layout_gravity="center">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="Adjustment task description"
+            android:id="@+id/dualPrepDescrText"
+            android:layout_gravity="center"
+            style="@style/CustomTextViewForFrameStyle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/rangPrepMainText"
+            android:id="@+id/dualtextView6"
+            android:layout_gravity="center"
+            style="@style/CustomTextViewForFrameStyle"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:layout_weight="1"
+                android:hint="@string/rangPrepDistCoefETHint"
+                android:ems="10"
+                android:id="@+id/dualPrepDistCoefET" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/rangPrepProtStepETHint"
+                android:id="@+id/dualPrepProtStepET" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:hint="@string/dualPrepLeftCoefHint"
+                android:id="@+id/dualPrepLeftCoefET"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:hint="@string/dualPrepRighCoefHint"
+                android:id="@+id/dualPrepRightCoefET"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/dualPrepMainFPText"
+                    android:gravity="center"
+                    android:id="@+id/textView" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dualPrepMainCommanderRG">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dualPrepMainLeftFPRadioText"
+                        android:id="@+id/dualPrepMainCommanderLeftRB"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dualPrepMainRightFPRadioText"
+                        android:id="@+id/dualPrepMainCommanderRightRB" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/dualPrepHandFPText"
+                    android:gravity="center"
+                    android:id="@+id/textView4" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dualPrepHandRG"
+                    >
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dualPrepHandLeftFPRadioText"
+                        android:id="@+id/dualPrepHandLeftRB"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dualPrepHandRightFPRadioText"
+                        android:id="@+id/dualPrepHandRightRB" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rangPrepScaleCBText"
+                android:id="@+id/dualPrepCB"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/rangPrepScaleETHint"
+                android:ems="10"
+                android:layout_weight="1"
+                android:id="@+id/dualPrepDeltaET" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rangPrepCheckButText"
+                android:id="@+id/dualPrepCheckBut"
+                android:layout_weight="1"
+                style="@style/CustomButtonForFramesStyle"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rangPrepGoButText"
+                android:id="@+id/dualPrepGoBut"
+                android:layout_weight="1"
+                style="@style/CustomButtonForFramesStyle"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
