@@ -283,6 +283,7 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     }
 
     /*Метод возвращающй описание боевого порядка*/
+
     @Override
     public String getFormotion() {
         return new StringBuilder().append("Дальність командира - ").append((int)mainCommanderDistance)

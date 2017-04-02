@@ -220,7 +220,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/adjGetBurstButtText"
                     android:id="@+id/adjBurstBut"
+                    android:layout_margin="@dimen/customItemMargin"
                     style="@style/CustomButtonForFramesStyle"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     />
 
@@ -239,7 +241,8 @@
                     android:text="@string/adjCorrButtText"
                     android:id="@+id/adjCorrBut"
                     android:enabled="false"
-                    style="@style/CustomButtonForFramesStyle"
+                    android:layout_margin="@dimen/customItemMargin"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     />
 

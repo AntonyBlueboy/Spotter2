@@ -352,8 +352,8 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
         if (this.mainDistanceCoef == userDistanceCoef & this.mainProtractorStep == userProtratorStep
                 & this.leftCoef == leftCoef & this.rightCoef == rightCoef & this.isLeftCommanderMain == isLeftMain
                 & this.isLeftHand == isLefthand) result = "Розраховано вірно. Можна розпочати пристрілку.";
-        else result =  String.format("Розраховано невірно. Запишіть, головне КСП - %s," +
-                "вогнева %s, КВ = %.1f, КК = %s. Коефіціенти: лівий - %d, правий - %d. \n Можна почнати пристрілку.",
+        else result =  String.format("Розраховано невірно.\n Запишіть, головне КСП - %s," +
+                "вогнева %s,\nКВ = %.1f, КК = %s.\nКоефіціенти: лівий - %d, правий - %d. \n Можна почнати пристрілку.",
                 (isLeftCommanderMain ? "ліве" : "праве"), (isLeftHand ? "зліва" : "зправа"),
                 mainDistanceCoef, ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
                 leftCoef, rightCoef);
@@ -443,22 +443,22 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
 
         /*Создаем строковый доклад о разрыве в двух вариантах*/
 
-        String burstDescription = "(Левое КСП) Наблюдаю разрыв по цели!\n(Правое КСП) Наблюдаю разрыв по цели!";
-        String burstDirDescription = String.format("(Левое КСП) Наблюдаю разрыв! Дирекионный - %s" +
-                "\n(Правое КСП) Наблюдаю разрыв! Дирекционный - %s",
+        String burstDescription = "(Лівий КСП) Розрив по цілі!\n(Правий КСП) Розрив по цілі!";
+        String burstDirDescription = String.format("(Лівий КСП) Розрив! Дирекційний - %s" +
+                "\n(Правий КСП) Розрив! Дирекційний - %s",
                 ArtilleryMilsUtil.convertToMilsFormat(leftDirAngle), ArtilleryMilsUtil.convertToMilsFormat(rightDirAngle));
 
         if (leftAngle == 0 & rightAngle!=0) {
-            burstDescription = "(Левое КСП) Наблюдаю разрыв по цели! \n(Правое КСП) Наблюдаю разрыв! " +
-                    (isLeftForRight ? ", лево " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(rightAngle) + "!";
+            burstDescription = "(Лівий КСП) Розрив по цілі! \n(Правий КСП) Розрив! " +
+                    (isLeftForRight ? ", ліво " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(rightAngle) + "!";
         }
         else if (leftAngle != 0 & rightAngle==0) {
-            burstDescription =  "(Левое КСП) Наблюдаю разрыв! " + (isLeftForLeft ? "Лево " : "Право ")
-                    + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "!\n(Правое КСП) Наблюдаю разрыв по цели!";
+            burstDescription =  "(Лівий КСП) Розрив! " + (isLeftForLeft ? "ліво " : "право ")
+                    + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "!\n(Правий КСП) Розрив по цели!";
         }
-        else if ( leftAngle != 0 & rightAngle!=0) burstDescription =  "(Левое КСП) Наблюдаю разрыв! " + (isLeftForLeft ? "Лево " : "Право ")
-                + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "! \n(Правое КСП) Наблюдаю разрыв! " +
-                (isLeftForRight ? ", лево " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(rightAngle) + "!";
+        else if ( leftAngle != 0 & rightAngle!=0) burstDescription =  "(Лівий КСП) Розрив! " + (isLeftForLeft ? "ліво " : "право ")
+                + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "! \n(Правий КСП) Розрив! " +
+                (isLeftForRight ? ", ліво " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(rightAngle) + "!";
 
 
         /*Готовим данные для корректуры, создаем обьект корректуры и присваиваем его переменной currentCorrection*/
@@ -491,12 +491,12 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
         StringBuilder formotion = new StringBuilder();
 
 
-        formotion.append("Дальність до цілі лівого КСП - ").append((int)leftCommanderDistance)
-                .append(", дирекційний по цілі лівого КСП - ").append(ArtilleryMilsUtil.convertToMilsFormat(leftParallax))
-                .append(", дальність до ціли правого КСП - ").append((int)rightCommanderDistance)
-                .append(", дирекційний по цілі правого КСП - ").append(ArtilleryMilsUtil.convertToMilsFormat(rightParallax))
-                .append(", дальность вогневої до цілі - ").append((int)troopDistance)
-                .append(", дирекційний напрямок стрільби - ").append(ArtilleryMilsUtil.convertToMilsFormat(troopAngle));
+        formotion.append("Дальність лівого КСП - ").append((int)leftCommanderDistance)
+                .append(", дирекційний лівого КСП - ").append(ArtilleryMilsUtil.convertToMilsFormat(leftParallax))
+                .append(", дальність правого КСП - ").append((int)rightCommanderDistance)
+                .append(", дирекційний правого КСП - ").append(ArtilleryMilsUtil.convertToMilsFormat(rightParallax))
+                .append(", дальность вогневої  - ").append((int)troopDistance)
+                .append(", дирекційний стрільби - ").append(ArtilleryMilsUtil.convertToMilsFormat(troopAngle));
 
         return formotion.toString();
     }
@@ -531,14 +531,14 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
 
     @Override
     public String getCoefsDescription() {
-        return String.format("Основне КСП - %s, " +
-                        "КВ = %.1f, " +
-                        "КК = %s, " +
-                        "Вогнева %s, " +
-                        "Коеф. лівого КСП - %d, " +
-                        "Дирекційний лівого КСП - %s, " +
-                        "Коеф. правого КСП - %d, " +
-                        "Дирекційний правого КСП - %s", (isLeftCommanderMain ? "ліве" : "праве"),
+        return String.format("Основне КСП - %s\n" +
+                        "КВ = %.1f\n" +
+                        "КК = %s\n" +
+                        "Вогнева %s\n" +
+                        "К лівого КСП - %d\n" +
+                        "Дир. кут лівого КСП - %s\n" +
+                        "К правого КСП - %d\n" +
+                        "Дир. кут правого КСП - %s", (isLeftCommanderMain ? "ліве" : "праве"),
                 mainDistanceCoef, ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
                 (isLeftHand ? "зліва" : "зправа"), leftCoef, ArtilleryMilsUtil.convertToMilsFormat(leftViewingAngle),
                 rightCoef, ArtilleryMilsUtil.convertToMilsFormat(rightViewingAngle));

@@ -27,6 +27,7 @@ import java.math.RoundingMode;
 import ua.com.spottertest.spotter2.core.AdjustmentTask;
 import ua.com.spottertest.spotter2.core.ArtilleryMilsUtil;
 import ua.com.spottertest.spotter2.core.Correction;
+import ua.com.spottertest.spotter2.core.DualObservingAdjustmentTask;
 import ua.com.spottertest.spotter2.core.NotMilsFormatException;
 import ua.com.spottertest.spotter2.core.RangefinderAdjustmentTask;
 
@@ -77,7 +78,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
     /*Переключатели для динамического изменения условий наблюдения и корректировки*/
 
-    private SwitchCompat adjDistSwitch, adjScaleSwitch;
+    private SwitchCompat adjDistOrAngSwitch, adjScaleSwitch;
 
 
 
@@ -98,7 +99,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
     /*Используется ли целеуказание в виде дальности по разрыву*/
 
-    private boolean isDistanceUsed = false;
+    private boolean isDistanceOrAnglesUsed = false;
 
     /*Началась ли стрельба*/
 
@@ -117,8 +118,17 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
         dataBaseHelper = new DataBaseHelper(this);
         Intent currentIntent = getIntent();
-        task = currentIntent.getParcelableExtra(RangefinderAdjustmentTask.class.getCanonicalName());
         taskId = currentIntent.getIntExtra("taskId", 0);
+
+        switch (taskId){
+            case AdjustmentTask.RANGE_FINDER_TYPE:
+                task = currentIntent.getParcelableExtra(RangefinderAdjustmentTask.class.getCanonicalName());
+                break;
+            case AdjustmentTask.DUAL_OBSERVINGS_TYPE:
+                task = currentIntent.getParcelableExtra(DualObservingAdjustmentTask.class .getCanonicalName());
+                break;
+        }
+
         userName = currentIntent.getStringExtra("userName");
         valueOfScale = task.getValueOfScale();
         isScaleUsed = valueOfScale != 0;
@@ -193,8 +203,9 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         adjCorrBut.setOnClickListener(this);
         adjBurstBut = (Button) findViewById(R.id.adjBurstBut);
         adjBurstBut.setOnClickListener(this);
-        adjDistSwitch = (SwitchCompat) findViewById(R.id.adjDistSwitch);
-        adjDistSwitch.setOnClickListener(this);
+        adjDistOrAngSwitch = (SwitchCompat) findViewById(R.id.adjDistSwitch);
+        adjDistOrAngSwitch.setOnClickListener(this);
+        if (taskId == AdjustmentTask.DUAL_OBSERVINGS_TYPE) adjDistOrAngSwitch.setText("Дирекційні по цілі");
         adjScaleSwitch = (SwitchCompat) findViewById(R.id.adjScaleSwitch);
         adjScaleSwitch.setOnClickListener(this);
         toolbar = (Toolbar)findViewById(R.id.toolBar);
@@ -220,7 +231,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
             * если бой начался, меняем описание разрыва*/
 
             case R.id.adjDistSwitch:
-                isDistanceUsed = adjDistSwitch.isChecked();
+                isDistanceOrAnglesUsed = adjDistOrAngSwitch.isChecked();
                 if (isStarted) printBurstDescription();
                 break;
 
@@ -269,7 +280,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
     * [1] для дистанции*/
 
     private void printBurstDescription(){
-        if (!isDistanceUsed) adjBurstDescrTV.setText(currentBurstDescriptions[0]);
+        if (!isDistanceOrAnglesUsed) adjBurstDescrTV.setText(currentBurstDescriptions[0]);
         else adjBurstDescrTV.setText(currentBurstDescriptions[1]);
     }
 
@@ -317,16 +328,16 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
             /*Для проверки передаем в обьект пристрелки корректуру из полей и флажок использования дП на 100*/
 
-            StringBuilder resulMessage = new StringBuilder(task.checkCorrection(getUserCorrection(), isScaleUsed));
+            StringBuilder resultMessage = new StringBuilder(task.checkCorrection(getUserCorrection(), isScaleUsed));
             chronometer.stop();
             long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
             summTime += elapsedMillis;
-            resulMessage.append("\nЧас - " + getTimeString(elapsedMillis));
+            resultMessage.append("\nЧас - " + getTimeString(elapsedMillis));
             String title = "Ціль не вражено";
             if(task.isLastCorrectionSuccessful()){
                 title = "Ціль вражено";
             }
-            makeDialogWindowMessage(title, resulMessage.toString());
+            makeDialogWindowMessage(title, resultMessage.toString());
 
             adjBurstBut.setEnabled(true);
             adjCorrBut.setEnabled(false);
