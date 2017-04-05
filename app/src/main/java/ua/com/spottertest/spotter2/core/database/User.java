@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.core.database;
 
 import java.math.BigDecimal;
 
@@ -32,6 +32,14 @@ public class User {
 
     private long averigeTime;
 
+    private int milTasks;
+
+    private int successMilTasks;
+
+    private int unSuccessMilTasks;
+
+    private int percentageOfSuccessMilTasks;
+
      /*Пустой конструктор для ручного заполнения полей*/
 
     public User() {
@@ -46,12 +54,23 @@ public class User {
         this.unSuccessTasks = 0;
         this.percentageOfSuccess = 0;
         this.averigeTime = 0;
+        this.milTasks = 0;
+        this.successMilTasks = 0;
+        this.unSuccessMilTasks = 0;
+        this.percentageOfSuccessMilTasks = 0;
     }
 
     /*Метод для пересчета процента успешных задач*/
 
     public void refreshPercentageOfSuccess() {
         if (tasks != 0)this.percentageOfSuccess = new BigDecimal((double) successTasks/(double) tasks * 100)
+                .setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+    }
+
+    /*Метод для пересчета процента успешных задач на тысячные*/
+
+    public void refreshPercentageOfSuccessMilTasks() {
+        if (milTasks != 0)this.percentageOfSuccessMilTasks = new BigDecimal((double) successMilTasks/(double) milTasks * 100)
                 .setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
     }
 
@@ -64,6 +83,14 @@ public class User {
         refreshTime(averigeTime);
     }
 
+    /*Увеличивает на 1 задачу число успешных задач на тысячные и общее число*/
+
+    public void incrementSuccessMilTasks(){
+        successMilTasks++;
+        milTasks++;
+        refreshPercentageOfSuccessMilTasks();
+    }
+
     /*Увеличивает на 1 задачу число ошибочных задач и общее число*/
 
     public void incrementUnsuccessTasks(long averigeTime){
@@ -73,18 +100,41 @@ public class User {
         refreshTime(averigeTime);
     }
 
+    /*Увеличивает на 1 задачу число ошибочных задач на тысячные и общее число*/
+
+    public void incrementUnsuccessMilTasks(){
+        unSuccessMilTasks++;
+        milTasks++;
+        refreshPercentageOfSuccess();
+    }
+
     /*Очищает статистику, кроме времени*/
 
     public void clear(){
         tasks = 0;
         successTasks = 0;
         unSuccessTasks = 0;
+        milTasks = 0;
+        successMilTasks = 0;
+        unSuccessMilTasks = 0;
     }
 
     private void refreshTime(long averigeTime){
 
         if(this.averigeTime == 0) this.averigeTime = averigeTime;
         else this.averigeTime = (this.averigeTime + averigeTime)/2;
+    }
+
+    public void pourInUserStats(User user){
+        this.tasks += user.getTasks();
+        this.successTasks += user.getSuccessTasks();
+        this.unSuccessTasks += user.getUnsuccessTasks();
+        this.refreshPercentageOfSuccess();
+        this.averigeTime = (this.averigeTime + user.getAverigeTime())/2;
+        this.milTasks += user.getMilTasks();
+        this.successMilTasks += user.getSuccessMilTasks();
+        this.unSuccessMilTasks += user.getUnSuccessMilTasks();
+        this.refreshPercentageOfSuccessMilTasks();
     }
 
     public String getName() {
@@ -133,6 +183,38 @@ public class User {
 
     public void setAverigeTime(long averigeTime) {
         this.averigeTime = averigeTime;
+    }
+
+    public int getMilTasks() {
+        return milTasks;
+    }
+
+    public void setMilTasks(int milTasks) {
+        this.milTasks = milTasks;
+    }
+
+    public int getSuccessMilTasks() {
+        return successMilTasks;
+    }
+
+    public void setSuccessMilTasks(int successMilTasks) {
+        this.successMilTasks = successMilTasks;
+    }
+
+    public int getUnSuccessMilTasks() {
+        return unSuccessMilTasks;
+    }
+
+    public void setUnSuccessMilTasks(int unSuccessMilTasks) {
+        this.unSuccessMilTasks = unSuccessMilTasks;
+    }
+
+    public int getPercentageOfSuccessMilTasks() {
+        return percentageOfSuccessMilTasks;
+    }
+
+    public void setPercentageOfSuccessMilTasks(int percentageOfSuccessMilTasks) {
+        this.percentageOfSuccessMilTasks = percentageOfSuccessMilTasks;
     }
 
 

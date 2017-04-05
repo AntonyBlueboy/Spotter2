@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,12 +24,16 @@ import android.widget.Toast;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import ua.com.spottertest.spotter2.core.AdjustmentTask;
-import ua.com.spottertest.spotter2.core.ArtilleryMilsUtil;
-import ua.com.spottertest.spotter2.core.Correction;
-import ua.com.spottertest.spotter2.core.DualObservingAdjustmentTask;
-import ua.com.spottertest.spotter2.core.NotMilsFormatException;
-import ua.com.spottertest.spotter2.core.RangefinderAdjustmentTask;
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.core.adjustment.AdjustmentTask;
+import ua.com.spottertest.spotter2.core.database.User;
+import ua.com.spottertest.spotter2.core.mils.ArtilleryMilsUtil;
+import ua.com.spottertest.spotter2.core.adjustment.Correction;
+import ua.com.spottertest.spotter2.core.adjustment.DualObservingAdjustmentTask;
+import ua.com.spottertest.spotter2.core.mils.NotMilsFormatException;
+import ua.com.spottertest.spotter2.core.adjustment.RangefinderAdjustmentTask;
+import ua.com.spottertest.spotter2.core.adjustment.WorldSidesAdjustmentTask;
+import ua.com.spottertest.spotter2.core.database.DataBaseHelper;
 
 /*Активити в котором происходят все пристрелки*/
 
@@ -127,6 +131,9 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
             case AdjustmentTask.DUAL_OBSERVINGS_TYPE:
                 task = currentIntent.getParcelableExtra(DualObservingAdjustmentTask.class .getCanonicalName());
                 break;
+            case AdjustmentTask.WORLD_SIDES_TYPE:
+                task = currentIntent.getParcelableExtra(WorldSidesAdjustmentTask.class .getCanonicalName());
+                break;
         }
 
         userName = currentIntent.getStringExtra("userName");
@@ -156,12 +163,17 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
                 String message = String.format("Коригувань всього   %d" + "\n" +
                                                "Уражень                      %d" + "\n" +
                                                "Успішність                  %d" + "\n" +
-                                               "Середній час              %s", user.getTasks(), user.getSuccessTasks(),
+                                               "Середній час              %s\n" +
+                                               "Задач усього             %d\n" +
+                                               "Вірних відповідей     %d\n" +
+                                               "Успішність                  %d", user.getTasks(), user.getSuccessTasks(),
                                                                         user.getPercentageOfSuccess(),
-                                                                        getTimeString(user.getAverigeTime()));
+                                                                        getTimeString(user.getAverigeTime()),
+                                                                        user.getMilTasks(), user.getSuccessMilTasks(),
+                                                                        user.getPercentageOfSuccessMilTasks());
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
-                user.clear();
+                currentUser.clear();
                 break;
             case R.id.adjQuitMenuItem:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -204,7 +216,13 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         adjBurstBut = (Button) findViewById(R.id.adjBurstBut);
         adjBurstBut.setOnClickListener(this);
         adjDistOrAngSwitch = (SwitchCompat) findViewById(R.id.adjDistSwitch);
-        adjDistOrAngSwitch.setOnClickListener(this);
+        if (taskId == AdjustmentTask.WORLD_SIDES_TYPE) {
+            adjDistOrAngSwitch.setVisibility(View.INVISIBLE);
+            adjDistOrAngSwitch.setEnabled(false);
+        }
+        else {
+            adjDistOrAngSwitch.setOnClickListener(this);
+        }
         if (taskId == AdjustmentTask.DUAL_OBSERVINGS_TYPE) adjDistOrAngSwitch.setText("Дирекційні по цілі");
         adjScaleSwitch = (SwitchCompat) findViewById(R.id.adjScaleSwitch);
         adjScaleSwitch.setOnClickListener(this);
@@ -228,7 +246,8 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
             /*Если клик на переключателе дистанция/отклонение
             * то задаем флаг
-            * если бой начался, меняем описание разрыва*/
+            * если бой начался, меняем описание разрыва
+            * в пристрелке по сторонам света кнопка отсутствует*/
 
             case R.id.adjDistSwitch:
                 isDistanceOrAnglesUsed = adjDistOrAngSwitch.isChecked();
@@ -435,6 +454,13 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
     public void onTaskDecided(boolean isSuccessful){
         tasks++;
+
+        if (isSuccessful){
+            succesfulTasks++;
+            currentUser.incrementSuccessTasks(summTime/tasks);
+        }
+        else currentUser.incrementUnsuccessTasks(summTime/tasks);
+
         percent = (double) succesfulTasks / tasks * 100;
         String avTime = getTimeString(summTime/tasks);
 
@@ -443,11 +469,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         else if (percent > 80) adjStatTV.setBackgroundColor(Color.GREEN);
         else adjStatTV.setBackgroundColor(Color.YELLOW);
 
-        if (isSuccessful){
-            succesfulTasks++;
-            currentUser.incrementSuccessTasks(summTime/tasks);
-        }
-        else currentUser.incrementUnsuccessTasks(summTime/tasks);
+
     }
 
 

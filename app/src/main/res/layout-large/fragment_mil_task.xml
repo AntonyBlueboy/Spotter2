@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".frontend.MilTaskFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorLoginFrame"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout4">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:enabled="false"
+            android:id="@+id/distMilTaskET"
+            android:layout_margin="@dimen/customItemMargin"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/distanceMilsStartButtonText"
+                android:id="@+id/distanceMilsStartButton"
+                android:layout_margin="@dimen/customItemMargin"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                tools:text="Medium Text"
+                android:id="@+id/distanceMilsStatTV"
+                android:layout_margin="@dimen/customItemMargin"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/distanceMilsCheckButtonText"
+                android:id="@+id/distanceMilsCheckButton"
+                android:enabled="false"
+                android:layout_margin="@dimen/customItemMargin"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/distMilTaskDescripTV"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/distanceMilsStartText"
+        android:layout_margin="@dimen/customItemMargin"
+        android:layout_above="@+id/linearLayout4"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

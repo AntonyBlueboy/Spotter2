@@ -2,27 +2,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frontend.RangeFinderPrepareFragment"
-    android:id="@+id/rangeFindPrepFragment">
+    tools:context=".frontend.WorldSidesPrepareFragment"
+    android:id="@+id/worldSidesPrepFragment">
 
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="380dp"
-        android:background="@color/colorLoginFrame"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:background="@color/colorLoginFrame"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="130dp">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="Adjustment task description"
-            android:id="@+id/rangPrepDescrText"
+            android:id="@+id/worldSidesPrepDescrText"
             android:layout_gravity="center"
             style="@style/CustomTextViewForFrameStyle"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/rangPrepMainText"
+            android:id="@+id/textView6"
+            android:layout_gravity="center"
+            style="@style/CustomTextViewForFrameStyle"/>
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -31,67 +42,51 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:layout_weight="1"
-                android:hint="@string/rangPrepDistCoefETHint"
+                android:hint="@string/worldSidesPrepMilFrameText"
+                android:inputType="number"
                 android:ems="10"
-                android:id="@+id/rangPrepDistCoefET"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/rangPrepProtStepETHint"
-                android:id="@+id/rangPrepProtStepET"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:id="@+id/worldSidesPrepMetPerMilET"
+                android:layout_weight="1" />
 
             <CheckBox
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/rangPrepScaleCBText"
-                android:id="@+id/rangPrepCB"
+                android:id="@+id/worldSidesPrepCB"
                 android:layout_weight="1"/>
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:hint="@string/rangPrepScaleETHint"
                 android:ems="10"
+                android:hint="@string/rangPrepScaleETHint"
                 android:layout_weight="1"
-                android:id="@+id/rangPrepDeltaET"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:id="@+id/worldSidesPrepDeltaET" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rangPrepCheckButText"
-                android:id="@+id/rangPrepCheckBut"
+                android:id="@+id/worldSidesPrepCheckBut"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"
-                />
+                style="@style/CustomButtonForFramesStyle"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rangPrepGoButText"
-                android:id="@+id/rangPrepGoBut"
+                android:id="@+id/worldSidesPrepGoBut"
                 android:layout_weight="1"
                 style="@style/CustomButtonForFramesStyle"/>
         </LinearLayout>
 
     </LinearLayout>
+
 </FrameLayout>

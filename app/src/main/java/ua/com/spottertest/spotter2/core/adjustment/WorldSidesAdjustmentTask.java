@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.adjustment;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Random;
+
+import ua.com.spottertest.spotter2.core.mils.ArtilleryMilsUtil;
 
 /**
  * Created by Rudolf on 02.04.2017.
@@ -224,10 +226,10 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
         /*Собираем текстовое наблюдение для разрыва*/
 
         String burstDescription;
-        if (dx == 0) burstDescription = String.format("Розрив! %s %d", (isWest ? "Захід" : "Схід"), dy);
-        else if (dy == 0) burstDescription = String.format("Розрив! %s %d", (isNorth ? "Північ" : "Південь"), dx);
-        else burstDescription = String.format("Разрыв! %s %d\n" +
-                                              "        %s %d", (isWest ? "Захід" : "Схід"), dy,
+        if (dx == 0) burstDescription = String.format("Розрив! %s %.0f", (isWest ? "Захід" : "Схід"), dy);
+        else if (dy == 0) burstDescription = String.format("Розрив! %s %.0f", (isNorth ? "Північ" : "Південь"), dx);
+        else burstDescription = String.format("Розрив! %s %.0f, " +
+                                              "        %s %.0f", (isWest ? "Захід" : "Схід"), dy,
                                                                 (isNorth ? "Північ" : "Південь"), dx);
         return new String[]{burstDescription};
     }
@@ -236,7 +238,7 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
     @Override
     public String getFormotion() {
         return String.format("Дальність вогневої  - %d,\n" +
-                             "Дирекційний на ціль - %d", (int) troopDistance, ArtilleryMilsUtil.convertToMilsFormat(troopAngle));
+                             "Дирекційний на ціль - %s", (int) troopDistance, ArtilleryMilsUtil.convertToMilsFormat(troopAngle));
     }
 
     /*Метод для проверки корректур, возвращает соответствующий вердикт*/
@@ -253,7 +255,7 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
             isLastCorrectionSuccesful = false;
             result.append("Коригування не точне!\n" +
                     "Мало бути:\n");
-            if (currentCorrection.getAngleCorrection() == 0) result.append("Приціл без змін");
+            if (currentCorrection.getDistanceCorrection() == 0) result.append("Приціл без змін");
             else {
                 result.append("Приціл " + (currentCorrection.isLower() ? "менше " : "більше "));
                 if (isScaleUsed) result.append(currentCorrection.getScaleCorrection());
@@ -273,9 +275,9 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
     public String getCoefsDescription() {
         String result;
         if (valueOfScale == 0) result = String.format("α = %s\n" +
-                                                      "0-01 = %d", ArtilleryMilsUtil.convertToMilsFormat(troopAngle), metersInMils);
+                                                      "0-01 = %d м", ArtilleryMilsUtil.convertToMilsFormat(troopAngle), metersInMils);
         else result = String.format("α = %s\n" +
-                                    "0-01 = %d\n" +
+                                    "0-01 = %d м\n" +
                                     "∆П100 = %d", ArtilleryMilsUtil.convertToMilsFormat(troopAngle), metersInMils, valueOfScale);
         return result;
     }

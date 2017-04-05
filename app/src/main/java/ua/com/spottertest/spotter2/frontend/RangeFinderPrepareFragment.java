@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
 
 import android.app.Fragment;
@@ -16,10 +16,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ua.com.spottertest.spotter2.core.ArtilleryMilsUtil;
-import ua.com.spottertest.spotter2.core.ArtilleryType;
-import ua.com.spottertest.spotter2.core.NotMilsFormatException;
-import ua.com.spottertest.spotter2.core.RangefinderAdjustmentTask;
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.core.mils.ArtilleryMilsUtil;
+import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
+import ua.com.spottertest.spotter2.core.mils.NotMilsFormatException;
+import ua.com.spottertest.spotter2.core.adjustment.RangefinderAdjustmentTask;
+import ua.com.spottertest.spotter2.frontend.AdjustmentActivity;
 
 
 /**
@@ -105,12 +107,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
         builder = new AlertDialog.Builder(getActivity());
     }
 
-    /*Стандартный метод для выведения на экран тоста*/
 
-    private void makeToastMessage(String message){
-        Toast.makeText(getActivity().getApplicationContext(), message,
-                Toast.LENGTH_SHORT).show();
-    }
 
     /*Метод реакции на клик по любому вью*/
 
@@ -194,5 +191,12 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    /*Стандартный метод для выведения на экран тоста*/
+
+    private void makeToastMessage(String message){
+        Toast.makeText(getActivity().getApplicationContext(), message,
+                Toast.LENGTH_SHORT).show();
     }
 }

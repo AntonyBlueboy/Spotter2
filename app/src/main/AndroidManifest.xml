@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".LoginActivity"
+            android:name=".frontend.LoginActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme">
             <intent-filter>
@@ -18,24 +18,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SelectionActivity"
+            android:name=".frontend.SelectionActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme" />
         <activity
-            android:name=".TheoryActivity"
+            android:name=".frontend.TheoryActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme" />
         <activity
-            android:name=".MilTaskActivity"
+            android:name=".frontend.MilTaskActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme" />
         <activity
-            android:name=".AdjustmentActivity"
+            android:name=".frontend.AdjustmentActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme">
         </activity>
         <activity
-            android:name=".PreparingAdjustmentActivity"
+            android:name=".frontend.PreparingAdjustmentActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme"/>
     </application>

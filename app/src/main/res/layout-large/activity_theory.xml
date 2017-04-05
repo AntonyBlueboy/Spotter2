@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
 
-    tools:context="ua.com.spottertest.spotter2.TheoryActivity">
+    tools:context=".frontend.TheoryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

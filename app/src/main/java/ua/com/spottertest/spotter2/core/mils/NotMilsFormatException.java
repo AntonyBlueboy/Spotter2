@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.mils;
 
 /**
  * Created by Rudolf on 07.03.2017.

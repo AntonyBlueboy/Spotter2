@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.adjustment;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Random;
+
+import ua.com.spottertest.spotter2.core.mils.ArtilleryMilsUtil;
 
 /**
  * Created by Rudolf on 07.03.2017.
@@ -305,7 +307,7 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
             isLastCorrectionSuccesful = false;
             result.append("Коригування не точне!\n" +
                     "Мало бути:\n");
-            if (currentCorrection.getAngleCorrection() == 0) result.append("Приціл без змін");
+            if (currentCorrection.getDistanceCorrection() == 0) result.append("Приціл без змін");
             else {
                 result.append("Приціл " + (currentCorrection.isLower() ? "менше " : "більше "));
                     if (isScaleUsed) result.append(currentCorrection.getScaleCorrection());
@@ -325,7 +327,7 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     public String getCoefsDescription() {
         return String.format("КВ = %.1f\n" +
                                 "КК = %s\n" +
-                                "Вогнева %s", getMainProtractorStep(),
+                                "Вогнева %s", mainDistanceCoef,
                 ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
                 (isLeftHand ? "зліва" : "зправа"));
     }
@@ -341,9 +343,6 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         this.valueOfScale = valueofScale;
     }
 
-    public int getMainProtractorStep() {
-        return mainProtractorStep;
-    }
 
     public String getAdjustmentTitle() {
         return adjustmentTitle;
@@ -357,5 +356,6 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     public String getArtylleryTypeName() {
         return artylleryTypeName;
     }
+
 }
 

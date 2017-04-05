@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.core.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -35,11 +35,16 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     /* Выполненые задания, выполненые успешно, неуспешно и процент выполненых соответственно*/
 
-    private static final String TASKS = "TASKS";
-    private static final String SUCCESS_TASKS = "SUCCESS_TASKS";
-    private static final String UNSUCCESS_TASKS = "UNSUCCESS_TASKS";
-    private static final String PERCENTAGE_OF_SUCCESS = "PERCENTAGE_OF_SUCCESS";
+    private static final String ADJUSTMENT_TASKS = "ADJUSTMENT_TASKS";
+    private static final String SUCCESS_ADJUSTMENT_TASKS = "SUCCESS_ADJUSTMENT_TASKS";
+    private static final String UNSUCCESS_ADJUSTMENT_TASKS = "UNSUCCESS_ADJUSTMENT_TASKS";
+    private static final String PERCENTAGE_OF_SUCCESS_ADJUSTMENT = "PERCENTAGE_OF_SUCCESS_ADJUSTMENT";
     private static final String AVERAGE_TIME = "AVERAGE_TIME";
+    private static final String MIL_TASKS = "MIL_TASKS";
+    private static final String SUCCESS_MIL_TASKS = "SUCCESS_MIL_TASKS";
+    private static final String UNSUCCESS_MIL_TASKS = "UNSUCCESS_MIL_TASKS";
+    private static final String PERCENTAGE_OF_SUCCESS_MILTASKS = "PERCENTAGE_OF_SUCCESS_MILTASKS";
+
 
 
     public DataBaseHelper(Context context) {
@@ -50,17 +55,21 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        /*Создаем таблицу с 7-ю соответствующими колонками*/
+        /*Создаем таблицу с 11-ю соответствующими колонками*/
 
         db.execSQL("CREATE TABLE " + USERS_TABLE_NAME+ " ( " +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 USERNAME + " TEXT, " +
                 PASSWORD + " TEXT, " +
-                TASKS + " INTEGER, " +
-                SUCCESS_TASKS + " INTEGER, " +
-                UNSUCCESS_TASKS + " INTEGER, " +
-                PERCENTAGE_OF_SUCCESS + " INTEGER, " +
-                AVERAGE_TIME + " LONG)");
+                ADJUSTMENT_TASKS + " INTEGER, " +
+                SUCCESS_ADJUSTMENT_TASKS + " INTEGER, " +
+                UNSUCCESS_ADJUSTMENT_TASKS + " INTEGER, " +
+                PERCENTAGE_OF_SUCCESS_ADJUSTMENT + " INTEGER, " +
+                AVERAGE_TIME + " LONG, " +
+                MIL_TASKS + " INTEGER, " +
+                SUCCESS_MIL_TASKS + " INTEGER, " +
+                UNSUCCESS_MIL_TASKS + " INTEGER, " +
+                PERCENTAGE_OF_SUCCESS_MILTASKS + " INTEGER)");
     }
 
     @Override
@@ -84,11 +93,16 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(USERNAME, userName);
         values.put(PASSWORD, password);
-        values.put(TASKS, 0);
-        values.put(SUCCESS_TASKS, 0);
-        values.put(UNSUCCESS_TASKS, 0);
-        values.put(PERCENTAGE_OF_SUCCESS, 0);
+        values.put(ADJUSTMENT_TASKS, 0);
+        values.put(SUCCESS_ADJUSTMENT_TASKS, 0);
+        values.put(UNSUCCESS_ADJUSTMENT_TASKS, 0);
+        values.put(PERCENTAGE_OF_SUCCESS_ADJUSTMENT, 0);
         values.put(AVERAGE_TIME, 0);
+        values.put(MIL_TASKS, 0);
+        values.put(SUCCESS_MIL_TASKS, 0);
+        values.put(UNSUCCESS_MIL_TASKS, 0);
+        values.put(PERCENTAGE_OF_SUCCESS_MILTASKS, 0);
+
 
         db.insert(USERS_TABLE_NAME, null, values);
         db.close();
@@ -117,8 +131,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     public User getUserForName(String userName){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{USERNAME, TASKS,
-                SUCCESS_TASKS, UNSUCCESS_TASKS, AVERAGE_TIME}
+        Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{USERNAME, ADJUSTMENT_TASKS,
+                        SUCCESS_ADJUSTMENT_TASKS, UNSUCCESS_ADJUSTMENT_TASKS, AVERAGE_TIME,
+                        MIL_TASKS, SUCCESS_MIL_TASKS, UNSUCCESS_MIL_TASKS}
                 ,USERNAME + " = ?", new String[]{userName}, null, null, null);
         if (cursor.moveToFirst()){
             User user = new User();
@@ -128,6 +143,10 @@ public class DataBaseHelper extends SQLiteOpenHelper{
             user.setUnsuccessTasks(cursor.getInt(3));
             user.refreshPercentageOfSuccess();
             user.setAverigeTime(cursor.getLong(4));
+            user.setMilTasks(cursor.getInt(5));
+            user.setSuccessMilTasks(cursor.getInt(6));
+            user.setUnSuccessMilTasks(cursor.getInt(7));
+            user.refreshPercentageOfSuccessMilTasks();
 
             cursor.close();
             db.close();
@@ -145,7 +164,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     public void refreshUserStats(User user){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{TASKS, SUCCESS_TASKS, UNSUCCESS_TASKS, AVERAGE_TIME}
+            Cursor cursor = db.query(USERS_TABLE_NAME, new String[]{ADJUSTMENT_TASKS,
+                    SUCCESS_ADJUSTMENT_TASKS, UNSUCCESS_ADJUSTMENT_TASKS, AVERAGE_TIME,
+                    MIL_TASKS, SUCCESS_MIL_TASKS, UNSUCCESS_MIL_TASKS}
                     , USERNAME + " = ?", new String[]{user.getName()}, null, null, null);
             cursor.moveToFirst();
             user.setTasks(user.getTasks() + cursor.getInt(0));
@@ -153,12 +174,20 @@ public class DataBaseHelper extends SQLiteOpenHelper{
             user.setUnsuccessTasks(user.getUnsuccessTasks() + cursor.getInt(2));
             user.setAverigeTime((user.getAverigeTime() + cursor.getLong(3))/2);
             user.refreshPercentageOfSuccess();
+            user.setMilTasks(user.getMilTasks() + cursor.getInt(4));
+            user.setSuccessMilTasks(user.getSuccessMilTasks() + cursor.getInt(5));
+            user.setUnSuccessMilTasks(user.getUnSuccessMilTasks() + cursor.getInt(6));
+            user.refreshPercentageOfSuccessMilTasks();
 
-            values.put(TASKS, user.getTasks());
-            values.put(SUCCESS_TASKS, user.getSuccessTasks());
-            values.put(UNSUCCESS_TASKS, user.getUnsuccessTasks());
-            values.put(PERCENTAGE_OF_SUCCESS, user.getPercentageOfSuccess());
+            values.put(ADJUSTMENT_TASKS, user.getTasks());
+            values.put(SUCCESS_ADJUSTMENT_TASKS, user.getSuccessTasks());
+            values.put(UNSUCCESS_ADJUSTMENT_TASKS, user.getUnsuccessTasks());
+            values.put(PERCENTAGE_OF_SUCCESS_ADJUSTMENT, user.getPercentageOfSuccess());
             values.put(AVERAGE_TIME, user.getAverigeTime());
+            values.put(MIL_TASKS, user.getMilTasks());
+            values.put(SUCCESS_MIL_TASKS, user.getSuccessMilTasks());
+            values.put(UNSUCCESS_MIL_TASKS, user.getUnSuccessMilTasks());
+            values.put(PERCENTAGE_OF_SUCCESS_MILTASKS, user.getPercentageOfSuccessMilTasks());
 
             db.update(USERS_TABLE_NAME, values, USERNAME + " = ?", new String[]{user.getName()});
 

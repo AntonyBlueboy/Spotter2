@@ -24,6 +24,7 @@
     <string-array name="adjustmentTasks">
         <item>З далекоміром</item>
         <item>З сопрядженим спостереженням</item>
+        <item>За сторонами світу</item>
     </string-array>
     <!-- String Resourses for activity_login layout -->
     <string name="loginActMainText">Увійдіть в обліковий запис \n або створіть новий</string>
@@ -58,6 +59,8 @@
     <string name="dualPrepHandLeftFPRadioText">Зліва</string>
     <string name="dualPrepHandRightFPRadioText">Зправа</string>
 
+    <string name="worldSidesPrepMilFrameText">Метрів на 0-01</string>
+
     <string name="adjDistSwitchText">Дальність розриву</string>
     <string name="adjScaleSwitchText">Ділення прицілу</string>
     <string name="adjGetBurstButtText">Отримати</string>
@@ -87,6 +90,12 @@
     <string name="selActMilButtText">Задачі з тисячними</string>
     <string name="selActDelMenuItemText">Видалити аккаунт</string>
     <string name="selActChangeMenuItemText">Змінити аккаунт</string>
+
+    <string name="distanceMilsTaskHint">Введіть дистанцію</string>
+    <string name="distanceMilsStartButtonText">Отримати</string>
+    <string name="distanceMilsCheckButtonText">Перевірити</string>
+    <string name="distanceMilsStartText">Отримайте задачу</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

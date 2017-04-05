@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ua.com.spottertest.spotter2.AdjustmentActivity">
+    tools:context=".frontend.AdjustmentActivity">
 
     <include
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="470dp"
+        android:layout_width="520dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -36,7 +36,8 @@
                 tools:text="Burst description"
                 android:id="@+id/adjBurstDescrTV"
                 android:layout_weight="2"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_margin="@dimen/customItemMargin"/>
 
             <Chronometer
                 android:layout_width="match_parent"
@@ -45,7 +46,7 @@
                 android:layout_weight="8"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                />
+                android:layout_margin="@dimen/customItemMargin"/>
         </LinearLayout>
 
         <LinearLayout
@@ -60,7 +61,8 @@
                 android:text="@string/adjInputTVText"
                 android:id="@+id/adjInputTV"
                 style="@style/CustomTextViewForFrameStyle"
-                android:layout_weight="5"/>
+                android:layout_weight="5"
+                android:layout_margin="@dimen/customItemMargin"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -70,6 +72,7 @@
                 android:id="@+id/adjStatTV"
                 style="@style/CustomTextViewForFrameStyle"
                 android:layout_weight="5"
+                android:layout_margin="@dimen/customItemMargin"
                 />
         </LinearLayout>
 
@@ -83,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:layout_weight="1"
-                android:id="@+id/adjAngCorrRG">
+                android:id="@+id/adjAngCorrRG"
+                android:layout_margin="@dimen/customItemMargin">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -103,7 +107,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.9">
+                android:layout_weight="0.9"
+                android:layout_margin="@dimen/customItemMargin">
 
                 <CheckBox
                     android:layout_width="match_parent"
@@ -116,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/adjAngCorrET"
                     android:hint="@string/adjAngCorrETHintText"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
 
             <RadioGroup
@@ -124,7 +129,8 @@
                 android:layout_height="match_parent"
                 android:gravity="left"
                 android:layout_weight="1"
-                android:id="@+id/adjDistCorrRG">
+                android:id="@+id/adjDistCorrRG"
+                android:layout_margin="@dimen/customItemMargin">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -145,7 +151,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.9">
+                android:layout_weight="0.9"
+                android:layout_margin="@dimen/customItemMargin">
 
                 <CheckBox
                     android:layout_width="match_parent"
@@ -159,7 +166,7 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/adjDistCorrET"
-                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
 
         </LinearLayout>
@@ -169,7 +176,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        tools:text="Result Text"
+        tools:text="Coefs Text"
         android:id="@+id/adjCoefsTV"
         android:layout_below="@+id/linearLayout3"
         android:layout_centerHorizontal="true"
@@ -183,6 +190,7 @@
         android:layout_below="@+id/linearLayout3"
         android:layout_alignEnd="@+id/linearLayout3"
         android:enabled="false"
+        android:layout_margin="@dimen/customItemMargin"
         />
 
     <Button
@@ -191,7 +199,8 @@
         android:text="@string/adjGetBurstButtText"
         android:id="@+id/adjBurstBut"
         android:layout_below="@+id/linearLayout3"
-        android:layout_alignStart="@+id/linearLayout3" />
+        android:layout_alignStart="@+id/linearLayout3"
+        android:layout_margin="@dimen/customItemMargin"/>
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/adjDistSwitch"

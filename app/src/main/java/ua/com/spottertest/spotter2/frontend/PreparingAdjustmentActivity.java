@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -12,8 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import java.math.BigDecimal;
 
-import ua.com.spottertest.spotter2.core.AdjustmentTask;
-import ua.com.spottertest.spotter2.core.ArtilleryType;
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.core.adjustment.AdjustmentTask;
+import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
+import ua.com.spottertest.spotter2.core.database.DataBaseHelper;
+import ua.com.spottertest.spotter2.core.database.User;
 
 /*Корневое активити для фрагментов с задачами по подготовке стрельбы.
  * Вся логика описана в фрагментах разных типов*/
@@ -103,7 +106,20 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
                 dualObservingPrepareFragment.setAdjustmentTask(adjustmentTypeId, artilleryType);
                 taskTitle = "Пристрілка з сопрядженим спостереженням";
                 break;
+            case AdjustmentTask.WORLD_SIDES_TYPE:
+                WorldSidesPrepareFragment worldSidesPrepareFragment = new WorldSidesPrepareFragment();
 
+                /*R.id.frag_container - специально вложеный в макет Активити фрейм
+                * В нем и запускается фрагмент*/
+
+                fragmentTransaction.add(R.id.frag_container, worldSidesPrepareFragment);
+                fragmentTransaction.commit();
+
+                /*Передаем в фрагмент тип пристрелки и артиллерии, инициируем переменную названия пристрелки*/
+
+                worldSidesPrepareFragment.setAdjustmentTask(adjustmentTypeId, artilleryType);
+                taskTitle = "Пристрілка за сторонами світу";
+                break;
         }
 
         /*Выводим описание стрельбы и артсистемы на Actionbar*/

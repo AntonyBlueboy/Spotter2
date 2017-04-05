@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.mils;
 
 /**
  * Created by Rudolf on 07.03.2017.
@@ -27,7 +27,7 @@ public abstract class ArtilleryMilsUtil {
     }
     /*Принимает строку с углом в тысячных, а возвращает числом*/
 
-    public static int convertToIntFormat(String angleInMils) throws NotMilsFormatException{
+    public static int convertToIntFormat(String angleInMils) throws NotMilsFormatException {
         try {
             String[] mils = angleInMils.split("-");
             int angle = Integer.parseInt(mils[0]) * 100 + Integer.parseInt(mils[1]);

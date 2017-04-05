@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.adjustment;
 
 import android.os.Parcelable;
 
@@ -14,6 +14,7 @@ public abstract class AdjustmentTask implements Parcelable{
 
     public static final int RANGE_FINDER_TYPE = 1;
     public static final int DUAL_OBSERVINGS_TYPE = 2;
+    public static final int WORLD_SIDES_TYPE = 3;
 
      /* метод выдает игроку наблюдения в виде строки, массив для различных разновидностей доклада*/
 

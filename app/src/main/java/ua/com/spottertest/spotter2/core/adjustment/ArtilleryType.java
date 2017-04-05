@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.adjustment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
-import android.content.ClipData;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
+
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.frontend.RecyclerAdapter;
 
 public class TheoryActivity extends AppCompatActivity {
     ActionBarDrawerToggle drawerToggle;

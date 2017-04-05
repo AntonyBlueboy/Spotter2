@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2.core;
+package ua.com.spottertest.spotter2.core.adjustment;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Random;
+
+import ua.com.spottertest.spotter2.core.mils.ArtilleryMilsUtil;
 
 /**
  * Created by Rudolf on 29.03.2017.
@@ -513,7 +515,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
             isLastCorrectionSuccesful = false;
             result.append("Коригування не точне!\n" +
                     "Мало бути:\n");
-            if (currentCorrection.getAngleCorrection() == 0) result.append("Приціл без змін");
+            if (currentCorrection.getDistanceCorrection() == 0) result.append("Приціл без змін");
             else {
                 result.append("Приціл " + (currentCorrection.isLower() ? "менше " : "більше "));
                 if (isScaleUsed) result.append(currentCorrection.getScaleCorrection());

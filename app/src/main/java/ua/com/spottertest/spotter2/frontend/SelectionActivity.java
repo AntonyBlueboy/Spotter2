@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,8 +15,11 @@ import android.widget.Spinner;
 
 import java.math.BigDecimal;
 
-import ua.com.spottertest.spotter2.core.AdjustmentTask;
-import ua.com.spottertest.spotter2.core.ArtilleryType;
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.core.adjustment.AdjustmentTask;
+import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
+import ua.com.spottertest.spotter2.core.database.DataBaseHelper;
+import ua.com.spottertest.spotter2.core.database.User;
 
 /*Activity в котором происходит выбор занятия: задачи на "Дуй в тысячу", пристрелка или теоретические вводные*/
 
@@ -110,12 +113,17 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.SelStatisticMenuItem:
                 User user = dataBaseHelper.getUserForName(userName);
-                String message = String.format("Коригувань всього    %d" + "\n" +
-                                "Уражень                       %d" + "\n" +
-                                "Успішність                   %d" + "\n" +
-                                "Середній час               %s", user.getTasks(), user.getSuccessTasks(),
+                String message = String.format("Коригувань всього   %d" + "\n" +
+                                "Уражень                      %d" + "\n" +
+                                "Успішність                  %d" + "\n" +
+                                "Середній час              %s\n" +
+                                "Задач усього             %d\n" +
+                                "Вірних відповідей     %d\n" +
+                                "Успішність                  %d", user.getTasks(), user.getSuccessTasks(),
                         user.getPercentageOfSuccess(),
-                        getTimeString(user.getAverigeTime()));
+                        getTimeString(user.getAverigeTime()),
+                        user.getMilTasks(), user.getSuccessMilTasks(),
+                        user.getPercentageOfSuccessMilTasks());
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
                 user.clear();
@@ -169,6 +177,9 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                         break;
                     case "З сопрядженим спостереженням":
                         adjustmentTypeVar = AdjustmentTask.DUAL_OBSERVINGS_TYPE;
+                        break;
+                    case "За сторонами світу":
+                        adjustmentTypeVar = AdjustmentTask.WORLD_SIDES_TYPE;
                         break;
                 }
                 nextActivityIntent.putExtra("Adjustment Type Id", adjustmentTypeVar);

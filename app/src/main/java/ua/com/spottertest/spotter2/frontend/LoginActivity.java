@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
 
 import android.content.Intent;
@@ -14,6 +14,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.List;
+
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.core.database.DataBaseHelper;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText loginET, firstPassET, secondPassET;

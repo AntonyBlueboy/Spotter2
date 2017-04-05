@@ -1,4 +1,4 @@
-package ua.com.spottertest.spotter2;
+package ua.com.spottertest.spotter2.frontend;
 
 
 import android.content.DialogInterface;
@@ -17,11 +17,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ua.com.spottertest.spotter2.core.ArtilleryMilsUtil;
-import ua.com.spottertest.spotter2.core.ArtilleryType;
-import ua.com.spottertest.spotter2.core.DualObservingAdjustmentTask;
-import ua.com.spottertest.spotter2.core.NotMilsFormatException;
-import ua.com.spottertest.spotter2.core.RangefinderAdjustmentTask;
+import ua.com.spottertest.spotter2.R;
+import ua.com.spottertest.spotter2.core.mils.ArtilleryMilsUtil;
+import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
+import ua.com.spottertest.spotter2.core.adjustment.DualObservingAdjustmentTask;
+import ua.com.spottertest.spotter2.core.mils.NotMilsFormatException;
+import ua.com.spottertest.spotter2.frontend.AdjustmentActivity;
 
 
 /**
