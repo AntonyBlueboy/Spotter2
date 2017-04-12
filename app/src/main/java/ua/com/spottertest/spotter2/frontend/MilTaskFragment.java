@@ -3,7 +3,9 @@ package ua.com.spottertest.spotter2.frontend;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.icu.math.BigDecimal;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -61,12 +63,12 @@ public class MilTaskFragment extends Fragment implements View.OnClickListener{
 
     }
 
-   /*Метод жизненного цикла стартующий сразу после создания активити и фрагмента
+    /*Метод жизненного цикла стартующий сразу после создания активити и фрагмента
     * В нем инициируем все вью и переменную логина*/
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         distMilTaskDescripTV = (TextView) getView().findViewById(R.id.distMilTaskDescripTV);
         distMilTaskET = (EditText) getView().findViewById(R.id.distMilTaskET);
         distanceMilsStartButton = (Button) getView().findViewById(R.id.distanceMilsStartButton);
@@ -78,11 +80,6 @@ public class MilTaskFragment extends Fragment implements View.OnClickListener{
         distMilTaskET.setEnabled(false);
         if (taskId == MilsTaskTrainer.SIZE_TASK) distMilTaskET.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
         else if(taskId == MilsTaskTrainer.ANGLE_TASK) distMilTaskET.setInputType(InputType.TYPE_CLASS_TEXT);
-
-
-
-        /*Текствью для вывода статистики*/
-
 
     }
 
@@ -178,7 +175,7 @@ public class MilTaskFragment extends Fragment implements View.OnClickListener{
                     break;
                 case MilsTaskTrainer.ANGLE_TASK:
                     message = String.format("Кут дорівнює %s м",
-                            ArtilleryMilsUtil.convertToIntFormat(milsTaskTrainer.getAngleTask()));
+                            ArtilleryMilsUtil.convertToMilsFormat(milsTaskTrainer.getAngleSize()));
                     break;
                 case MilsTaskTrainer.SIZE_TASK:
                     message = String.format("Лінійний розмір дорівнює %.1f м", milsTaskTrainer.getMeterSize());
@@ -186,13 +183,10 @@ public class MilTaskFragment extends Fragment implements View.OnClickListener{
 
             currentUser.incrementUnsuccessMilTasks();
         }
+        percent = (double) succesfulTasks/tasks *100;
         /*Выводим в текствью статистику решений. Проверяем процент удачных и подсвечиваем вью соответствующим цветом
         * выводим окно с резльтатом*/
-
-        distanceMilsStatTV.setText(String.format("%d з %d (%.1f%%)", succesfulTasks, tasks, percent));
-        if (percent < 50) distanceMilsStatTV.setBackgroundColor(Color.RED);
-        else if (percent > 80) distanceMilsStatTV.setBackgroundColor(Color.GREEN);
-        else distanceMilsStatTV.setBackgroundColor(Color.YELLOW);
+        buildStatsField();
 
         makeDialogWindowMessage(title, message);
     }
@@ -201,7 +195,7 @@ public class MilTaskFragment extends Fragment implements View.OnClickListener{
 
     private void makeDialogWindowMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title).setMessage(message).setCancelable(false).setNegativeButton("До стрільби",
+        builder.setTitle(title).setMessage(message).setCancelable(false).setNegativeButton("До заняття",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -216,6 +210,15 @@ public class MilTaskFragment extends Fragment implements View.OnClickListener{
     private void makeToastMessage(String message){
         Toast.makeText(getActivity().getApplicationContext(), message,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    /*Метод для заполнения тектствью статистикой с сменой цвета фона*/
+    private void buildStatsField(){
+        distanceMilsStatTV.setText(String.format("%d з %d (%.1f%%)", succesfulTasks, tasks, percent));
+        if (percent < 50) distanceMilsStatTV.setBackgroundColor(Color.RED);
+        else if (percent > 80) distanceMilsStatTV.setBackgroundColor(Color.GREEN);
+        else distanceMilsStatTV.setBackgroundColor(Color.YELLOW);
+
     }
 
     /*Геттер для работы с активити*/

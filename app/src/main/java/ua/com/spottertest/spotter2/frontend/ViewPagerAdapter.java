@@ -19,9 +19,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    /*После обучения рефакторить название метода и аргументов, мы добавляем ОДИН фрагмент*/
-    public void addFragments(Fragment fragments, String titles){
-        this.fragments.add(fragments);
+    public void addFragments(Fragment fragment, String titles){
+        this.fragments.add(fragment);
         this.tabTitles.add(titles);
     }
 

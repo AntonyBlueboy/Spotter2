@@ -144,7 +144,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
     public DualObservingAdjustmentTask(ArtilleryType type) {
         this.type = type;
         this.artylleryTypeName = type.getTypeDescription();
-        this.adjustmentTitle = "Пристрілка з далекоміром";
+        this.adjustmentTitle = "Пристрілка з спряженими спостереженнями";
         this.maxDistanсe = type.getMaxDistance();
         this.random = new Random(new Date().getTime());
 

@@ -159,33 +159,36 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         switch (item.getItemId()){
             case R.id.adjStatisticMenuItem:
                 dataBaseHelper.refreshUserStats(currentUser);
-                User user = dataBaseHelper.getUserForName(userName);
-                String message = String.format("Коригувань всього   %d" + "\n" +
-                                               "Уражень                      %d" + "\n" +
-                                               "Успішність                  %d" + "\n" +
-                                               "Середній час              %s\n" +
-                                               "Задач усього             %d\n" +
-                                               "Вірних відповідей     %d\n" +
-                                               "Успішність                  %d", user.getTasks(), user.getSuccessTasks(),
-                                                                        user.getPercentageOfSuccess(),
-                                                                        getTimeString(user.getAverigeTime()),
-                                                                        user.getMilTasks(), user.getSuccessMilTasks(),
-                                                                        user.getPercentageOfSuccessMilTasks());
+                String message = dataBaseHelper.getUserStatsForName(userName);
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
                 currentUser.clear();
                 break;
-            case R.id.adjQuitMenuItem:
+            case R.id.adjGoTheoryMenuItem:
+                final Intent theoryActIntent = new Intent(this,  TheoryActivity.class);
+                theoryActIntent.putExtra("taskId", taskId);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Вийти з додатку?").setPositiveButton("Так",
+                builder.setTitle("Перейти до теорії?").setPositiveButton("Так",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                dataBaseHelper.refreshUserStats(currentUser);
+                                startActivity(theoryActIntent);
+                            }
+                        });
+                builder.setNegativeButton("Ні", null);
+                builder.show();
+                break;
+            case R.id.adjQuitMenuItem:
+                AlertDialog.Builder tempBuilder = new AlertDialog.Builder(this);
+                tempBuilder.setTitle("Вийти з додатку?").setPositiveButton("Так",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id) {
                                 dataBaseHelper.refreshUserStats(currentUser);
                                 finishAffinity();
                             }
                         });
-                builder.setNegativeButton("Ні", null);
-                builder.show();
+                tempBuilder.setNegativeButton("Ні", null);
+                tempBuilder.show();
 
                 break;
         }
@@ -397,13 +400,26 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
             /*Дальность изменить на количество метров*/
 
-            if (adjDistNoCorrCB.isChecked()) distanceCorrection = 0;
-            else distanceCorrection = Integer.parseInt(adjDistCorrET.getText().toString());
+            if (adjDistNoCorrCB.isChecked()) {
+                distanceCorrection = 0;
+                scaleCorrection = 0;
+            }
+            else {
+                if(!isScaleUsed) {
+                    distanceCorrection = Integer.parseInt(adjDistCorrET.getText().toString());
 
             /*Дальность изменить на количество делений прицела*/
 
-            scaleCorrection = new BigDecimal((double)distanceCorrection / 100 * valueOfScale)
-                    .setScale(0, RoundingMode.HALF_UP).intValue();
+                    scaleCorrection = new BigDecimal((double) distanceCorrection / 100 * valueOfScale)
+                            .setScale(0, RoundingMode.HALF_UP).intValue();
+                }
+                else {
+                    scaleCorrection = Integer.parseInt(adjDistCorrET.getText().toString());
+                    distanceCorrection = new BigDecimal((double) scaleCorrection/valueOfScale * 100)
+                            .setScale(0, RoundingMode.HALF_UP).intValue();
+                }
+
+            }
 
             userCorrection = new Correction(isLower, distanceCorrection,scaleCorrection, isTotheLeft, angleCorrection);
         }

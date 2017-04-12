@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
         getSupportActionBar().setTitle("Увійдіть в обліковий запис, або створіть новий");
 
     }

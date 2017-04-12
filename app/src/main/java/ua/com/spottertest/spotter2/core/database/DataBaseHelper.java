@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,5 +215,34 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(USERS_TABLE_NAME, USERNAME + " = ?", new String[]{userName});
         db.close();
+    }
+
+    public String getUserStatsForName(String userName){
+        User user = getUserForName(userName);
+        String message = String.format("Коригування:\n" +
+                        "Всього                             %d" + "\n" +
+                        "Уражень                         %d" + "\n" +
+                        "Успішність                     %d%%" + "\n" +
+                        "Середній час                 %s\n\n" +
+                        "Задачі з тисячними:\n" +
+                        "Всього                             %d\n" +
+                        "Вірних відповідей        %d\n" +
+                        "Успішність                     %d%%", user.getTasks(), user.getSuccessTasks(),
+                user.getPercentageOfSuccess(),
+                getTimeString(user.getAverigeTime()),
+                user.getMilTasks(), user.getSuccessMilTasks(),
+                user.getPercentageOfSuccessMilTasks());
+        return message;
+    }
+
+    /*Метод для получения строки с временем выполнения корректировки из милисекунд*/
+
+    private String getTimeString(long millis){
+        int minutes = new BigDecimal(((double) millis)/1000/60).setScale(0, BigDecimal.ROUND_DOWN).intValue();
+        int seconds = new BigDecimal(((double)millis)/1000%60).setScale(0,BigDecimal.ROUND_HALF_UP).intValue();
+
+        String result = String.format("%02d:%02d",
+                minutes, seconds);
+        return result;
     }
 }

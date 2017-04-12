@@ -9,21 +9,18 @@
     <string name="drawer_close">Drawer close</string>
 
     <string-array name="topics">
-        <item>Дубок</item>
-        <item>Рудольф</item>
-        <item>Дусант</item>
-        <item>Пушкарь</item>
-        <item>Лемиш</item>
-        <item>Дуф</item>
-        <item>Арт</item>
-        <item>Кихот</item>
-        <item>Варяг</item>
-        <item>Чаек</item>
+        <item>Загальні відомості</item>
+        <item>Теорія тисячної</item>
+        <item>Пристрілка з далекоміром</item>
+        <item>Пристрілка з секундоміром</item>
+        <item>Пристрілка за СЗР</item>
+        <item>Пристрілка з спряженими спостереженнями</item>
+        <item>Пристрілка за сторонами світу</item>
     </string-array>
 
     <string-array name="adjustmentTasks">
         <item>З далекоміром</item>
-        <item>З сопрядженим спостереженням</item>
+        <item>З спряженими спостереженнями</item>
         <item>За сторонами світу</item>
     </string-array>
     <!-- String Resourses for activity_login layout -->
@@ -95,7 +92,6 @@
     <string name="distanceMilsStartButtonText">Отримати</string>
     <string name="distanceMilsCheckButtonText">Перевірити</string>
     <string name="distanceMilsStartText">Отримайте задачу</string>
-
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

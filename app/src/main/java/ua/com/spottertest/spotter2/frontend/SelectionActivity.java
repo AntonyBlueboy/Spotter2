@@ -72,6 +72,7 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
         adjSpinner.setAdapter(adjSpinAdapter);
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
         getSupportActionBar().setTitle(getResources().getString(R.string.SelActMainText));
     }
 
@@ -112,21 +113,9 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                 builder.show();
                 break;
             case R.id.SelStatisticMenuItem:
-                User user = dataBaseHelper.getUserForName(userName);
-                String message = String.format("Коригувань всього   %d" + "\n" +
-                                "Уражень                      %d" + "\n" +
-                                "Успішність                  %d" + "\n" +
-                                "Середній час              %s\n" +
-                                "Задач усього             %d\n" +
-                                "Вірних відповідей     %d\n" +
-                                "Успішність                  %d", user.getTasks(), user.getSuccessTasks(),
-                        user.getPercentageOfSuccess(),
-                        getTimeString(user.getAverigeTime()),
-                        user.getMilTasks(), user.getSuccessMilTasks(),
-                        user.getPercentageOfSuccessMilTasks());
+                String message = dataBaseHelper.getUserStatsForName(userName);
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
-                user.clear();
                 break;
             case R.id.SelQuitMenuItem:
                 builder = new AlertDialog.Builder(this);
@@ -175,7 +164,7 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                     case "З далекоміром" :
                         adjustmentTypeVar = AdjustmentTask.RANGE_FINDER_TYPE;
                         break;
-                    case "З сопрядженим спостереженням":
+                    case "З спряженими спостереженнями":
                         adjustmentTypeVar = AdjustmentTask.DUAL_OBSERVINGS_TYPE;
                         break;
                     case "За сторонами світу":
@@ -209,6 +198,7 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                     }
                 });
         AlertDialog dialog = builder.create();
+        dialog.setIcon(R.drawable.ic_stat_name);
         dialog.show();
     }
 

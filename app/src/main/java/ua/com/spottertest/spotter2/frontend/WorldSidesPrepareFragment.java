@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ua.com.spottertest.spotter2.R;
 import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
+import ua.com.spottertest.spotter2.core.adjustment.RangefinderAdjustmentTask;
 import ua.com.spottertest.spotter2.core.adjustment.WorldSidesAdjustmentTask;
 
 
@@ -41,6 +44,7 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
     private EditText worldSidesPrepMetPerMilET, worldSidesPrepDeltaET;
     private CheckBox worldSidesPrepCB;
     private Button worldSidesPrepCheckBut, worldSidesPrepGoBut;
+    private ImageButton worldSidesChangeBut;
 
     /*Переменная для интента для перехода к следующей активити*/
 
@@ -81,9 +85,10 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
     /*Метод жизненного цикла стартующий сразу после создания активити и фрагмента
     * В нем инициируем все вью и переменную логина*/
 
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         worldSidesPrepDescrText = (TextView) getView().findViewById(R.id.worldSidesPrepDescrText);
         worldSidesPrepDescrText.setText(task.getFormotion());
@@ -95,6 +100,8 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
         worldSidesPrepCheckBut.setOnClickListener(this);
         worldSidesPrepGoBut = (Button) getView().findViewById(R.id.worldSidesPrepGoBut);
         worldSidesPrepGoBut.setOnClickListener(this);
+        worldSidesChangeBut = (ImageButton) getView().findViewById(R.id.worldSidesChangeBut);
+        worldSidesChangeBut.setOnClickListener(this);
         userName = getActivity().getIntent().getStringExtra("userName");
 
         builder = new AlertDialog.Builder(getActivity());
@@ -122,6 +129,9 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
                 try{
                     userMetForMil = Integer.parseInt(worldSidesPrepMetPerMilET.getText().toString());
                     if (!isWithoutScale) valueOfScale = Integer.parseInt(worldSidesPrepDeltaET.getText().toString());
+                    worldSidesPrepCheckBut.setEnabled(false);
+                    worldSidesChangeBut.setEnabled(false);
+
                 }
                 catch (NumberFormatException e){
                     makeToastMessage(getView().getResources().getString(R.string.numExMessage));
@@ -154,7 +164,9 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
                     getActivity().finish();
                 }
                 break;
-
+            case R.id.worldSidesChangeBut:
+                changeTask();
+                break;
         }
     }
 
@@ -177,5 +189,10 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
     private void makeToastMessage(String message){
         Toast.makeText(getActivity().getApplicationContext(), message,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private void changeTask(){
+        task = new WorldSidesAdjustmentTask(this.type);
+        worldSidesPrepDescrText.setText(task.getFormotion());
     }
 }

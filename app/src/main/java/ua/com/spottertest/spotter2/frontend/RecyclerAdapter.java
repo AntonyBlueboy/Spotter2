@@ -1,6 +1,7 @@
 package ua.com.spottertest.spotter2.frontend;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,11 @@ import ua.com.spottertest.spotter2.R;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>{
 
     ArrayList<String> arrayList = new ArrayList<>();
+    View.OnClickListener listener;
 
-    public RecyclerAdapter(ArrayList<String> arrayList) {
+    public RecyclerAdapter(ArrayList<String> arrayList, View.OnClickListener listener) {
         this.arrayList = arrayList;
+        this.listener = listener;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.textView.setText(arrayList.get(position));
+        holder.textView.setOnClickListener(listener);
     }
 
     @Override

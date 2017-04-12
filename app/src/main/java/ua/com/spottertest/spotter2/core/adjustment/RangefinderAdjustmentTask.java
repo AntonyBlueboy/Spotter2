@@ -277,8 +277,8 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         /*если исчисленые корректуры равны нулю, создать нулевую ссылку*/
         if(angleCorrection==0 & distanceCorrection==0) currentCorrection = null;
 
-        else currentCorrection = new Correction((distanceCorrection < 0), Math.abs(distanceCorrection), Math.abs(scaleCorrection),
-                (angleCorrection < 0), Math.abs(angleCorrection) );
+        else currentCorrection = new Correction((distanceCorrection <= 0), Math.abs(distanceCorrection), Math.abs(scaleCorrection),
+                (angleCorrection <= 0), Math.abs(angleCorrection) );
 
         /*Возвращаем массив с двумя разными описаниями одного разрыва*/
         return new String[]{burstRejectionDescription, burstDistanceDescription};
@@ -300,7 +300,7 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         StringBuilder result = new StringBuilder();
         if (currentCorrection.equals(userCorretion)) {
             isLastCorrectionSuccesful = true;
-            result.append("Точна коректура!\nЧас розрахунку - .");
+            result.append("Точна коректура!\n");
 
         }
         else {
@@ -327,9 +327,10 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     public String getCoefsDescription() {
         return String.format("КВ = %.1f\n" +
                                 "КК = %s\n" +
-                                "Вогнева %s", mainDistanceCoef,
+                                "Вогнева %s\n" +
+                                "Дк = %.0f м", mainDistanceCoef,
                 ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
-                (isLeftHand ? "зліва" : "зправа"));
+                (isLeftHand ? "зліва" : "зправа"), mainCommanderDistance);
     }
 
     @Override

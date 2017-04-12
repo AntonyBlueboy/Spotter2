@@ -72,6 +72,7 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
 
         artilleryTitle = artilleryType.getTypeDescription();
 
@@ -104,7 +105,7 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
                 /*Передаем в фрагмент тип пристрелки и артиллерии, инициируем переменную названия пристрелки*/
 
                 dualObservingPrepareFragment.setAdjustmentTask(adjustmentTypeId, artilleryType);
-                taskTitle = "Пристрілка з сопрядженим спостереженням";
+                taskTitle = "Пристрілка з спряженими спостереженнями";
                 break;
             case AdjustmentTask.WORLD_SIDES_TYPE:
                 WorldSidesPrepareFragment worldSidesPrepareFragment = new WorldSidesPrepareFragment();
@@ -144,31 +145,37 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
                 * получаем статистику из БД по имени
                 * Формируем отчет
                 * Выводим его в диалоговое окно*/
-                User user = dataBaseHelper.getUserForName(userName);
-                String message = String.format("Коригувань всього   %d" + "\n" +
-                                "Уражень                      %d" + "\n" +
-                                "Успішність                  %d" + "\n" +
-                                "Середній час              %s", user.getTasks(), user.getSuccessTasks(),
-                        user.getPercentageOfSuccess(),
-                        getTimeString(user.getAverigeTime()));
+                String message = dataBaseHelper.getUserStatsForName(userName);
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
-                user.clear();
+                break;
+            case R.id.adjGoTheoryMenuItem:
+                final Intent theoryActIntent = new Intent(this,  TheoryActivity.class);
+                theoryActIntent.putExtra("taskId", adjustmentTypeId);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Перейти до теорії?").setPositiveButton("Так",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                startActivity(theoryActIntent);
+                            }
+                        });
+                builder.setNegativeButton("Ні", null);
+                builder.show();
                 break;
             case R.id.adjQuitMenuItem:
                 /*При выборе кнопки "Выйти"
                 * Создаем диалоговое окно,
                 * Переспрашиваем
                 * Выходим*/
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Вийти з додатку?").setPositiveButton("Так",
+                AlertDialog.Builder tempBuilder = new AlertDialog.Builder(this);
+                tempBuilder.setTitle("Вийти з додатку?").setPositiveButton("Так",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id) {
                                 finishAffinity();
                             }
                         });
-                builder.setNegativeButton("Ні", null);
-                builder.show();
+                tempBuilder.setNegativeButton("Ні", null);
+                tempBuilder.show();
 
                 break;
         }

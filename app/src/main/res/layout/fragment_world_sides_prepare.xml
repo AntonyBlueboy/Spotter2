@@ -87,6 +87,15 @@
                 android:id="@+id/worldSidesPrepGoBut"
                 android:layout_weight="1"
                 style="@style/CustomButtonForFramesStyle"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/worldSidesChangeBut"
+                android:layout_weight="1"
+                style="@style/CustomButtonForFramesStyle"
+                android:src="@drawable/ic_change_task_button"/>
+
         </LinearLayout>
 
     </LinearLayout>

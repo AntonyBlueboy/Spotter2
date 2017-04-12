@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     private EditText rangPrepDistCoefET, rangPrepProtStepET, rangPrepDeltaET;
     private CheckBox rangPrepCB;
     private Button rangPrepCheckBut, rangPrepGoBut;
+    private ImageButton rangPrepChangeBut;
 
     /*Переменная для интента для перехода к следующей активити*/
 
@@ -88,9 +90,10 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     /*Метод жизненного цикла стартующий сразу после создания активити и фрагмента
     * В нем инициируем все вью и переменную логина*/
 
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         rangPrepDescrTV = (TextView) getView().findViewById(R.id.rangPrepDescrText);
         rangPrepDescrTV.setText(task.getFormotion());
         rangPrepCB = (CheckBox) getView().findViewById(R.id.rangPrepCB);
@@ -102,6 +105,8 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
         rangPrepCheckBut.setOnClickListener(this);
         rangPrepGoBut = (Button) getView().findViewById(R.id.rangPrepGoBut);
         rangPrepGoBut.setOnClickListener(this);
+        rangPrepChangeBut = (ImageButton)  getView().findViewById(R.id.rangPrepChangeBut);
+        rangPrepChangeBut.setOnClickListener(this);
         userName = getActivity().getIntent().getStringExtra("userName");
 
         builder = new AlertDialog.Builder(getActivity());
@@ -137,6 +142,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
                 userDistanceCoef = Double.parseDouble(rangPrepDistCoefET.getText().toString());
                 userProtratorStep = ArtilleryMilsUtil.convertToIntFormat(rangPrepProtStepET.getText().toString());
                     if (!isWithoutScale) valueOfScale = Integer.parseInt(rangPrepDeltaET.getText().toString());
+                    rangPrepCheckBut.setEnabled(false);
                 }
                 catch (NotMilsFormatException e){
                     makeToastMessage(getView().getResources().getString(R.string.milsExMessage));
@@ -158,6 +164,7 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
                 /*Выставляем флажок "проверено"*/
 
                 isChacked = true;
+                rangPrepChangeBut.setEnabled(false);
                 break;
             case R.id.rangPrepGoBut:
 
@@ -175,7 +182,9 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
                     getActivity().finish();
                 }
                 break;
-
+            case R.id.rangPrepChangeBut:
+                changeTask();
+                break;
         }
 
     }
@@ -198,5 +207,10 @@ public class RangeFinderPrepareFragment extends Fragment implements View.OnClick
     private void makeToastMessage(String message){
         Toast.makeText(getActivity().getApplicationContext(), message,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private void changeTask(){
+        task = new RangefinderAdjustmentTask(this.type);
+        rangPrepDescrTV.setText(task.getFormotion());
     }
 }

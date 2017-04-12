@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class DualObservingPrepareFragment extends Fragment implements View.OnCli
             dualPrepHandLeftRB, dualPrepHandRightRB;
     private CheckBox dualPrepCB;
     private Button dualPrepCheckBut, dualPrepGoBut;
+    private ImageButton dualObservingChangeBut;
 
     /*Переменная для интента для перехода к следующей активити*/
 
@@ -91,8 +93,8 @@ public class DualObservingPrepareFragment extends Fragment implements View.OnCli
     * В нем инициируем все вью и переменную логина*/
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         dualPrepDescrText = (TextView) getView().findViewById(R.id.dualPrepDescrText);
         dualPrepDescrText.setText(task.getFormotion());
@@ -113,6 +115,8 @@ public class DualObservingPrepareFragment extends Fragment implements View.OnCli
         dualPrepCheckBut.setOnClickListener(this);
         dualPrepGoBut = (Button) getView().findViewById(R.id.dualPrepGoBut);
         dualPrepGoBut.setOnClickListener(this);
+        dualObservingChangeBut = (ImageButton) getView().findViewById(R.id.dualObservingChangeBut);
+        dualObservingChangeBut.setOnClickListener(this);
 
         userName = getActivity().getIntent().getStringExtra("userName");
 
@@ -163,6 +167,8 @@ public class DualObservingPrepareFragment extends Fragment implements View.OnCli
                     rightCoef = Integer.parseInt(dualPrepRightCoefET.getText().toString());
                     isLeftMain = dualPrepMainCommanderLeftRB.isChecked();
                     isLefthand = dualPrepHandLeftRB.isChecked();
+                    dualPrepCheckBut.setEnabled(false);
+                    dualObservingChangeBut.setEnabled(false);
                 }
                 catch (NotMilsFormatException e){
                     makeToastMessage(getView().getResources().getString(R.string.milsExMessage));
@@ -201,6 +207,9 @@ public class DualObservingPrepareFragment extends Fragment implements View.OnCli
                     getActivity().finish();
                 }
                 break;
+            case R.id.dualObservingChangeBut:
+                changeTask();
+                break;
         }
     }
 
@@ -216,5 +225,10 @@ public class DualObservingPrepareFragment extends Fragment implements View.OnCli
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void changeTask(){
+        task = new DualObservingAdjustmentTask(this.type);
+        dualPrepDescrText.setText(task.getFormotion());
     }
 }

@@ -1,6 +1,7 @@
 package ua.com.spottertest.spotter2.frontend;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -47,6 +48,7 @@ public class MilTaskActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
         getSupportActionBar().setTitle("Вирішення задач з тисячною");
 
         /*Инициализируем базу данных и Имя юзернейма из интента*/
@@ -73,9 +75,9 @@ public class MilTaskActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(distanceMilTaskFragment, "Дистанції");
-        viewPagerAdapter.addFragments(angleMilTaskFragment, "Кутоміра");
-        viewPagerAdapter.addFragments(sizeMilTaskFragment, "Величини");
+        viewPagerAdapter.addFragments(distanceMilTaskFragment, "Дистанція");
+        viewPagerAdapter.addFragments(angleMilTaskFragment, "Кутомір");
+        viewPagerAdapter.addFragments(sizeMilTaskFragment, "Величина");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -93,7 +95,7 @@ public class MilTaskActivity extends AppCompatActivity {
         * Cоздаем и присваиваем пустой временный Юзер
         * Если фрагменты были в работе (Задачи решались), извлекаем статистику в формате User*/
 
-        final User tempUser = new User(userName);
+        final User tempUser = getStatsFromFragments();
         if(distanceMilTaskFragment.isUsed()) {
             tempUser.pourInUserStats(distanceMilTaskFragment.getStats());
             distanceMilTaskFragment.getStats().clear();
@@ -116,18 +118,7 @@ public class MilTaskActivity extends AppCompatActivity {
                 * обновляем данные юзера в базе
                 * извлекаем обновленные данные и выводим в Окно*/
                 dataBaseHelper.refreshUserStats(tempUser);
-                User user = dataBaseHelper.getUserForName(userName);
-                String message = String.format("Коригувань всього   %d" + "\n" +
-                                "Уражень                      %d" + "\n" +
-                                "Успішність                  %d" + "\n" +
-                                "Середній час              %s\n" +
-                                "Задач усього             %d\n" +
-                                "Вірних відповідей     %d\n" +
-                                "Успішність                  %d", user.getTasks(), user.getSuccessTasks(),
-                        user.getPercentageOfSuccess(),
-                        getTimeString(user.getAverigeTime()),
-                        user.getMilTasks(), user.getSuccessMilTasks(),
-                        user.getPercentageOfSuccessMilTasks());
+                String message = dataBaseHelper.getUserStatsForName(userName);
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
                 break;
@@ -146,7 +137,20 @@ public class MilTaskActivity extends AppCompatActivity {
                         });
                 builder.setNegativeButton("Ні", null);
                 builder.show();
-
+                break;
+            case R.id.adjGoTheoryMenuItem:
+                final Intent theoryActIntent = new Intent(this,  TheoryActivity.class);
+                theoryActIntent.putExtra("taskId", 0);
+                AlertDialog.Builder tempBuilder = new AlertDialog.Builder(this);
+                tempBuilder.setTitle("Перейти до теорії?").setPositiveButton("Так",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id) {
+                                dataBaseHelper.refreshUserStats(tempUser);
+                                startActivity(theoryActIntent);
+                            }
+                        });
+                tempBuilder.setNegativeButton("Ні", null);
+                tempBuilder.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -167,7 +171,7 @@ public class MilTaskActivity extends AppCompatActivity {
 
     private void makeDialogWindowMessage(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(message).setCancelable(false).setNegativeButton("До стрільби",
+        builder.setTitle(title).setMessage(message).setCancelable(false).setNegativeButton("До задачі",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -175,5 +179,37 @@ public class MilTaskActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        final User tempUser = getStatsFromFragments();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Залишити заняття?").setPositiveButton("Так",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id) {
+                        dataBaseHelper.refreshUserStats(tempUser);
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("Ні", null);
+        builder.show();
+    }
+
+    private User getStatsFromFragments(){
+        User tempUser = new User(userName);
+        if(distanceMilTaskFragment.isUsed()) {
+            tempUser.pourInUserStats(distanceMilTaskFragment.getStats());
+            distanceMilTaskFragment.getStats().clear();
+        }
+        if(angleMilTaskFragment.isUsed()){
+            tempUser.pourInUserStats(angleMilTaskFragment.getStats());
+            angleMilTaskFragment.getStats().clear();
+        }
+        if(sizeMilTaskFragment.isUsed()){
+            tempUser.pourInUserStats(sizeMilTaskFragment.getStats());
+            sizeMilTaskFragment.getStats().clear();
+        }
+        return tempUser;
     }
 }
