@@ -89,7 +89,7 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
 
         /*Тысячную дальности рассчиываем и округляем до целых*/
 
-        this.metersInMils = new BigDecimal(((double) troopDistance)/1000).setScale(0, RoundingMode.HALF_UP).intValue();
+        this.metersInMils = new BigDecimal(( troopDistance)/1000).setScale(0, RoundingMode.HALF_UP).intValue();
 
         /*Дирекц. угол стрельбы берем в пределе между 0-00 и 60-00*/
 
@@ -187,28 +187,42 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
 
         double angleFromTargetToBurst = getAngleFromTargetToBurst(isNorth, isWest, dx, dy);
 
-        /*Получаем угол между дир. по цели и цель- разрыв*/
+        /*Получаем угол между дир. по цели и цель- разрыв, если угол цели меньше, то добавляем 6000*/
+        int troopDirect = troopAngle;
+        double sharpAngle = 0;
+        double y = (troopDirect * RADIANS_IN_MIL) - angleFromTargetToBurst;
+        if (y < 0) {
+            troopDirect += MAXIMAL_VIEWING_ANGLE;
+            y = (troopDirect * RADIANS_IN_MIL) - angleFromTargetToBurst;
+        }
 
-        double y = (troopAngle * RADIANS_IN_MIL) - angleFromTargetToBurst;
+        if (y < Math.toRadians(90)){
+            isTotheLeft = false;
+            isLower = true;
+            sharpAngle = y;
+        }
+        else if(y < Math.toRadians(180)){
+            isTotheLeft = false;
+            isLower = false;
+            sharpAngle = Math.toRadians(180) - y;
+        }
+        else if(y < Math.toRadians(270)){
+            isTotheLeft = true;
+            isLower = false;
+            sharpAngle = y - Math.toRadians(180);
+        }
+        else {
+            isTotheLeft = true;
+            isLower = true;
+            sharpAngle = Math.toRadians(360) - y;
+        }
 
-        /*Если цель левее напр стрельбы корректура будет правее*/
-
-        isTotheLeft = y < 0;
-
-        /*Если угол у меньше  90, то прицел уменьшать, иначе - увеличивать*/
-
-        isLower = Math.abs(y) < Math.toRadians(90);
-
-        /*Если угол у больше 90, для дальнейших рассчетов он не годится, значит нужно его изменить на 180 град*/
-
-        if (Math.abs(y) > Math.toRadians(90))
-            y = Math.toRadians(180) - y;
 
         /*Считаем корректуры в дальность и угломер по формулам тригонометрии*/
 
-        distanceCorrection = (int) ((double)distanceFromTargetToBurst * Math.sin(y));
+        distanceCorrection = (int) ((double)distanceFromTargetToBurst * Math.cos(sharpAngle));
 
-        angleCorrection = (int) ((double)distanceFromTargetToBurst * Math.cos(y));
+        angleCorrection = (int) ((double)distanceFromTargetToBurst * Math.sin(sharpAngle));
 
         /*Переводим метры доворота в тысячные доворота по формуле тысячной*/
 
@@ -229,7 +243,7 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
         if (dx == 0) burstDescription = String.format("Розрив! %s %.0f", (isWest ? "Захід" : "Схід"), dy);
         else if (dy == 0) burstDescription = String.format("Розрив! %s %.0f", (isNorth ? "Північ" : "Південь"), dx);
         else burstDescription = String.format("Розрив! %s %.0f, " +
-                                              "        %s %.0f", (isWest ? "Захід" : "Схід"), dy,
+                                                        "%s %.0f", (isWest ? "Захід" : "Схід"), dy,
                                                                 (isNorth ? "Північ" : "Південь"), dx);
         return new String[]{burstDescription};
     }
@@ -237,7 +251,7 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
 
     @Override
     public String getFormotion() {
-        return String.format("Дальність вогневої  - %d,\n" +
+        return String.format("Дальність вогневої  - %d м,\n" +
                              "Дирекційний на ціль - %s", (int) troopDistance, ArtilleryMilsUtil.convertToMilsFormat(troopAngle));
     }
 
@@ -245,11 +259,16 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
 
     @Override
     public String checkCorrection(Correction userCorretion, boolean isScaleUsed) {
+
         StringBuilder result = new StringBuilder();
         if (currentCorrection.equals(userCorretion)) {
             isLastCorrectionSuccesful = true;
-            result.append("Точна коректура!\nЧас розрахунку - .");
+            result.append("Точна коректура!");
 
+        }
+        else if (checkWithLimits(userCorretion, isScaleUsed)){
+            isLastCorrectionSuccesful = true;
+            result.append("Точна коректура!");
         }
         else {
             isLastCorrectionSuccesful = false;
@@ -302,8 +321,8 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
 
     private double getAngleFromTargetToBurst(boolean isNorth, boolean isWest, double dx, double dy){
 
-        /*Определение четвертей. Схема четвертей - 4 | 1
-        *                                          3 | 2  */
+        /*Определение четвертей. Схема четвертей - 4 _|_ 1
+        *                                          3  |  2  */
 
         int quarter = 0;
         if (isNorth & !isWest) quarter = 1;
@@ -333,6 +352,25 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
                 angleFromTargetToBurst = Math.toRadians(360) - angleFromTargetToBurst;
         }
         return angleFromTargetToBurst;
+    }
+
+    /*Метод возвращает true, если в корректуре все совпадает с точностью до 20 м*/
+
+    private boolean checkWithLimits(Correction userCorrection, boolean isScaleUsed){
+        if (userCorrection == null) return false;
+        if (userCorrection.isLower() != currentCorrection.isLower()) return false;
+        if (userCorrection.isTotheLeft() != currentCorrection.isTotheLeft()) return false;
+
+        int userAngleCorrection = userCorrection.getAngleCorrection();
+        int currentAngleCorrection = currentCorrection.getAngleCorrection();
+        int limitAngle = new BigDecimal(20.0d/metersInMils).setScale(0, RoundingMode.HALF_UP).intValue();
+        if ((userAngleCorrection > (currentAngleCorrection + limitAngle))
+                || (userAngleCorrection < (currentAngleCorrection - limitAngle))) return false;
+        int limitDistance = 20;
+        int userDistanceCorrection = userCorrection.getDistanceCorrection();
+        int currentDistancecorrection = currentCorrection.getDistanceCorrection();
+        return  !((userDistanceCorrection > (currentDistancecorrection + limitDistance))
+                || (userDistanceCorrection < (currentDistancecorrection - limitDistance) ));
     }
 
     @Override

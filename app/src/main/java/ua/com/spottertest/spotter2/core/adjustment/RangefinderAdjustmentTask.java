@@ -289,7 +289,7 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
     @Override
     public String getFormotion() {
         return new StringBuilder().append("Дальність командира - ").append((int)mainCommanderDistance)
-                .append(".\n Дальність ціли - ").append((int)troopDistance).append(".\n Поправка на зміщення - ")
+                .append(" м.\n Дальність ціли - ").append((int)troopDistance).append(" м.\n Поправка на зміщення - ")
                 .append(ArtilleryMilsUtil.convertToMilsFormat(mainParallax)).append(".\n Положення вогневої - ")
                 .append(isLeftHand ? "зліва" : "зправа")
                 .toString();
@@ -325,12 +325,14 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
 
     @Override
     public String getCoefsDescription() {
-        return String.format("КВ = %.1f\n" +
+        String result =  String.format("КВ = %.1f\n" +
                                 "КК = %s\n" +
                                 "Вогнева %s\n" +
                                 "Дк = %.0f м", mainDistanceCoef,
                 ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
-                (isLeftHand ? "зліва" : "зправа"), mainCommanderDistance);
+                (isLeftHand ? "ліворуч" : "праворуч"), mainCommanderDistance);
+        if (valueOfScale != 0) result = result + "\nΔП на 100 м = " + valueOfScale;
+        return result;
     }
 
     @Override

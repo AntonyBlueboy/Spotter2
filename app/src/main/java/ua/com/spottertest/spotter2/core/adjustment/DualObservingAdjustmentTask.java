@@ -195,6 +195,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
                 isLeftHand = true;
                 rightParallax = gama + leftParallax;
                 troopAngle = leftViewingAngle + (int) leftParallax;
+                if (troopAngle > MAXIMAL_VIEWING_ANGLE) troopAngle = troopAngle - 6000;
                 FPposition = "зліва від обох КСП";
             }
             else{
@@ -207,6 +208,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
                     FPposition = "зправа від обох КСП";
                 }
                 troopAngle = leftViewingAngle - (int) leftParallax;
+                if (troopAngle < 0) troopAngle = 6000 + troopAngle; //troopangle минусовый
             }
         }
         if (!this.isLeftCommanderMain){
@@ -217,6 +219,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
                 leftParallax = gama + rightParallax;
                 FPposition = "зправа від обох КСП";
                 troopAngle = leftViewingAngle - (int) leftParallax;
+                if (troopAngle < 0) troopAngle = 6000 + troopAngle; //troopangle минусовый
             }
             else{
                 isLeftHand = true;
@@ -224,6 +227,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
                 if (rightParallax < gama) FPposition = "між двома КСП";
                 else FPposition = "зліва від обох КСП";
                 troopAngle = rightViewingAngle + (int) rightParallax;
+                if (troopAngle > MAXIMAL_VIEWING_ANGLE) troopAngle = troopAngle - 6000;
             }
         }
 
@@ -344,122 +348,133 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
     public String checkPreparingResult(Object... preparedCoefs) {
         double userDistanceCoef = (double)preparedCoefs[0];
         int userProtratorStep = (int) preparedCoefs[1];
-        int leftCoef = (int) preparedCoefs[2];
-        int rightCoef = (int) preparedCoefs[3];
-        boolean isLeftMain = Boolean.getBoolean(preparedCoefs[4].toString());
-        boolean isLefthand = Boolean.getBoolean(preparedCoefs[5].toString());
+        int userLeftCoef = (int) preparedCoefs[2];
+        int userRightCoef = (int) preparedCoefs[3];
+        boolean userIsLeftMain = (Boolean) preparedCoefs[4];
+        boolean userIsLefthand = (Boolean) preparedCoefs[5];
 
         String result;
 
-        if (this.mainDistanceCoef == userDistanceCoef & this.mainProtractorStep == userProtratorStep
-                & this.leftCoef == leftCoef & this.rightCoef == rightCoef & this.isLeftCommanderMain == isLeftMain
-                & this.isLeftHand == isLefthand) result = "Розраховано вірно. Можна розпочати пристрілку.";
-        else result =  String.format("Розраховано невірно.\n Запишіть, головне КСП - %s," +
+        if ((this.mainDistanceCoef == userDistanceCoef) & (this.mainProtractorStep == userProtratorStep)
+                & (this.leftCoef == userLeftCoef) & (this.rightCoef == userRightCoef) & (this.isLeftCommanderMain == userIsLeftMain)
+                & (this.isLeftHand == userIsLefthand)) result = "Розраховано вірно. Можна розпочати пристрілку.";
+        else result =  String.format("Розраховано невірно.\n Запишіть, головне СП - %s," +
                 "вогнева %s,\nКВ = %.1f, КК = %s.\nКоефіціенти: лівий - %d, правий - %d. \n Можна почнати пристрілку.",
-                (isLeftCommanderMain ? "ліве" : "праве"), (isLeftHand ? "зліва" : "зправа"),
-                mainDistanceCoef, ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
-                leftCoef, rightCoef);
+                (this.isLeftCommanderMain ? "ліве" : "праве"), (this.isLeftHand ? "зліва" : "зправа"),
+                this.mainDistanceCoef, ArtilleryMilsUtil.convertToMilsFormat(this.mainProtractorStep),
+                this.leftCoef, this.rightCoef);
         return result;
     }
 
     @Override
     public String[] getBurstDescription() {
-        int distanceToTarget;
-        boolean isOver = random.nextBoolean();
+        int burstDistanceToTarget;
+        boolean burstIsOver = random.nextBoolean();
         int randomNum = random.nextInt(100);
 
         /*В менее чем 25% случаев перелет/недолет достигает 310 м*/
 
-        if (randomNum < 25) distanceToTarget = (30 + random.nextInt(281))/10*10;
+        if (randomNum < 25) burstDistanceToTarget = (30 + random.nextInt(281))/10*10;
 
         /*В остальных случаях перелет/недолет до 200 м*/
 
-        else distanceToTarget = (30 + random.nextInt(179))/10*10;
+        else burstDistanceToTarget = (30 + random.nextInt(179))/10*10;
 
         /* Так же готовим отклонения по угломеру от огневой*/
 
-        boolean isLeft = random.nextBoolean();
-        int angleToTarget;
-        int znakvForm = isLeft ? -1 : 1;
+        boolean burstIsLeft = random.nextBoolean();
+        int burstAngleToTarget;
+        int znakvForm = burstIsLeft ? -1 : 1;
 
         randomNum = random.nextInt(100);
 
         /*В менее чем 20% случаев отклонение по угломеру может достигать 0-85*/
 
-        if (randomNum < 20) angleToTarget =  znakvForm*(5 + random.nextInt(80) / 10 * 10 + 5);
+        if (randomNum < 20) burstAngleToTarget =  znakvForm*(5 + random.nextInt(80) / 10 * 10 + 5);
 
         /*В менее чем 40% случаев отклонение по угломеру может достигать 0-55*/
 
-        else if (randomNum < 40) angleToTarget = znakvForm*(5 + random.nextInt(50) / 10 * 10 + 5);
+        else if (randomNum < 50) burstAngleToTarget = znakvForm*(5 + random.nextInt(50) / 10 * 10 + 5);
 
         /*В менее чем 60% случаев отклонение по угломеру может достигать 0-30*/
 
-        else angleToTarget = znakvForm*(random.nextInt(30) / 10 * 10 + 5);
+        else burstAngleToTarget = znakvForm*(5 + random.nextInt(30) / 10 * 10 + 5);
 
         /*Создаем и обнуляем наблюдения с двух КСП, в том числе и в виде дирекционных углов*/
 
         int leftAngle = 0;
-        boolean isLeftForRight = false;
-        int rightAngle = 0;
         boolean isLeftForLeft = false;
+        int rightAngle = 0;
+        boolean isLeftForRight = false;
         int leftDirAngle = 0;
         int rightDirAngle = 0;
 
         /* знак, подставляемый в формулу зависит от значения перелета/недолета и положения огневой относительно КСП*/
 
-        int znak = (isLeftHand & (isOver) || ((!isLeftHand)& (!isOver)))? +1 : -1;
+        int znak = 0;
+        if (isLeftHand){
+            if (!burstIsOver) znak = -1;
+            else znak = +1;
+        }
+        else {
+            if (burstIsOver) znak = -1;
+            else znak = +1;
+        }
+
 
         /*Генерируем сначала наблюдение с ведущего КСП из корректуры в дальность и угломер.
         Затем на его основе генерируем наблюдение со второго КСП. Используем обращение двух основных формул.*/
 
         if (isLeftCommanderMain){
-            leftAngle = -new BigDecimal(((angleToTarget + -znak * ((double)distanceToTarget/100*mainProtractorStep)))/mainDistanceCoef)
+            leftAngle = -new BigDecimal((burstAngleToTarget - znak * (((double)burstDistanceToTarget)/100*mainProtractorStep))/mainDistanceCoef)
                     .setScale(0, RoundingMode.HALF_UP).intValue();
             isLeftForLeft = leftAngle < 0;
-            leftAngle = Math.abs(leftAngle);
-            int distanceCorrectureMeters = (isOver ? -1 : +1) * distanceToTarget;
+            int distanceCorrectureMeters = (burstIsOver ? -1 : +1) * burstDistanceToTarget;
             rightAngle = -new BigDecimal((distanceCorrectureMeters - leftAngle*leftCoef)/rightCoef)
                     .setScale(0, RoundingMode.HALF_UP).intValue();
             isLeftForRight = rightAngle < 0;
+            leftAngle = Math.abs(leftAngle);
             rightAngle = Math.abs(rightAngle);
         }
         if (!isLeftCommanderMain){
-            rightAngle = -new BigDecimal(((angleToTarget + -znak * ((double)distanceToTarget/100*mainProtractorStep)))/mainDistanceCoef)
+            rightAngle = -new BigDecimal((burstAngleToTarget - znak * (((double)burstDistanceToTarget)/100*mainProtractorStep))/mainDistanceCoef)
                     .setScale(0, RoundingMode.HALF_UP).intValue();
             isLeftForRight = rightAngle < 0;
-            rightAngle = Math.abs(rightAngle);
-            int distanceCorrectureMeters = (isOver ? -1 : +1) * distanceToTarget;
+            int distanceCorrectureMeters = (burstIsOver ? -1 : +1) * burstDistanceToTarget;
             leftAngle = new BigDecimal((distanceCorrectureMeters + rightAngle*rightCoef)/leftCoef)
                     .setScale(0, RoundingMode.HALF_UP).intValue();
             isLeftForLeft = leftAngle < 0;
+            rightAngle = Math.abs(rightAngle);
             leftAngle = Math.abs(leftAngle);
         }
-
-        leftDirAngle = leftViewingAngle + (isLeftForLeft ? -1 : +1) * leftAngle;
-        rightDirAngle = rightViewingAngle + (isLeftForRight ? -1 : +1) * rightAngle;
 
         /*Округляем наблюдения до 0-05*/
 
         while (leftAngle%5 != 0) leftAngle++;
         while (rightAngle%5 != 0) rightAngle++;
 
+        leftDirAngle = leftViewingAngle + (isLeftForLeft ? -1 : +1) * leftAngle;
+        rightDirAngle = rightViewingAngle + (isLeftForRight ? -1 : +1) * rightAngle;
+
+
+
         /*Создаем строковый доклад о разрыве в двух вариантах*/
 
-        String burstDescription = "(Лівий КСП) Розрив по цілі!\n(Правий КСП) Розрив по цілі!";
-        String burstDirDescription = String.format("(Лівий КСП) Розрив! Дирекційний - %s" +
-                "\n(Правий КСП) Розрив! Дирекційний - %s",
+        String burstDescription = "(Лівий СП) Розрив по цілі!\n(Правий СП) Розрив по цілі!";
+        String burstDirDescription = String.format("(Лівий СП) Розрив! Дирекційний - %s" +
+                "\n(Правий СП) Розрив! Дирекційний - %s",
                 ArtilleryMilsUtil.convertToMilsFormat(leftDirAngle), ArtilleryMilsUtil.convertToMilsFormat(rightDirAngle));
 
         if (leftAngle == 0 & rightAngle!=0) {
-            burstDescription = "(Лівий КСП) Розрив по цілі! \n(Правий КСП) Розрив! " +
+            burstDescription = "(Лівий СП) Розрив по цілі! \n(Правий СП) Розрив! " +
                     (isLeftForRight ? ", ліво " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(rightAngle) + "!";
         }
         else if (leftAngle != 0 & rightAngle==0) {
-            burstDescription =  "(Лівий КСП) Розрив! " + (isLeftForLeft ? "ліво " : "право ")
-                    + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "!\n(Правий КСП) Розрив по цели!";
+            burstDescription =  "(Лівий СП) Розрив! " + (isLeftForLeft ? "ліво " : "право ")
+                    + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "!\n(Правий СП) Розрив по цели!";
         }
-        else if ( leftAngle != 0 & rightAngle!=0) burstDescription =  "(Лівий КСП) Розрив! " + (isLeftForLeft ? "ліво " : "право ")
-                + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "! \n(Правий КСП) Розрив! " +
+        else if ( leftAngle != 0 & rightAngle!=0) burstDescription =  "(Лівий СП) Розрив! " + (isLeftForLeft ? "ліво " : "право ")
+                + ArtilleryMilsUtil.convertToMilsFormat(leftAngle) + "! \n(Правий СП) Розрив! " +
                 (isLeftForRight ? ", ліво " : ", право ")+ ArtilleryMilsUtil.convertToMilsFormat(rightAngle) + "!";
 
 
@@ -470,20 +485,20 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
 
         /*Gересчитываем корректуру из образованых наблюдений, что б убрать фактор округления*/
 
-        int distanseCorrection = (isLeftForLeft ? -1 : +1) * leftAngle * leftCoef -
+        int distanсeCorrection = (isLeftForLeft ? -1 : +1) * leftAngle * leftCoef -
                 (isLeftForRight ? -1 : +1) * rightAngle * rightCoef;
 
-        scaleCorrection = new BigDecimal((double)distanceToTarget/100 * valueOfScale).setScale(0, RoundingMode.HALF_UP).intValue();
+        scaleCorrection = new BigDecimal((double)distanсeCorrection/100 * valueOfScale).setScale(0, RoundingMode.HALF_UP).intValue();
 
-        isLeft = isLeftCommanderMain ? isLeftForLeft : isLeftForRight;
-        angleToTarget = isLeftCommanderMain ? leftAngle : rightAngle;
+        burstIsLeft = (isLeftCommanderMain ? isLeftForLeft : isLeftForRight);
+        burstAngleToTarget = (isLeftCommanderMain ? leftAngle : rightAngle);
 
-        angleCorrection = (isLeft ? +1 : -1) * new BigDecimal(angleToTarget*mainDistanceCoef).setScale(0, RoundingMode.HALF_UP).intValue()
-                + znak * new BigDecimal((double)Math.abs(distanceToTarget)/100*mainProtractorStep).setScale(0, RoundingMode.HALF_UP).intValue();
+        angleCorrection = (burstIsLeft ? +1 : -1) * new BigDecimal(burstAngleToTarget*mainDistanceCoef).setScale(0, RoundingMode.HALF_UP).intValue()
+                + znak * new BigDecimal(((double)Math.abs(burstDistanceToTarget))/100*mainProtractorStep).setScale(0, RoundingMode.HALF_UP).intValue();
 
-        if(angleCorrection==0 & distanseCorrection==0) currentCorrection = null;
-        else currentCorrection = new Correction((scaleCorrection < 0),Math.abs(distanseCorrection), Math.abs(scaleCorrection),
-                (angleCorrection < 0), Math.abs(angleCorrection) );
+        if(angleCorrection==0 & distanсeCorrection==0) currentCorrection = null;
+        else currentCorrection = new Correction((scaleCorrection <= 0),Math.abs(distanсeCorrection), Math.abs(scaleCorrection),
+                (angleCorrection <= 0), Math.abs(angleCorrection) );
 
         return new String[]{burstDescription, burstDirDescription};
     }
@@ -493,11 +508,11 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
         StringBuilder formotion = new StringBuilder();
 
 
-        formotion.append("Дальність лівого КСП - ").append((int)leftCommanderDistance)
-                .append(", дирекційний лівого КСП - ").append(ArtilleryMilsUtil.convertToMilsFormat(leftParallax))
-                .append(", дальність правого КСП - ").append((int)rightCommanderDistance)
-                .append(", дирекційний правого КСП - ").append(ArtilleryMilsUtil.convertToMilsFormat(rightParallax))
-                .append(", дальность вогневої  - ").append((int)troopDistance)
+        formotion.append("Дальність лівого СП - ").append((int)leftCommanderDistance).append(" м")
+                .append(", дирекційний лівого СП - ").append(ArtilleryMilsUtil.convertToMilsFormat(leftViewingAngle))
+                .append(", дальність правого СП - ").append((int)rightCommanderDistance).append(" м")
+                .append(", дирекційний правого СП - ").append(ArtilleryMilsUtil.convertToMilsFormat(rightViewingAngle))
+                .append(", дальность вогневої  - ").append((int)troopDistance).append(" м")
                 .append(", дирекційний стрільби - ").append(ArtilleryMilsUtil.convertToMilsFormat(troopAngle));
 
         return formotion.toString();
@@ -508,7 +523,7 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
         StringBuilder result = new StringBuilder();
         if (currentCorrection.equals(userCorretion)) {
             isLastCorrectionSuccesful = true;
-            result.append("Точна коректура!\nЧас розрахунку - .");
+            result.append("Точна коректура!");
 
         }
         else {
@@ -533,17 +548,19 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
 
     @Override
     public String getCoefsDescription() {
-        return String.format("Основне КСП - %s\n" +
+        String result =  String.format("КСП - %s\n" +
                         "КВ = %.1f\n" +
                         "КК = %s\n" +
                         "Вогнева %s\n" +
-                        "К лівого КСП - %d\n" +
-                        "Дир. кут лівого КСП - %s\n" +
-                        "К правого КСП - %d\n" +
-                        "Дир. кут правого КСП - %s", (isLeftCommanderMain ? "ліве" : "праве"),
+                        "К лівого - %d\n" +
+                        "α лівого - %s\n" +
+                        "К правого - %d\n" +
+                        "α правого - %s", (isLeftCommanderMain ? "лівий" : "правий"),
                 mainDistanceCoef, ArtilleryMilsUtil.convertToMilsFormat(mainProtractorStep),
-                (isLeftHand ? "зліва" : "зправа"), leftCoef, ArtilleryMilsUtil.convertToMilsFormat(leftViewingAngle),
+                (isLeftHand ? "ліворуч" : "праворуч"), leftCoef, ArtilleryMilsUtil.convertToMilsFormat(leftViewingAngle),
                 rightCoef, ArtilleryMilsUtil.convertToMilsFormat(rightViewingAngle));
+        if (valueOfScale != 0) result = result + "\nΔП на 100 м = " + valueOfScale;
+        return result;
     }
 
     @Override
