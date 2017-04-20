@@ -10,15 +10,18 @@
     <item android:id="@+id/milStatisticMenuItem"
         android:title="@string/adjStatisticMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_equalizer_black_24dp"/>
 
     <item android:id="@+id/milGoTheoryMenuItem"
         android:title="@string/adjGoTheoryMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_go_theory_24dp"/>
 
     <item android:id="@+id/milQuitMenuItem"
         android:title="@string/adjQuitMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_exit_24dp"/>
 </menu>

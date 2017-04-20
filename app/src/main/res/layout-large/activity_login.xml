@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frontend.LoginActivity">
+    tools:context=".frontend.LoginActivity"
+    android:background="@drawable/backgound_map">
 
     <include
         android:layout_width="match_parent"
@@ -18,12 +19,15 @@
         android:id="@+id/loginButt"
         android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/customItemMargin" />
+        android:layout_margin="@dimen/customItemMargin"
+        android:drawableStart="@drawable/ic_input_48px"
+        android:drawablePadding="@dimen/customItemMargin"
+        android:background="@drawable/main_button" />
 
     <LinearLayout
-        android:background="@color/colorLoginFrame"
+        android:background="@drawable/frame_background"
         android:orientation="vertical"
-        android:layout_width="380dp"
+        android:layout_width="415dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_centerVertical="true"

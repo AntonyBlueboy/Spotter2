@@ -1,12 +1,15 @@
 package ua.com.spottertest.spotter2.core.database;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.math.BigDecimal;
 
 /**
  * Created by Rudolf on 06.03.2017.
  * Класс инкапсулирующий статистику пользователя вне бд
  */
-public class User {
+public class User implements Parcelable{
 
     /*Имя юзера*/
 
@@ -40,10 +43,28 @@ public class User {
 
     private int percentageOfSuccessMilTasks;
 
+    /*Поле, необходимое при парселизации*/
+
+    public static final Parcelable.Creator<User> CREATOR =
+            new Parcelable.Creator<User>(){
+                public User createFromParcel(Parcel in){
+                    return new User(in);
+                }
+
+                @Override
+                public User[] newArray(int size) {
+                    return new User[size];
+                }
+            };
+
      /*Пустой конструктор для ручного заполнения полей*/
 
     public User() {
     }
+
+
+
+
 
     /*Конструктор для быстрого создания нулевого Юзера с именем*/
 
@@ -58,6 +79,45 @@ public class User {
         this.successMilTasks = 0;
         this.unSuccessMilTasks = 0;
         this.percentageOfSuccessMilTasks = 0;
+    }
+
+    /*Конструктор для парселизации*/
+
+    public User(Parcel parcel) {
+        this.name = parcel.readString();
+        this.tasks = parcel.readInt();
+        this.successTasks = parcel.readInt();
+        this.unSuccessTasks = parcel.readInt();
+        this.percentageOfSuccess = parcel.readInt();
+        this.averigeTime = parcel.readLong();
+        this.milTasks = parcel.readInt();
+        this.successMilTasks = parcel.readInt();
+        this.unSuccessMilTasks = parcel.readInt();
+        this.percentageOfSuccessMilTasks = parcel.readInt();
+    }
+
+    /*Метод для упаковки полей в парсель*/
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.name);
+        parcel.writeInt(this.tasks);
+        parcel.writeInt(this.successTasks);
+        parcel.writeInt(this.unSuccessTasks);
+        parcel.writeInt(this.percentageOfSuccess);
+        parcel.writeLong(this.averigeTime);
+        parcel.writeInt(this.milTasks);
+        parcel.writeInt(this.successMilTasks);
+        parcel.writeInt(this.unSuccessMilTasks);
+        parcel.writeInt(this.percentageOfSuccessMilTasks);
+    }
+
+
+    /*Метод обязательный при имплементировании парселизации*/
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     /*Метод для пересчета процента успешных задач*/

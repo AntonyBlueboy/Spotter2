@@ -276,6 +276,9 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
         rightCoef = parcel.readInt();
         maxDistanсe = parcel.readInt();
         artylleryTypeName = parcel.readString();
+        isLastCorrectionSuccesful = parcel.readInt() == 1;
+        currentCorrection = parcel.readParcelable(Correction.class.getClassLoader());
+
         type = ArtilleryType.getTypeForDescription(artylleryTypeName);
         random = new Random(new Date().getTime());
     }
@@ -319,6 +322,9 @@ public class DualObservingAdjustmentTask extends AdjustmentTask {
         parcel.writeInt(rightCoef);
         parcel.writeInt(maxDistanсe);
         parcel.writeString(artylleryTypeName);
+        int isLCSuccessful = isLastCorrectionSuccesful ? 1 : 0;
+        parcel.writeInt(isLCSuccessful);
+        parcel.writeParcelable(currentCorrection, 0);
     }
 
     /*Вспомогательный метод для генерирования дальностей наблюдателей. Генерируем дальность основного наблюдателя. Выдерживаем принципы:

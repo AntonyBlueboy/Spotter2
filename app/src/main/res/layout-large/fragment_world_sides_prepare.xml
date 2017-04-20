@@ -8,9 +8,9 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="400dp"
+        android:layout_width="420dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorLoginFrame"
+        android:background="@drawable/frame_background"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="130dp">
 
@@ -76,7 +76,8 @@
                 android:text="@string/rangPrepCheckButText"
                 android:id="@+id/worldSidesPrepCheckBut"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"/>
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_check_prep_black_24dp"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -84,7 +85,8 @@
                 android:text="@string/rangPrepGoButText"
                 android:id="@+id/worldSidesPrepGoBut"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"/>
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_go_adj_black_24dp"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -94,6 +96,15 @@
                 style="@style/CustomButtonForFramesStyle"
                 android:src="@drawable/ic_change_task_button"/>
         </LinearLayout>
+
+        <Button
+            style="@style/CustomButtonForFramesStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Бланк пристрлки"
+            android:id="@+id/worldSidesPDFButton"
+            android:drawableStart="@drawable/ic_blank_black_24dp"
+            />
 
     </LinearLayout>
 

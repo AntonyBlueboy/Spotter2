@@ -1,10 +1,13 @@
 package ua.com.spottertest.spotter2.core.adjustment;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Rudolf on 07.03.2017.
  * Класс описывает корректуру в прицел и доворот.
  */
-public class Correction {
+public class Correction implements Parcelable{
 
     /*дальность меньше или нет*/
 
@@ -26,6 +29,20 @@ public class Correction {
 
     private int angleCorrection;
 
+       /*Поле, необходимое при парселизации*/
+
+    public static final Parcelable.Creator<Correction> CREATOR =
+            new Parcelable.Creator<Correction>(){
+                public Correction createFromParcel(Parcel in){
+                    return new Correction(in);
+                }
+
+                @Override
+                public Correction[] newArray(int size) {
+                    return new Correction[size];
+                }
+            };
+
     public Correction(boolean isLower, int distanceCorrection, int scaleCorrection, boolean isTotheLeft, int angleCorrection) {
         this.isLower = isLower;
         this.distanceCorrection = distanceCorrection;
@@ -34,7 +51,35 @@ public class Correction {
         this.angleCorrection = angleCorrection;
     }
 
+    /*Конструктор для парселизации*/
 
+    public Correction(Parcel parcel) {
+        this.isLower = parcel.readInt() == 1;
+        this.distanceCorrection = parcel.readInt();
+        this.scaleCorrection = parcel.readInt();
+        this.isTotheLeft = parcel.readInt() == 1;
+        this.angleCorrection = parcel.readInt();
+    }
+
+    /*Метод для упаковки полей в парсель*/
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        int isLow = this.isLower ? 1 : 0;
+        parcel.writeInt(isLow);
+        parcel.writeInt(this.distanceCorrection);
+        parcel.writeInt(this.scaleCorrection);
+        int isTTLeft = this.isTotheLeft ? 1 : 0;
+        parcel.writeInt(isTTLeft);
+        parcel.writeInt(this.angleCorrection);
+    }
+
+      /*Метод обязательный при имплементировании парселизации*/
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
     @Override
     public boolean equals(Object o) {

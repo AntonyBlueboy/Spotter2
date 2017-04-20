@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/theoryStatisticMenuItem"
+        android:title="@string/adjStatisticMenuItemText"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_equalizer_black_24dp"/>
+
+    <item android:id="@+id/theoryQuitMenuItem"
+        android:title="@string/adjQuitMenuItemText"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:icon="@drawable/ic_exit_24dp"/>
+</menu>

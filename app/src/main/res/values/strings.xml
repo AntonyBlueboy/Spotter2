@@ -25,7 +25,7 @@
     </string-array>
     <!-- String Resourses for activity_login layout -->
     <string name="loginActMainText">Увійдіть в обліковий запис \n або створіть новий</string>
-    <string name="loginActInputNewEditText">Введіть новий позивний</string>
+    <string name="loginActInputNewEditText">Введіть новий логін</string>
     <string name="loginActSelectEditText">Виберіть існуючий</string>
     <string name="loginActYetCheckText">Вже маю</string>
     <string name="loginActPassEditText">Введіть пароль</string>

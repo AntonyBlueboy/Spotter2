@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <!-- tools:context=".AdjustmentActivity" было в теге выше -->
@@ -9,15 +8,18 @@
     <item android:id="@+id/adjStatisticMenuItem"
         android:title="@string/adjStatisticMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_equalizer_black_24dp"/>
 
     <item android:id="@+id/adjGoTheoryMenuItem"
         android:title="@string/adjGoTheoryMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_go_theory_24dp"/>
 
     <item android:id="@+id/adjQuitMenuItem"
         android:title="@string/adjQuitMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_exit_24dp"/>
 </menu>

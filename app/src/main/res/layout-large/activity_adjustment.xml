@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".frontend.AdjustmentActivity">
+    tools:context=".frontend.AdjustmentActivity"
+    android:background="@drawable/backgound_map">
 
     <include
         android:layout_width="match_parent"
@@ -15,12 +15,12 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="520dp"
+        android:layout_width="540dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout3"
-        android:background="@color/colorLoginFrame">
+        android:background="@drawable/frame_background">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -180,7 +180,8 @@
         android:id="@+id/adjCoefsTV"
         android:layout_below="@+id/linearLayout3"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/customItemMargin"/>
+        android:layout_margin="@dimen/customItemMargin"
+        android:background="@color/colorBackground"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -191,6 +192,8 @@
         android:layout_alignEnd="@+id/linearLayout3"
         android:enabled="false"
         android:layout_margin="@dimen/customItemMargin"
+        android:background="@drawable/main_button"
+        android:drawableStart="@drawable/ic_get_task_black_24dp"
         />
 
     <Button
@@ -200,7 +203,9 @@
         android:id="@+id/adjBurstBut"
         android:layout_below="@+id/linearLayout3"
         android:layout_alignStart="@+id/linearLayout3"
-        android:layout_margin="@dimen/customItemMargin"/>
+        android:layout_margin="@dimen/customItemMargin"
+        android:background="@drawable/main_button"
+        android:drawableStart="@drawable/ic_correct_black_24dp"/>
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/adjDistSwitch"
@@ -209,7 +214,8 @@
         android:checked="false"
         android:text="@string/adjDistSwitchText"
         android:layout_above="@+id/linearLayout3"
-        android:layout_alignStart="@+id/linearLayout3" />
+        android:layout_alignStart="@+id/linearLayout3"
+        android:background="@color/colorBackground"/>
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/adjScaleSwitch"
@@ -218,7 +224,8 @@
         android:checked="true"
         android:text="@string/adjScaleSwitchText"
         android:layout_above="@+id/linearLayout3"
-        android:layout_alignEnd="@+id/linearLayout3" />
+        android:layout_alignEnd="@+id/linearLayout3"
+        android:background="@color/colorBackground"/>
 
 
 </RelativeLayout>

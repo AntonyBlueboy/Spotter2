@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context=".frontend.SelectionActivity">
+    tools:context=".frontend.SelectionActivity"
+    android:background="@drawable/backgound_map">
 
     <include
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:background="@color/colorLoginFrame"
+        android:background="@drawable/frame_background"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout2">
@@ -40,7 +40,8 @@
             <Button
                 style="@style/CustomButtonForFramesStyle"
                 android:text="@string/selActGoExButtonText"
-                android:id="@+id/selGoToTaskButton"/>
+                android:id="@+id/selGoToTaskButton"
+                android:drawableStart="@drawable/ic_go_task_black_24dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +64,8 @@
             <Button
                 android:text="@string/selActNewExText"
                 android:id="@+id/selCustomTaskButton"
-                style="@style/CustomButtonForFramesStyle" />
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_create_task_color_black_24dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -76,13 +78,15 @@
                 android:text="@string/selActTheorButText"
                 android:id="@+id/selTheoryButton"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"/>
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_theory_black_24dp"/>
 
             <Button
                 android:text="@string/selActMilButtText"
                 android:id="@+id/selMilsTaskButton"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"/>
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_mil_black_24dp"/>
         </LinearLayout>
     </LinearLayout>
 

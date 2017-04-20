@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/SelStatisticMenuItem"
         android:title="@string/adjStatisticMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_equalizer_black_24dp"/>
 
     <item android:id="@+id/SelChangeAcMenuItem"
         android:title="@string/selActChangeMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_change_acc_24dp"/>
 
     <item android:id="@+id/selDeleteAcMenuItem"
         android:title="@string/selActDelMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_delete_black_24dp" />
 
     <item android:id="@+id/SelQuitMenuItem"
         android:title="@string/adjQuitMenuItemText"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:icon="@drawable/ic_exit_24dp"/>
 </menu>

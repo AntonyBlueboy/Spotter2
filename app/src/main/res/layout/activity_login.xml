@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frontend.LoginActivity">
+    tools:context=".frontend.LoginActivity"
+    android:background="@drawable/backgound_map">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,9 +35,9 @@
             >
 
             <LinearLayout
-                android:background="@color/colorLoginFrame"
+                android:background="@drawable/frame_background"
                 android:orientation="vertical"
-                android:layout_width="410dp"
+                android:layout_width="425dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/linearLayout">
@@ -114,7 +115,9 @@
                 android:text="@string/loginActButtonText"
                 android:id="@+id/loginButt"
                 android:layout_gravity="center"
-                style="@style/CustomButtonForFramesStyle"/>
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_input_48px"
+                />
         </LinearLayout>
     </ScrollView>
 

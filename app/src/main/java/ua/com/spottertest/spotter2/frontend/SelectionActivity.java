@@ -6,6 +6,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,7 +82,34 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.select_activity_menu, menu);
+
+        SpannableStringBuilder builder;
+        MenuItem SelStatisticMenuItem = menu.findItem(R.id.SelStatisticMenuItem);
+        builder = new SpannableStringBuilder("  " + SelStatisticMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_equalizer_black_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SelStatisticMenuItem.setTitle(builder);
+
+        MenuItem SelChangeAcMenuItem = menu.findItem(R.id.SelChangeAcMenuItem);
+        builder = new SpannableStringBuilder("  " + SelChangeAcMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_change_acc_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SelChangeAcMenuItem.setTitle(builder);
+
+        MenuItem selDeleteAcMenuItem = menu.findItem(R.id.selDeleteAcMenuItem);
+        builder = new SpannableStringBuilder("  " + selDeleteAcMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_delete_black_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        selDeleteAcMenuItem.setTitle(builder);
+
+        MenuItem SelQuitMenuItem = menu.findItem(R.id.SelQuitMenuItem);
+        builder = new SpannableStringBuilder("  " + SelQuitMenuItem.getTitle());
+        // replace "*" with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_exit_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SelQuitMenuItem.setTitle(builder);
+
         return true;
+
     }
 
     @Override
@@ -140,6 +170,7 @@ public class SelectionActivity extends AppCompatActivity implements View.OnClick
                 /*При нажатии кнопки selTheoryButton создаем интент на актвити с вводными и присваиваем nextActivityIntent*/
 
                 nextActivityIntent = new Intent(this, TheoryActivity.class);
+                nextActivityIntent.putExtra("userName", userName);
                 break;
             case R.id.selMilsTaskButton :
 

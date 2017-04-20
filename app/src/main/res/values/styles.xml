@@ -24,6 +24,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/customItemMargin</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/main_button</item>
     </style>
 
     <style name="CustomTextViewForFrameStyle">

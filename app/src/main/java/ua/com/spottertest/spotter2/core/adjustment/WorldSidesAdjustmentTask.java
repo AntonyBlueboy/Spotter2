@@ -107,6 +107,8 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
         maxDistanсe = parcel.readInt();
         artylleryTypeName = parcel.readString();
         metersInMils = parcel.readInt();
+        isLastCorrectionSuccesful = parcel.readInt() == 1;
+        currentCorrection = parcel.readParcelable(Correction.class.getClassLoader());
 
         random = new Random(new Date().getTime());
     }
@@ -120,6 +122,9 @@ public class WorldSidesAdjustmentTask extends AdjustmentTask {
         parcel.writeInt(maxDistanсe);
         parcel.writeString(artylleryTypeName);
         parcel.writeInt(metersInMils);
+        int isLCSuccessful = isLastCorrectionSuccesful ? 1 : 0;
+        parcel.writeInt(isLCSuccessful);
+        parcel.writeParcelable(currentCorrection, 0);
     }
 
     /*Метод обязательный при имплементировании парселизации*/

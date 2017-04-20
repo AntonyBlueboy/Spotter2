@@ -1,12 +1,17 @@
 package ua.com.spottertest.spotter2.frontend;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +21,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.Permission;
+import java.util.ArrayList;
+import java.util.jar.Manifest;
 
 import ua.com.spottertest.spotter2.R;
 import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
@@ -43,7 +60,7 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
     private TextView worldSidesPrepDescrText;
     private EditText worldSidesPrepMetPerMilET, worldSidesPrepDeltaET;
     private CheckBox worldSidesPrepCB;
-    private Button worldSidesPrepCheckBut, worldSidesPrepGoBut;
+    private Button worldSidesPrepCheckBut, worldSidesPrepGoBut, worldSidesPDFButton;
     private ImageButton worldSidesChangeBut;
 
     /*Переменная для интента для перехода к следующей активити*/
@@ -103,6 +120,8 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
         worldSidesChangeBut = (ImageButton) getView().findViewById(R.id.worldSidesChangeBut);
         worldSidesChangeBut.setOnClickListener(this);
         userName = getActivity().getIntent().getStringExtra("userName");
+        worldSidesPDFButton = (Button) getView().findViewById(R.id.worldSidesPDFButton);
+        worldSidesPDFButton.setOnClickListener(this);
 
         builder = new AlertDialog.Builder(getActivity());
     }
@@ -167,6 +186,66 @@ public class WorldSidesPrepareFragment extends Fragment implements View.OnClickL
             case R.id.worldSidesChangeBut:
                 changeTask();
                 break;
+            case R.id.worldSidesPDFButton:
+                TedPermission dispecher = new TedPermission(getActivity()).setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        CopyReadPDFFromAssets();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                        makeToastMessage("Для перегляду і збереження бланку пристрілки необхідні дозволи.");
+                    }
+                });
+                dispecher.setPermissions("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE");
+                dispecher.check();
+
+                break;
+        }
+    }
+
+    private void CopyReadPDFFromAssets()
+    {
+        AssetManager assetManager = getActivity().getAssets();
+
+        InputStream in = null;
+        OutputStream out = null;
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                                                                                "blank_for_adjustment.pdf");
+        String filename = file.getName();
+        try
+        {
+            in = assetManager.open("blank_for_adjustment.pdf");
+            out = new FileOutputStream(file);
+
+            copyPdfFile(in, out);
+            in.close();
+            in = null;
+            out.flush();
+            out.close();
+            out = null;
+        } catch (Exception e)
+        {
+            Log.e("errors", e.toString());
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(
+                Uri.parse("file://" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/blank_for_adjustment.pdf"),
+                "application/pdf");
+
+        startActivity(intent);
+    }
+
+    private void copyPdfFile(InputStream in, OutputStream out) throws IOException
+    {
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1)
+        {
+            out.write(buffer, 0, read);
         }
     }
 

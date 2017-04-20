@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/webView"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/customItemMargin"/>
+            android:layout_margin="@dimen/customItemMargin" />
 
 
     </LinearLayout>

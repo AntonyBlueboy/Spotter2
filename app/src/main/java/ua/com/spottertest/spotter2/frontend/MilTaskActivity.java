@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -84,7 +87,27 @@ public class MilTaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.adj_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.mil_activity_menu, menu);
+
+        SpannableStringBuilder builder;
+        MenuItem milStatisticMenuItem = menu.findItem(R.id.milStatisticMenuItem);
+        builder = new SpannableStringBuilder("  " + milStatisticMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_equalizer_black_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        milStatisticMenuItem.setTitle(builder);
+
+        MenuItem milGoTheoryMenuItem = menu.findItem(R.id.milGoTheoryMenuItem);
+        builder = new SpannableStringBuilder("  " + milGoTheoryMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_go_theory_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        milGoTheoryMenuItem.setTitle(builder);
+
+        MenuItem milQuitMenuItem = menu.findItem(R.id.milQuitMenuItem);
+        builder = new SpannableStringBuilder("  " + milQuitMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_exit_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        milQuitMenuItem.setTitle(builder);
+
         return true;
     }
 
@@ -112,7 +135,7 @@ public class MilTaskActivity extends AppCompatActivity {
 
 
         switch (item.getItemId()){
-            case R.id.adjStatisticMenuItem:
+            case R.id.milStatisticMenuItem:
 
                 /*Для пункта вызова статистики,
                 * обновляем данные юзера в базе
@@ -122,7 +145,7 @@ public class MilTaskActivity extends AppCompatActivity {
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
                         message);
                 break;
-            case R.id.adjQuitMenuItem:
+            case R.id.milGoTheoryMenuItem:
 
                 /*Для пунтка "Выйти"
                 * Создаем билдер окон, переспрашиваем, если подтверждает обновляем бд юзера и выходим*/
@@ -138,7 +161,7 @@ public class MilTaskActivity extends AppCompatActivity {
                 builder.setNegativeButton("Ні", null);
                 builder.show();
                 break;
-            case R.id.adjGoTheoryMenuItem:
+            case R.id.milQuitMenuItem:
                 final Intent theoryActIntent = new Intent(this,  TheoryActivity.class);
                 theoryActIntent.putExtra("taskId", 0);
                 AlertDialog.Builder tempBuilder = new AlertDialog.Builder(this);

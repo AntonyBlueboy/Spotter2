@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.math.BigDecimal;
@@ -16,7 +19,6 @@ import ua.com.spottertest.spotter2.R;
 import ua.com.spottertest.spotter2.core.adjustment.AdjustmentTask;
 import ua.com.spottertest.spotter2.core.adjustment.ArtilleryType;
 import ua.com.spottertest.spotter2.core.database.DataBaseHelper;
-import ua.com.spottertest.spotter2.core.database.User;
 
 /*Корневое активити для фрагментов с задачами по подготовке стрельбы.
  * Вся логика описана в фрагментах разных типов*/
@@ -124,13 +126,33 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
         }
 
         /*Выводим описание стрельбы и артсистемы на Actionbar*/
-
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
         getSupportActionBar().setTitle(taskTitle + "  " + artilleryTitle);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.adj_activity_menu, menu);
+
+        SpannableStringBuilder builder;
+        MenuItem theoryStatisticMenuItem = menu.findItem(R.id.adjStatisticMenuItem);
+        builder = new SpannableStringBuilder("  " + theoryStatisticMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_equalizer_black_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        theoryStatisticMenuItem.setTitle(builder);
+
+        MenuItem adjGoTheoryMenuItem = menu.findItem(R.id.adjGoTheoryMenuItem);
+        builder = new SpannableStringBuilder("  " + adjGoTheoryMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_go_theory_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        adjGoTheoryMenuItem.setTitle(builder);
+
+        MenuItem adjQuitMenuItem = menu.findItem(R.id.adjQuitMenuItem);
+        builder = new SpannableStringBuilder("  " + adjQuitMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_exit_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        adjQuitMenuItem.setTitle(builder);
+
         return true;
     }
 
@@ -162,7 +184,7 @@ public class PreparingAdjustmentActivity extends AppCompatActivity {
                 builder.setNegativeButton("Ні", null);
                 builder.show();
                 break;
-            case R.id.adjQuitMenuItem:
+            case R.id.theoryQuitMenuItem:
                 /*При выборе кнопки "Выйти"
                 * Создаем диалоговое окно,
                 * Переспрашиваем

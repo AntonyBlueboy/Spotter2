@@ -142,6 +142,9 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         mainProtractorStep = parcel.readInt();
         maxDistanсe = parcel.readInt();
         artylleryTypeName = parcel.readString();
+        isLastCorrectionSuccesful = parcel.readInt() == 1;
+        currentCorrection = parcel.readParcelable(Correction.class.getClassLoader());
+
         type = ArtilleryType.getTypeForDescription(artylleryTypeName);
         random = new Random(new Date().getTime());
     }
@@ -170,6 +173,9 @@ public class RangefinderAdjustmentTask extends AdjustmentTask {
         parcel.writeInt(mainProtractorStep);
         parcel.writeInt(maxDistanсe);
         parcel.writeString(artylleryTypeName);
+        int isLCSuccessful = isLastCorrectionSuccesful ? 1 : 0;
+        parcel.writeInt(isLCSuccessful);
+        parcel.writeParcelable(currentCorrection, 0);
     }
 
     /*Получаем исчисленые пользователем КУ и ШУ в контейнере для Object, сверяем и возвразаем вердикт*/

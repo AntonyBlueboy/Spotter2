@@ -1,14 +1,20 @@
 package ua.com.spottertest.spotter2.frontend;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,8 +90,6 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
 
     private SwitchCompat adjDistOrAngSwitch, adjScaleSwitch;
 
-
-
     /*Переменная пристрелки, индекса пристрелки и логина*/
 
     private AdjustmentTask task;
@@ -100,6 +104,8 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
     * используеться ли дП на 100*/
 
     private boolean isScaleUsed;
+
+
 
     /*Используется ли целеуказание в виде дальности по разрыву*/
 
@@ -119,37 +125,141 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adjustment);
 
+        /*Вызываем метод инициации элементов интерфейса*/
 
+        initiateGUI();
         dataBaseHelper = new DataBaseHelper(this);
-        Intent currentIntent = getIntent();
-        taskId = currentIntent.getIntExtra("taskId", 0);
 
-        switch (taskId){
-            case AdjustmentTask.RANGE_FINDER_TYPE:
-                task = currentIntent.getParcelableExtra(RangefinderAdjustmentTask.class.getCanonicalName());
-                break;
-            case AdjustmentTask.DUAL_OBSERVINGS_TYPE:
-                task = currentIntent.getParcelableExtra(DualObservingAdjustmentTask.class .getCanonicalName());
-                break;
-            case AdjustmentTask.WORLD_SIDES_TYPE:
-                task = currentIntent.getParcelableExtra(WorldSidesAdjustmentTask.class .getCanonicalName());
-                break;
+        if (savedInstanceState != null){
+            /*Восстанавливаем переменные*/
+
+            taskId = savedInstanceState.getInt("taskId");
+            task = savedInstanceState.getParcelable("task");
+            userName = savedInstanceState.getString("userName");
+            tasks = savedInstanceState.getInt("tasks");
+            succesfulTasks = savedInstanceState.getInt("succesfulTasks");
+            percent = savedInstanceState.getDouble("percent");
+            summTime = savedInstanceState.getLong("summTime");
+            isDistanceOrAnglesUsed = savedInstanceState.getBoolean("isDistanceOrAnglesUsed");
+            isStarted = savedInstanceState.getBoolean("isStarted");
+            currentBurstDescriptions = savedInstanceState.getStringArray("currentBurstDescriptions");
+
+            /*Восстанавливаем состояние GUI*/
+
+            adjLeftRB.setChecked(savedInstanceState.getBoolean("adjLeftRB.isChecked"));
+            adjLessRB.setChecked(savedInstanceState.getBoolean("adjLessRB.isChecked"));
+            adjAngNoCorrCB.setChecked(savedInstanceState.getBoolean("adjAngNoCorrCB.isChecked"));
+            onClick(adjAngNoCorrCB);
+            adjDistNoCorrCB.setChecked(savedInstanceState.getBoolean("adjDistNoCorrCB.isChecked"));
+            onClick(adjDistNoCorrCB);
+            adjCorrBut.setEnabled(savedInstanceState.getBoolean("adjCorrBut.isEnabled"));
+            adjBurstBut.setEnabled(savedInstanceState.getBoolean("adjBurstBut.isEnabled"));
+
+            adjAngCorrET.setText(savedInstanceState.getString("adjAngCorrET.text", ""));
+            adjDistCorrET.setText(savedInstanceState.getString("adjDistCorrET.text", ""));
+
+            if(isStarted) printBurstDescription();
+            if(tasks > 0) printStats();
         }
+        else {
+            Intent currentIntent = getIntent();
+            taskId = currentIntent.getIntExtra("taskId", 0);
 
-        userName = currentIntent.getStringExtra("userName");
+            switch (taskId) {
+                case AdjustmentTask.RANGE_FINDER_TYPE:
+                    task = currentIntent.getParcelableExtra(RangefinderAdjustmentTask.class.getCanonicalName());
+                    break;
+                case AdjustmentTask.DUAL_OBSERVINGS_TYPE:
+                    task = currentIntent.getParcelableExtra(DualObservingAdjustmentTask.class.getCanonicalName());
+                    break;
+                case AdjustmentTask.WORLD_SIDES_TYPE:
+                    task = currentIntent.getParcelableExtra(WorldSidesAdjustmentTask.class.getCanonicalName());
+                    break;
+            }
+
+            userName = currentIntent.getStringExtra("userName");
+        }
         valueOfScale = task.getValueOfScale();
         isScaleUsed = valueOfScale != 0;
         currentUser = new User(userName);
 
-        /*Вызываем метод инициации элементов интерфейса*/
+        if (taskId == AdjustmentTask.WORLD_SIDES_TYPE) {
+            adjDistOrAngSwitch.setVisibility(View.INVISIBLE);
+            adjDistOrAngSwitch.setEnabled(false);
+        }
+        else {
+            adjDistOrAngSwitch.setOnClickListener(this);
+        }
+        if (taskId == AdjustmentTask.DUAL_OBSERVINGS_TYPE) adjDistOrAngSwitch.setText("Дирекційні по цілі");
 
-        initiateGUI();
+        adjCoefsTV.setText(task.getCoefsDescription());
+        getSupportActionBar().setLogo(R.drawable.ic_action_name);
+        getSupportActionBar().setTitle(task.getAdjustmentTitle() + "  " + task.getArtylleryTypeName());
 
+        adjScaleSwitch.setChecked(isScaleUsed);
+        adjDistOrAngSwitch.setChecked(isDistanceOrAnglesUsed);
+        if (isScaleUsed) adjDistCorrET.setHint(getResources().getString(R.string.adjScaleCorrETHintText));
+        else adjDistCorrET.setHint(getResources().getString(R.string.adjMetersCorrETHintText));
+        adjScaleSwitch.setEnabled(isScaleUsed);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        /*Сохраняем переменные*/
+
+        outState.putParcelable("task", task);
+        outState.putInt("taskId", taskId);
+        outState.putString("userName", userName);
+        outState.putInt("tasks", tasks);
+        outState.putInt("succesfulTasks", succesfulTasks);
+        outState.putDouble("percent", percent);
+        outState.putLong("summTime", summTime);
+        outState.putBoolean("isDistanceOrAnglesUsed", isDistanceOrAnglesUsed);
+        outState.putBoolean("isStarted", isStarted);
+        outState.putStringArray("currentBurstDescriptions", currentBurstDescriptions);
+
+        /*Сохраняем состояние вью*/
+
+        outState.putBoolean("adjLeftRB.isChecked", adjLeftRB.isChecked());
+        outState.putBoolean("adjLessRB.isChecked", adjLessRB.isChecked());
+        outState.putBoolean("adjAngNoCorrCB.isChecked", adjAngNoCorrCB.isChecked());
+        outState.putBoolean("adjDistNoCorrCB.isChecked", adjDistNoCorrCB.isChecked());
+        outState.putBoolean("adjCorrBut.isEnabled", adjCorrBut.isEnabled());
+        outState.putBoolean("adjBurstBut.isEnabled", adjBurstBut.isEnabled());
+
+        outState.putString("adjAngCorrET.text", adjAngCorrET.getText().toString());
+        outState.putString("adjDistCorrET.text", adjDistCorrET.getText().toString());
+
+
+        dataBaseHelper.refreshUserStats(currentUser);
+        super.onSaveInstanceState(outState);
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.adj_activity_menu, menu);
+
+        SpannableStringBuilder builder;
+        MenuItem theoryStatisticMenuItem = menu.findItem(R.id.adjStatisticMenuItem);
+        builder = new SpannableStringBuilder("  " + theoryStatisticMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_equalizer_black_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        theoryStatisticMenuItem.setTitle(builder);
+
+        MenuItem adjGoTheoryMenuItem = menu.findItem(R.id.adjGoTheoryMenuItem);
+        builder = new SpannableStringBuilder("  " + adjGoTheoryMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_go_theory_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        adjGoTheoryMenuItem.setTitle(builder);
+
+        MenuItem adjQuitMenuItem = menu.findItem(R.id.adjQuitMenuItem);
+        builder = new SpannableStringBuilder("  " + adjQuitMenuItem.getTitle());
+        // replace " " with icon
+        builder.setSpan(new ImageSpan(this, R.drawable.ic_exit_24dp), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        adjQuitMenuItem.setTitle(builder);
+
         return true;
     }
 
@@ -160,8 +270,9 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
             case R.id.adjStatisticMenuItem:
                 dataBaseHelper.refreshUserStats(currentUser);
                 String message = dataBaseHelper.getUserStatsForName(userName);
+                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_stats_black_24dp);
                 makeDialogWindowMessage(getResources().getString(R.string.adjStatisticMenuItemText) + " " + userName,
-                        message);
+                        message, drawable);
                 currentUser.clear();
                 break;
             case R.id.adjGoTheoryMenuItem:
@@ -175,6 +286,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
                                 startActivity(theoryActIntent);
                             }
                         });
+                builder.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_warning_black_24dp));
                 builder.setNegativeButton("Ні", null);
                 builder.show();
                 break;
@@ -187,6 +299,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
                                 finishAffinity();
                             }
                         });
+                tempBuilder.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_warning_black_24dp));
                 tempBuilder.setNegativeButton("Ні", null);
                 tempBuilder.show();
 
@@ -219,25 +332,11 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         adjBurstBut = (Button) findViewById(R.id.adjBurstBut);
         adjBurstBut.setOnClickListener(this);
         adjDistOrAngSwitch = (SwitchCompat) findViewById(R.id.adjDistSwitch);
-        if (taskId == AdjustmentTask.WORLD_SIDES_TYPE) {
-            adjDistOrAngSwitch.setVisibility(View.INVISIBLE);
-            adjDistOrAngSwitch.setEnabled(false);
-        }
-        else {
-            adjDistOrAngSwitch.setOnClickListener(this);
-        }
-        if (taskId == AdjustmentTask.DUAL_OBSERVINGS_TYPE) adjDistOrAngSwitch.setText("Дирекційні по цілі");
         adjScaleSwitch = (SwitchCompat) findViewById(R.id.adjScaleSwitch);
         adjScaleSwitch.setOnClickListener(this);
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
-        adjCoefsTV.setText(task.getCoefsDescription());
-        getSupportActionBar().setTitle(task.getAdjustmentTitle() + "  " + task.getArtylleryTypeName());
 
-        adjScaleSwitch.setChecked(isScaleUsed);
-        if (isScaleUsed) adjDistCorrET.setHint(getResources().getString(R.string.adjScaleCorrETHintText));
-        else adjDistCorrET.setHint(getResources().getString(R.string.adjMetersCorrETHintText));
-        adjScaleSwitch.setEnabled(isScaleUsed);
     }
 
 
@@ -325,9 +424,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         adjAngNoCorrCB.setChecked(false);
         adjDistNoCorrCB.setChecked(false);
         adjAngCorrET.setText("");
-        adjAngCorrET.setEnabled(true);
         adjDistCorrET.setText("");
-        adjDistCorrET.setEnabled(true);
         adjBurstBut.setEnabled(false);
         adjCorrBut.setEnabled(true);
 
@@ -355,11 +452,13 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
             long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
             summTime += elapsedMillis;
             resultMessage.append("\nЧас - " + getTimeString(elapsedMillis));
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_loose_black_24dp);
             String title = "Ціль не вражено";
             if(task.isLastCorrectionSuccessful()){
                 title = "Ціль вражено";
+                drawable = ContextCompat.getDrawable(this, R.drawable.target_destroyed);
             }
-            makeDialogWindowMessage(title, resultMessage.toString());
+            makeDialogWindowMessage(title, resultMessage.toString(), drawable);
 
             adjBurstBut.setEnabled(true);
             adjCorrBut.setEnabled(false);
@@ -431,7 +530,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
                 Toast.LENGTH_SHORT).show();
     }
 
-    private void makeDialogWindowMessage(String title, String message){
+    private void makeDialogWindowMessage(String title, String message, Drawable drawable){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(message).setCancelable(false).setNegativeButton("До стрільби",
                 new DialogInterface.OnClickListener() {
@@ -439,6 +538,7 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
                 dialog.cancel();
             }
         });
+        builder.setIcon(drawable);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -478,14 +578,17 @@ public class AdjustmentActivity extends AppCompatActivity implements View.OnClic
         else currentUser.incrementUnsuccessTasks(summTime/tasks);
 
         percent = (double) succesfulTasks / tasks * 100;
+        printStats();
+
+    }
+
+    private void printStats(){
         String avTime = getTimeString(summTime/tasks);
 
         adjStatTV.setText(String.format("%d з %d (%.1f%%)\nСер. час - %s", succesfulTasks, tasks, percent, avTime));
         if (percent < 50) adjStatTV.setBackgroundColor(Color.RED);
         else if (percent > 80) adjStatTV.setBackgroundColor(Color.GREEN);
         else adjStatTV.setBackgroundColor(Color.YELLOW);
-
-
     }
 
 

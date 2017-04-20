@@ -8,8 +8,8 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="380dp"
-        android:background="@color/colorLoginFrame"
+        android:layout_width="420dp"
+        android:background="@drawable/frame_background"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
@@ -82,6 +82,7 @@
                 android:id="@+id/rangPrepCheckBut"
                 android:layout_weight="1"
                 style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_check_prep_black_24dp"
                 />
 
             <Button
@@ -90,7 +91,8 @@
                 android:text="@string/rangPrepGoButText"
                 android:id="@+id/rangPrepGoBut"
                 android:layout_weight="1"
-                style="@style/CustomButtonForFramesStyle"/>
+                style="@style/CustomButtonForFramesStyle"
+                android:drawableStart="@drawable/ic_go_adj_black_24dp"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
