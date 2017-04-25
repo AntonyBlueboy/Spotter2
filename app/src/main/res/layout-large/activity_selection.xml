@@ -65,7 +65,8 @@
                 android:text="@string/selActNewExText"
                 android:id="@+id/selCustomTaskButton"
                 style="@style/CustomButtonForFramesStyle"
-                android:drawableStart="@drawable/ic_create_task_color_black_24dp"/>
+                android:drawableStart="@drawable/ic_create_task_color_black_24dp"
+                android:enabled="false"/>
         </LinearLayout>
 
         <LinearLayout

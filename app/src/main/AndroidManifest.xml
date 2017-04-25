@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ua.com.spottertest.spotter2">
+    package="ua.com.adjuster.adjuster">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -35,10 +35,13 @@
         <activity
             android:name=".frontend.AdjustmentActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/CustomNoActionBarTheme">
-        </activity>
+            android:theme="@style/CustomNoActionBarTheme"/>
         <activity
             android:name=".frontend.PreparingAdjustmentActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/CustomNoActionBarTheme" />
+        <activity
+            android:name=".frontend.CreateAdjustmentActivity"
             android:screenOrientation="landscape"
             android:theme="@style/CustomNoActionBarTheme"/>
     </application>

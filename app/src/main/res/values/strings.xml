@@ -37,6 +37,8 @@
     <string name="loginActSelectLoginMessage">Виберіть позивний</string>
     <string name="loginActInputPassMessage">Введіть пароль</string>
     <string name="loginActWrongPassMessage">Невірний пароль!</string>
+    <string name="loginActInfoMessage">Автори додатку:\nПрограмування: друг Рудольф\nТеорія і консультації: капітан ЗСУ друг Арт\n\n
+        Додаток повністю автономний і локальний, не вкористовує підключення до мережі, зберігає дані виключно на пристрої.\n\nЗауваження і побажання прошу надсилати на пошту eol.darkelf13@gmail.com</string>
 
     <string name="rangPrepMainText">Введіть необхідні дані</string>
     <string name="rangPrepDistCoefETHint">Коеф. віддалення</string>
@@ -57,6 +59,7 @@
     <string name="dualPrepHandRightFPRadioText">Зправа</string>
 
     <string name="worldSidesPrepMilFrameText">Метрів на 0-01</string>
+    <string name="worldSidesPrepBlankButtText">Бланк пристрлки</string>
 
     <string name="adjDistSwitchText">Дальність розриву</string>
     <string name="adjScaleSwitchText">Ділення прицілу</string>
@@ -93,8 +96,10 @@
     <string name="distanceMilsCheckButtonText">Перевірити</string>
     <string name="distanceMilsStartText">Отримайте задачу</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="creatFragCommDistSelectionText">Виберіть Дк</string>
+    <string name="creatFragFireDistSelectionText">Виберіть Дц</string>
+    <string name="creatFragParalSelectionText">Виберіть ПЗ</string>
+
 
 
 </resources>

@@ -104,7 +104,7 @@
             style="@style/CustomButtonForFramesStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Бланк пристрлки"
+            android:text="@string/worldSidesPrepBlankButtText"
             android:id="@+id/worldSidesPDFButton"
             android:drawableStart="@drawable/ic_blank_black_24dp"
             />

@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "ua.com.spottertest.spotter2"
+        applicationId "ua.com.adjuster.adjuster"
         minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
     compile 'gun0912.ted:tedpermission:1.0.3'
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
 }

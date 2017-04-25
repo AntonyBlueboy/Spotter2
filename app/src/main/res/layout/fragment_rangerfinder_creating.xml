@@ -1,0 +1,95 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".frontend.RangerfinderCreatingFragment">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="420dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/frame_background"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createStaticRangeFinderTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/creatFragCommDistSelectionText" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:dsb_max="3000"
+                app:dsb_min="500"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/createRangeFinderCommDistanceTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="CommDist" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createStaticRangeFinderTV2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/creatFragFireDistSelectionText" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:dsb_max="3000"
+                app:dsb_min="500"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/createRangeFinderFireDistanceTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="FireDist" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createStaticRangeFinderTV3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/creatFragParalSelectionText" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:dsb_max="3000"
+                app:dsb_min="500"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/createRangeFinderFireParallTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="parallax" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
